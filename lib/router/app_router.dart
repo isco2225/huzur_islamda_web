@@ -10,11 +10,11 @@ final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const LandingScreen()),
     GoRoute(
-      path: '/gizlilik-politikasi',
+      path: '/privict_policy',
       builder: (context, state) => const PrivacyPolicyScreen(),
     ),
     GoRoute(
-      path: '/kullanim-kosullari',
+      path: '/terms_of_use',
       builder: (context, state) => const TermsOfUseScreen(),
     ),
     GoRoute(

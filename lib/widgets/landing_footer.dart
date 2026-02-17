@@ -30,7 +30,7 @@ class LandingFooter extends StatelessWidget {
               children: [
                 _FooterLink(
                   label: 'Gizlilik Politikası',
-                  onTap: () => context.push('/gizlilik-politikasi'),
+                  onTap: () => context.push('/privict_policy'),
                 ),
                 _FooterLink(
                   label: 'Kullanım Koşulları',
