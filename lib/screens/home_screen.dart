@@ -33,23 +33,25 @@ class HomeScreen extends StatelessWidget {
         Text(
           'İbadet Rehberim',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: (Theme.of(context).textTheme.headlineMedium?.fontSize ?? 28) * Responsive.headlineScale(context),
-              ),
+            color: AppColors.primary,
+            fontWeight: FontWeight.bold,
+            fontSize:
+                (Theme.of(context).textTheme.headlineMedium?.fontSize ?? 28) *
+                Responsive.headlineScale(context),
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           'Mobil uygulama yasal sayfaları',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.subtitleColor,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.subtitleColor),
         ),
         SizedBox(height: isMobile ? 36 : 56),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () => context.push('/gizlilik-politikasi'),
+            onPressed: () => context.push('/privacy_policy'),
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: isMobile ? 14 : 18),
             ),
@@ -60,7 +62,7 @@ class HomeScreen extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () => context.push('/kullanim-kosullari'),
+            onPressed: () => context.push('/terms_of_use'),
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: isMobile ? 14 : 18),
             ),
@@ -77,10 +79,7 @@ class HomeScreen extends StatelessWidget {
         child: Responsive.constrainContent(
           context,
           child: SingleChildScrollView(
-            child: Padding(
-              padding: padding,
-              child: content,
-            ),
+            child: Padding(padding: padding, child: content),
           ),
         ),
       ),

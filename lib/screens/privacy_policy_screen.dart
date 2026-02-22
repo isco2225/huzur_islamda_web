@@ -89,12 +89,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   style: bodyStyle,
                 ),
                 const SizedBox(height: 12),
-                Text('Cihaz ve Teknik Veriler:', style: boldStyle),
-                Text(
-                  'IP adresi, cihaz modeli, işletim sistemi sürümü, uygulama çökme raporları (Logs) ve performans verileri.',
-                  style: bodyStyle,
-                ),
-                const SizedBox(height: 12),
                 Text('Reklam Verileri:', style: boldStyle),
                 Text(
                   'Ücretsiz sürümü kullanıyorsanız, reklam gösterimi için cihaz reklam kimliği (IDFA/GAID) gibi tanımlayıcılar toplanabilir.',

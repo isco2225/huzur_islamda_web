@@ -12,7 +12,9 @@ class LandingFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
     final padH = Responsive.sectionHorizontalPadding(context);
-    final padV = isMobile ? 32.0 : (Responsive.isWideDesktop(context) ? 56.0 : 48.0);
+    final padV = isMobile
+        ? 32.0
+        : (Responsive.isWideDesktop(context) ? 56.0 : 48.0);
 
     return Container(
       width: double.infinity,
@@ -30,24 +32,24 @@ class LandingFooter extends StatelessWidget {
               children: [
                 _FooterLink(
                   label: 'Gizlilik Politikası',
-                  onTap: () => context.push('/privict_policy'),
+                  onTap: () => context.push('/privacy_policy'),
                 ),
                 _FooterLink(
                   label: 'Kullanım Koşulları',
-                  onTap: () => context.push('/kullanim-kosullari'),
+                  onTap: () => context.push('/terms_of_use'),
                 ),
                 _FooterLink(
                   label: 'Veri Silme Talebi',
-                  onTap: () => context.push('/delete-account'),
+                  onTap: () => context.push('/delete_account'),
                 ),
               ],
             ),
             SizedBox(height: isMobile ? 20 : 28),
             Text(
               '© ${DateTime.now().year} İbadet Rehberim. Tüm hakları saklıdır.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.subtitleColor,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.subtitleColor),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: isMobile ? 12 : 16),
@@ -90,10 +92,7 @@ class _FooterLink extends StatelessWidget {
       onPressed: onTap,
       child: Text(
         label,
-        style: TextStyle(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w500,
-        ),
+        style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500),
       ),
     );
   }

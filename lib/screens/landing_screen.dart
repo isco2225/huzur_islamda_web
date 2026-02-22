@@ -173,22 +173,16 @@ class _AppMockupPlaceholder extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(isMobile ? 20 : 28),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              'assets/icons/app_icon.png',
-              width: phoneW * 0.7,
-              height: phoneW * 0.7,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.smartphone,
-                size: phoneW * 0.6,
-                color: AppColors.primary.withValues(alpha: 0.5),
-              ),
-            ),
-          ],
+        borderRadius: BorderRadius.circular(isMobile ? 12 : 16),
+        child: Image.asset(
+          'assets/app_screenshots/1 photo.jpg',
+          fit: BoxFit.cover,
+          alignment: Alignment.topCenter,
+          errorBuilder: (context, error, stackTrace) => Icon(
+            Icons.smartphone,
+            size: phoneW * 0.6,
+            color: AppColors.primary.withValues(alpha: 0.5),
+          ),
         ),
       ),
     );
@@ -476,32 +470,8 @@ class _ScreenshotsSection extends StatelessWidget {
               ),
               SizedBox(height: isMobile ? 24 : (isWide ? 40 : 32)),
               isMobile
-                  ? SizedBox(
-                      height: 320,
-                      child: PageView(
-                        children: [
-                          _ScreenshotPlaceholder(index: 1),
-                          _ScreenshotPlaceholder(index: 2),
-                          _ScreenshotPlaceholder(index: 3),
-                          _ScreenshotPlaceholder(index: 4),
-                        ],
-                      ),
-                    )
-                  : SizedBox(
-                      height: 340,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(child: _ScreenshotPlaceholder(index: 1)),
-                          const SizedBox(width: 12),
-                          Expanded(child: _ScreenshotPlaceholder(index: 2)),
-                          const SizedBox(width: 12),
-                          Expanded(child: _ScreenshotPlaceholder(index: 3)),
-                          const SizedBox(width: 12),
-                          Expanded(child: _ScreenshotPlaceholder(index: 4)),
-                        ],
-                      ),
-                    ),
+                  ? const _MobileScreenshotCarousel()
+                  : const _DesktopScreenshotStrip(),
             ],
           ),
         ),
@@ -510,46 +480,223 @@ class _ScreenshotsSection extends StatelessWidget {
   }
 }
 
-class _ScreenshotPlaceholder extends StatelessWidget {
-  const _ScreenshotPlaceholder({required this.index});
+class _DesktopScreenshotStrip extends StatefulWidget {
+  const _DesktopScreenshotStrip();
 
-  final int index;
+  @override
+  State<_DesktopScreenshotStrip> createState() => _DesktopScreenshotStripState();
+}
+
+class _DesktopScreenshotStripState extends State<_DesktopScreenshotStrip> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.primary),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.phone_android,
-                size: 48,
-                color: AppColors.primary.withValues(alpha: 0.5),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Ekran Görüntüsü $index',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.subtitleColor,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'assets/screenshots/screen_$index.png',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.subtitleColor,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
+    return Scrollbar(
+      controller: _scrollController,
+      thumbVisibility: true,
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 1; i <= 9; i++) ...[
+              if (i > 1) const SizedBox(width: 12),
+              _ScreenshotPlaceholder(index: i, maxWidth: 160),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileScreenshotCarousel extends StatefulWidget {
+  const _MobileScreenshotCarousel();
+
+  static const _pageCount = 9;
+
+  @override
+  State<_MobileScreenshotCarousel> createState() =>
+      _MobileScreenshotCarouselState();
+}
+
+class _MobileScreenshotCarouselState extends State<_MobileScreenshotCarousel> {
+  late final PageController _pageController;
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: _currentPage > 0
+                  ? () => _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    )
+                  : null,
+              icon: Icon(
+                Icons.chevron_left,
+                size: 40,
+                color: _currentPage > 0
+                    ? AppColors.primary
+                    : AppColors.primary.withValues(alpha: 0.3),
+              ),
+              style: IconButton.styleFrom(minimumSize: const Size(48, 48)),
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 300,
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (i) => setState(() => _currentPage = i),
+                  children: List.generate(
+                    _MobileScreenshotCarousel._pageCount,
+                    (i) => Center(
+                      child: _ScreenshotPlaceholder(
+                        index: i + 1,
+                        maxWidth: 160,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: _currentPage < _MobileScreenshotCarousel._pageCount - 1
+                  ? () => _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    )
+                  : null,
+              icon: Icon(
+                Icons.chevron_right,
+                size: 40,
+                color: _currentPage < _MobileScreenshotCarousel._pageCount - 1
+                    ? AppColors.primary
+                    : AppColors.primary.withValues(alpha: 0.3),
+              ),
+              style: IconButton.styleFrom(minimumSize: const Size(48, 48)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            _MobileScreenshotCarousel._pageCount,
+            (i) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: i == _currentPage ? 20 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: i == _currentPage
+                      ? AppColors.primary
+                      : AppColors.primary.withValues(alpha: 0.3),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ScreenshotPlaceholder extends StatelessWidget {
+  const _ScreenshotPlaceholder({required this.index, this.maxWidth = 160});
+
+  final int index;
+  final double maxWidth;
+
+  static const _assetPath = 'assets/app_screenshots';
+  static const _aspectRatio = 9 / 19.5;
+
+  @override
+  Widget build(BuildContext context) {
+    final assetName = '$index photo.jpg';
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: maxWidth,
+          maxHeight: maxWidth / _aspectRatio,
+        ),
+        child: AspectRatio(
+          aspectRatio: _aspectRatio,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.4),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Image.asset(
+                '$_assetPath/$assetName',
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: AppColors.surface,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.phone_android,
+                          size: 48,
+                          color: AppColors.primary.withValues(alpha: 0.5),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Ekran $index',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppColors.subtitleColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
