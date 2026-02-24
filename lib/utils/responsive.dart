@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-/// Ekran genişliğine göre responsive değerler.
+/// Responsive layout helpers based on screen width.
 class Responsive {
   Responsive._();
 
-  /// Mobil kabul edilen üst sınır (px).
+  /// Maximum width (px) considered as mobile.
   static const double mobileBreakpoint = 600;
 
-  /// Geniş masaüstü (px) – bu genişlikten sonra landing daha ferah.
+  /// Desktop breakpoint (px) – landing layout gets roomier beyond this.
   static const double desktopBreakpoint = 1024;
 
-  /// Tablet ve üzeri için içerik maksimum genişlik (px).
+  /// Max content width (px) for tablet and larger.
   static const double contentMaxWidth = 720;
 
-  /// Landing sayfası için içerik maksimum genişlik (px).
+  /// Max content width (px) for the landing page.
   static const double landingMaxWidth = 960;
 
-  /// Geniş ekranlarda landing için max genişlik (px).
+  /// Max landing width (px) on wide screens.
   static const double landingWideMaxWidth = 1200;
 
   static bool isMobile(BuildContext context) {
@@ -35,7 +35,7 @@ class Responsive {
     return MediaQuery.sizeOf(context).width;
   }
 
-  /// Sayfa yatay padding: mobilde daha dar, masaüstünde daha geniş.
+  /// Page horizontal padding: tighter on mobile, wider on desktop.
   static EdgeInsets pagePadding(BuildContext context) {
     if (isMobile(context)) {
       return const EdgeInsets.symmetric(horizontal: 20, vertical: 20);
@@ -43,27 +43,27 @@ class Responsive {
     return const EdgeInsets.symmetric(horizontal: 32, vertical: 32);
   }
 
-  /// Ana sayfa logo boyutu.
+  /// Home screen logo size.
   static double homeLogoSize(BuildContext context) {
     return isMobile(context) ? 100 : 140;
   }
 
-  /// AppBar logo boyutu.
+  /// App bar logo size.
   static double appBarLogoSize(BuildContext context) {
     return isMobile(context) ? 28 : 36;
   }
 
-  /// AppBar başlık font boyutu.
+  /// App bar title font size.
   static double appBarTitleFontSize(BuildContext context) {
     return isMobile(context) ? 17 : 22;
   }
 
-  /// Ana sayfa başlık (headline) font boyutu için scale.
+  /// Scale factor for home screen headline font size.
   static double headlineScale(BuildContext context) {
     return isMobile(context) ? 1.0 : 1.25;
   }
 
-  /// İçerik alanını masaüstünde ortala ve max genişlik ver.
+  /// Center content on desktop and apply a max width.
   static Widget constrainContent(BuildContext context, {required Widget child}) {
     if (isMobile(context)) {
       return child;
@@ -76,7 +76,7 @@ class Responsive {
     );
   }
 
-  /// Landing sayfası için geniş içerik alanı (hero, features vb.).
+  /// Wide content container for landing sections (hero, features, etc.).
   static Widget constrainLandingContent(BuildContext context, {required Widget child}) {
     if (isMobile(context)) {
       return child;
@@ -91,7 +91,7 @@ class Responsive {
     );
   }
 
-  /// Masaüstü için section yatay padding (daha geniş).
+  /// Section horizontal padding for desktop (wider gutters).
   static double sectionHorizontalPadding(BuildContext context) {
     if (isMobile(context)) return 20;
     if (MediaQuery.sizeOf(context).width >= desktopBreakpoint) return 48;

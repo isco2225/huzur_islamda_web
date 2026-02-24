@@ -21,8 +21,8 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   final _reasonController = TextEditingController();
   bool _isLoading = false;
 
-  // EmailJS ayarları - https://www.emailjs.com adresinden alacaksın
-  // Ücretsiz hesap açıp Public Key ve Service ID'yi buraya ekle
+  // EmailJS settings - get these from https://www.emailjs.com
+  // Create a free account and paste your Public Key and Service ID here
   static const String _emailjsPublicKey =
       'NYh4ChOPW2-Eo3i8M'; // EmailJS Public Key
   static const String _emailjsServiceId =
