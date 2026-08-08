@@ -59,7 +59,7 @@ const ogImage = new URL('/og.png', Astro.site);
 
     <script is:inline>
       (() => {
-        const parcalar = document.querySelectorAll('.reveal');
+        const parcalar = document.querySelectorAll('.reveal, .reveal-grup');
         if (!parcalar.length) return;
         if (
           !('IntersectionObserver' in window) ||

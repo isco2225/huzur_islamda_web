@@ -6,20 +6,25 @@ import appIcon from '../assets/app_icon.png';
 
 <!-- Final CTA — TASARIM.md §6.8: --gece zemininde ikon + tek cümle + mağaza rozetleri -->
 <section id="indir" class="bolum bg-gece">
-  <div class="kapsayici reveal flex flex-col items-center text-center">
+  <div class="kapsayici flex flex-col items-center text-center">
     <Image
       src={appIcon}
       alt=""
       width={160}
       densities={[1, 2]}
-      class="h-20 w-20 rounded-[20px]"
+      class="reveal h-20 w-20 rounded-[20px]"
       loading="lazy"
     />
-    <h2 class="mt-7 max-w-[24ch] text-zemin">İbadet Rehberim'i deneyin</h2>
-    <p class="mt-4 max-w-[44ch] text-[1.05rem] leading-[1.7] text-zemin/70">
+    <h2 class="reveal mt-7 max-w-[24ch] text-zemin" style="--gecikme: 0.1s">
+      İbadet Rehberim'i deneyin
+    </h2>
+    <p
+      class="reveal mt-4 max-w-[44ch] text-[1.05rem] leading-[1.7] text-zemin/70"
+      style="--gecikme: 0.2s"
+    >
       Kurulumu bir dakikanızı almaz. Ücretsizdir; beğenmezseniz silmesi de kolay.
     </p>
-    <div class="mt-8">
+    <div class="reveal mt-8" style="--gecikme: 0.3s">
       <MagazaButonlari varyant="acik" class="justify-center" />
     </div>
   </div>

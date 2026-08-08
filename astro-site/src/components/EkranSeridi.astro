@@ -43,14 +43,16 @@ const ekranlar = [
 ];
 ---
 
-<section id="ekranlar" class="bolum reveal">
+<section id="ekranlar" class="bolum">
   <div class="kapsayici">
-    <p class="eyebrow">Ekranlar</p>
-    <h2 class="mt-3 max-w-[26ch]">Uygulamanın içinden birkaç ekran</h2>
+    <p class="eyebrow reveal">Ekranlar</p>
+    <h2 class="reveal mt-3 max-w-[26ch]" style="--gecikme: 0.08s">
+      Uygulamanın içinden birkaç ekran
+    </h2>
   </div>
 
   <div class="serit-dis">
-    <ul class="serit" aria-label="Uygulama ekran görüntüleri">
+    <ul class="serit reveal-grup" aria-label="Uygulama ekran görüntüleri">
       {
         ekranlar.map((ekran) => (
           <li class="kare">

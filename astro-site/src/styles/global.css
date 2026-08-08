@@ -134,16 +134,39 @@ html {
     animation-delay: 0.3s;
   }
 
-  /* Scroll ile belirme */
+  /* Scroll ile belirme. --gecikme ile kardeş öğeler kademeli gelir
+     (kartlar, adımlar, vakit noktaları). */
   html.js .reveal {
     opacity: 0;
     transform: translateY(16px);
     transition:
       opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--gecikme, 0s);
   }
   html.js .reveal.goster {
     opacity: 1;
     transform: none;
   }
+
+  /* Grup reveal: ebeveyn görünür olunca çocuklar soldan sağa kademeli gelir.
+     Yatay kaydırmalı şerit gibi, çocukları ekran dışında kalabilen kapsayıcılar için. */
+  html.js .reveal-grup > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  html.js .reveal-grup.goster > * {
+    opacity: 1;
+    transform: none;
+  }
+  html.js .reveal-grup > *:nth-child(2) { transition-delay: 0.08s; }
+  html.js .reveal-grup > *:nth-child(3) { transition-delay: 0.16s; }
+  html.js .reveal-grup > *:nth-child(4) { transition-delay: 0.24s; }
+  html.js .reveal-grup > *:nth-child(5) { transition-delay: 0.32s; }
+  html.js .reveal-grup > *:nth-child(6) { transition-delay: 0.4s; }
+  html.js .reveal-grup > *:nth-child(7) { transition-delay: 0.48s; }
+  html.js .reveal-grup > *:nth-child(8) { transition-delay: 0.56s; }
 }
