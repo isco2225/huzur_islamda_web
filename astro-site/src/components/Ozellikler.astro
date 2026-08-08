@@ -1,10 +1,12 @@
 ---
 /*
  * Özellik kartları — TASARIM.md §6.4: fiil öncelikli başlık + kartın içinde
- * HTML/CSS mini demo. Tüm demo içerikleri gerçek uygulama ekranlarından
- * (assets/app_screenshots): vakit satırı, zikir ilerlemesi, dua kartı, asistan sohbeti.
- * İkonlar: tek set inline SVG (Lucide çizgi stili).
+ * HTML/CSS mini demo. Demo içerikleri gerçek uygulama ekranlarından.
+ * İstisna (GORSELLER.md §2.6): zikir özelliği mini demo yerine bölüm sonundaki
+ * hazır akış bandıyla anlatılır. İkonlar: tek set inline SVG (Lucide çizgi stili).
  */
+import { Image } from 'astro:assets';
+import akisZikir from '../assets/gorseller/akis-zikir.png';
 ---
 
 <section id="ozellikler" class="bolum kapsayici reveal">
@@ -46,15 +48,8 @@
       <h3>Zikrini say</h3>
       <p>
         Kendi zikrinizi oluşturabilir, namaz tesbihatını tek dokunuşla kurabilir ya da ruh
-        halinize uygun hazır setleri kullanabilirsiniz.
+        halinize uygun hazır setleri kullanabilirsiniz. Nasıl işlediği aşağıda.
       </p>
-      <div class="demo" aria-hidden="true">
-        <div class="demo-satir rakam">
-          <span>Estağfirullah</span>
-          <span class="yesil">50 / 100</span>
-        </div>
-        <div class="cubuk"><i style="width: 50%"></i></div>
-      </div>
     </article>
 
     <!-- Dua-hadis-Kur'an akışı -->
@@ -95,6 +90,24 @@
       </div>
     </article>
   </div>
+
+  <!-- Zikir akışı bandı: menü → tesbihat onayı → liste → sayaç (GORSELLER.md §2.6).
+       Mobilde yatay kaydırılır ki telefonlar okunaksız küçülmesin. -->
+  <figure class="akis-dis">
+    <div class="akis-kaydirici">
+      <Image
+        src={akisZikir}
+        alt="Zikir akışı: menüden Namaz Tesbihatı seçimi, oluşan zikir listesi ve zikirmatik sayacı"
+        width={1120}
+        densities={[1, 2]}
+        class="akis-resim"
+        loading="lazy"
+      />
+    </div>
+    <figcaption class="akis-altyazi">
+      Namaz tesbihatı üç dokunuşla kurulur; gerisi saymaktan ibaret.
+    </figcaption>
+  </figure>
 </section>
 
 <style>
@@ -162,7 +175,6 @@
     font-weight: 500;
   }
   .demo-satir + .demo-satir,
-  .demo-satir + .cubuk,
   .demo-satir + .demo-metin {
     margin-top: 0.5rem;
   }
@@ -174,17 +186,6 @@
   .yesil {
     color: var(--color-vurgu-koyu);
     font-weight: 600;
-  }
-
-  .cubuk {
-    border-radius: 999px;
-    padding: 3px;
-  }
-  .cubuk i {
-    display: block;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--color-vurgu);
   }
 
   .etiket {
@@ -220,5 +221,30 @@
     border-radius: 14px 14px 4px 14px;
     background: color-mix(in srgb, var(--color-vurgu) 12%, var(--color-zemin));
     border-color: color-mix(in srgb, var(--color-vurgu) 28%, transparent);
+  }
+
+  /* Zikir akışı bandı */
+  .akis-dis {
+    margin-top: 3rem;
+  }
+  .akis-kaydirici {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+  .akis-resim {
+    width: 100%;
+    min-width: 860px; /* dar ekranda küçülüp okunaksızlaşmasın; kaydırılır */
+    height: auto;
+    scroll-snap-align: center;
+  }
+  @media (min-width: 900px) {
+    .akis-resim {
+      min-width: 0;
+    }
+  }
+  .akis-altyazi {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--color-soluk);
   }
 </style>

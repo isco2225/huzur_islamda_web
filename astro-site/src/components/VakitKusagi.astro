@@ -29,7 +29,10 @@ const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
     position: relative;
   }
 
-  /* Gökyüzü şeridi: gece → şafak → gündüz → ikindi → akşam → gece */
+  /* Gökyüzü şeridi: gece → şafak → gündüz → ikindi → akşam → gece.
+     Duraklar GORSELLER.md'deki şafak gradyanı renk kilidinden alınmıştır
+     (kart-vakitler ve hero görselleriyle birebir aynı palet); gün ortası
+     etrafında aynalanarak altı vaktin döngüsü kurulur. */
   .serit {
     position: absolute;
     inset-inline: 0;
@@ -38,14 +41,15 @@ const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
     border-radius: 999px;
     background-image: linear-gradient(
       100deg,
-      var(--color-gece) 0%,
-      #24405c 12%,
-      #e29a55 28%,
-      #f2ecd4 45%,
-      #e5b968 60%,
-      #c4693f 76%,
-      #16283c 90%,
-      var(--color-gece) 100%
+      #0e1b2a 0%,
+      #2e3a5c 12%,
+      #966962 26%,
+      #e8b04b 38%,
+      #f1c77a 50%,
+      #e8b04b 62%,
+      #966962 76%,
+      #2e3a5c 88%,
+      #0e1b2a 100%
     );
   }
 

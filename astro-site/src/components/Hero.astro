@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import MagazaButonlari from './MagazaButonlari.astro';
-import TelefonMockup from './TelefonMockup.astro';
+import mockupVakitler from '../assets/gorseller/mockup-vakitler.png';
 
 // Rozetler: yalnızca doğrulanmış gerçekler (SSS içerikleri + mağaza durumu)
 const rozetler = ['Ücretsiz', 'Türkçe', 'iOS ve Android'];
@@ -34,8 +35,17 @@ const rozetler = ['Ücretsiz', 'Türkçe', 'iOS ve Android'];
       </div>
     </div>
 
+    <!-- Çerçeve ve gölge görselin içindedir; ekstra zemin/çerçeve eklenmez (GORSELLER.md §3) -->
     <div class="giris-4">
-      <TelefonMockup />
+      <Image
+        src={mockupVakitler}
+        alt="İbadet Rehberim ezan vakitleri ekranı: günün altı vakti ve sonraki vakte kalan süre"
+        width={360}
+        densities={[1, 2]}
+        class="mx-auto h-auto w-[min(85%,360px)]"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </div>
 </section>

@@ -1,27 +1,46 @@
 ---
 import { Image } from 'astro:assets';
+import kartVakitler from '../assets/gorseller/kart-vakitler.png';
+import kartZikirSayac from '../assets/gorseller/kart-zikir-sayac.png';
+import kartAsistan from '../assets/gorseller/kart-asistan.png';
+import kartZikirlerim from '../assets/gorseller/kart-zikirlerim.png';
+import kartKesfet from '../assets/gorseller/kart-kesfet.png';
+import kartGonderi from '../assets/gorseller/kart-gonderi.png';
 
-// 9 gerçek ekran görüntüsü + görüntülerdeki gerçek başlıklardan türetilen alt yazılar
-const dosyalar = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/screenshots/screenshot-*.jpg',
-  { eager: true }
-);
-const altYazilar = [
-  'Genel görünüm',
-  'Keşfet akışı: günün ayet ve hadisleri',
-  'Namaz vakitleri ve bildirimler',
-  'İslami asistan',
-  'Zikir oluşturma seçenekleri',
-  'Ruh haline göre zikirler',
-  'Zikirmatik',
-  'Günlük zikir takibi',
-  'Namaz tesbihatı',
+// Küratörlü 6 kart — sıra ve alt metinler GORSELLER.md'den.
+// Köşe yuvarlaklığı ve gölge görselin İÇİNDEDİR; site tarafında eklenmez.
+const ekranlar = [
+  {
+    resim: kartVakitler,
+    alt: 'İbadet Rehberim ezan vakitleri ekranı: günün altı vakti ve sonraki vakte kalan süre',
+    altYazi: 'Ezan vakitleri',
+  },
+  {
+    resim: kartZikirSayac,
+    alt: 'Zikirmatik ekranı: Sübhanallah zikrinde 50/100 ilerleme halkası',
+    altYazi: 'Zikirmatik',
+  },
+  {
+    resim: kartAsistan,
+    alt: 'Yapay zekâ asistan ekranı: dua, hadis ve İslami sorular için sohbet',
+    altYazi: 'İslami asistan',
+  },
+  {
+    resim: kartZikirlerim,
+    alt: 'Zikirlerim ekranı: günlük zikir hedefleri ve ilerleme çubukları',
+    altYazi: 'Günlük zikir takibi',
+  },
+  {
+    resim: kartKesfet,
+    alt: 'Keşfet akışı: hadis ve dua kartları',
+    altYazi: 'Keşfet akışı',
+  },
+  {
+    resim: kartGonderi,
+    alt: 'Gönderi detayı: Arapça metniyle birlikte bir dua ve Türkçe açıklaması',
+    altYazi: 'Gönderi detayı',
+  },
 ];
-const ekranlar = Object.keys(dosyalar)
-  .sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true })
-  )
-  .map((yol, i) => ({ resim: dosyalar[yol].default, altYazi: altYazilar[i] ?? '' }));
 ---
 
 <section id="ekranlar" class="bolum reveal">
@@ -33,16 +52,16 @@ const ekranlar = Object.keys(dosyalar)
   <div class="serit-dis">
     <ul class="serit" aria-label="Uygulama ekran görüntüleri">
       {
-        ekranlar.map((ekran, i) => (
+        ekranlar.map((ekran) => (
           <li class="kare">
             <figure>
               <Image
                 src={ekran.resim}
-                alt={`İbadet Rehberim — ${ekran.altYazi}`}
-                width={440}
+                alt={ekran.alt}
+                width={380}
                 densities={[1, 2]}
                 class="resim"
-                loading={i < 2 ? 'eager' : 'lazy'}
+                loading="lazy"
               />
               <figcaption>{ekran.altYazi}</figcaption>
             </figure>
@@ -60,7 +79,7 @@ const ekranlar = Object.keys(dosyalar)
   }
   .serit {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-block: 0.5rem;
@@ -77,14 +96,11 @@ const ekranlar = Object.keys(dosyalar)
   .kare {
     flex-shrink: 0;
     scroll-snap-align: start;
-    width: min(62vw, 220px);
+    width: min(78vw, 380px);
   }
   .resim {
     width: 100%;
     height: auto;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--color-detay) 25%, transparent);
-    background: var(--color-yuzey);
   }
   figcaption {
     margin-top: 0.6rem;

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 /*
- * Token sistemi — TASARIM.md §2.
- * Marka kaynağı: lib/constants/app_colors.dart (#687d2a zeytin, #faf9eb krem).
+ * Token sistemi — TASARIM.md §2 + GORSELLER.md §3 renk kilidi
+ * (değerler uygulama ekranlarından örneklenmiştir; görsellerle dikişsiz eşleşir).
  * Sayfa genelinde 1 vurgu (--color-vurgu) + 1 detay (--color-detay) rengi vardır.
  */
 @theme {
-  --color-zemin: #faf9eb; /* sayfa arka planı (Flutter background) */
+  --color-zemin: #faf8eb; /* uygulama krem zemini */
   --color-yuzey: #ffffff; /* kart/menü yüzeyi */
-  --color-murekkep: #20281a; /* ana metin — koyu zeytin mürekkebi */
+  --color-murekkep: #20221a; /* ana metin */
   --color-soluk: #5c6650; /* ikincil metin (zemin üstünde ≥4.5:1) */
-  --color-vurgu: #687d2a; /* marka zeytin yeşili: butonlar */
-  --color-vurgu-koyu: #4c5d1d; /* linkler, hover/aktif (zemin üstünde ≥4.5:1) */
+  --color-vurgu: #677d2a; /* zeytin yeşili (birincil): butonlar */
+  --color-vurgu-koyu: #16431a; /* koyu orman yeşili: linkler, hover/aktif */
   --color-detay: #b9944a; /* sıcak altın — yalnız ince çizgi ve vakit noktaları */
-  --color-gece: #0f1e30; /* koyu bölüm zemini (final CTA / footer) */
-  --color-error: #b00020; /* form hataları (app_colors.dart) */
+  --color-gece: #0e1b2a; /* koyu bölüm zemini (final CTA / footer) */
+  --color-error: #b00020; /* form hataları */
 
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
