@@ -1,49 +1,55 @@
 ---
 import { Image } from 'astro:assets';
-import kartVakitler from '../assets/gorseller/kart-vakitler.png';
-import kartZikirSayac from '../assets/gorseller/kart-zikir-sayac.png';
-import kartAsistan from '../assets/gorseller/kart-asistan.png';
-import kartZikirlerim from '../assets/gorseller/kart-zikirlerim.png';
-import kartKesfet from '../assets/gorseller/kart-kesfet.png';
-import kartGonderi from '../assets/gorseller/kart-gonderi.png';
 
-// Küratörlü 6 kart — sıra ve alt metinler GORSELLER.md'den.
-// Köşe yuvarlaklığı ve gölge görselin İÇİNDEDİR; site tarafında eklenmez.
-const ekranlar = [
-  {
-    resim: kartVakitler,
-    alt: 'İbadet Rehberim ezan vakitleri ekranı: günün altı vakti ve sonraki vakte kalan süre',
+// Mağaza tanıtım görselleri (gorseller/store_photos): koyu yeşil zeminli,
+// başlıklı 8 kare. Tam kanvas oldukları için köşe ve gölge site tarafında verilir.
+const dosyalar = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/gorseller/store/*.png',
+  { eager: true }
+);
+const altYazilar: Record<string, { alt: string; altYazi: string }> = {
+  '01-vakitler': {
+    alt: 'Mağaza görseli — Hiçbir vakti kaçırma: konuma göre ezan vakitleri listesi ve kalan süre',
     altYazi: 'Ezan vakitleri',
   },
-  {
-    resim: kartZikirSayac,
-    alt: 'Zikirmatik ekranı: Sübhanallah zikrinde 50/100 ilerleme halkası',
+  '02-zikir-sayac': {
+    alt: 'Mağaza görseli — zikirmatik sayaç ekranı',
     altYazi: 'Zikirmatik',
   },
-  {
-    resim: kartAsistan,
-    alt: 'Yapay zekâ asistan ekranı: dua, hadis ve İslami sorular için sohbet',
-    altYazi: 'İslami asistan',
+  '03-zikir-tesbihat': {
+    alt: 'Mağaza görseli — namaz tesbihatını tek dokunuşla oluşturma',
+    altYazi: 'Namaz tesbihatı',
   },
-  {
-    resim: kartZikirlerim,
-    alt: 'Zikirlerim ekranı: günlük zikir hedefleri ve ilerleme çubukları',
+  '04-zikirlerim': {
+    alt: 'Mağaza görseli — günlük zikir hedefleri ve ilerleme listesi',
     altYazi: 'Günlük zikir takibi',
   },
-  {
-    resim: kartKesfet,
-    alt: 'Keşfet akışı: hadis ve dua kartları',
+  '05-asistan': {
+    alt: 'Mağaza görseli — İslami sorular için asistan sohbeti',
+    altYazi: 'İslami asistan',
+  },
+  '06-kesfet': {
+    alt: 'Mağaza görseli — dua ve hadis kartlarından oluşan keşfet akışı',
     altYazi: 'Keşfet akışı',
   },
-  {
-    resim: kartGonderi,
-    alt: 'Gönderi detayı: Arapça metniyle birlikte bir dua ve Türkçe açıklaması',
+  '07-gonderi': {
+    alt: 'Mağaza görseli — Arapça metniyle birlikte gönderi detayı',
     altYazi: 'Gönderi detayı',
   },
-];
+  '08-kapanis': {
+    alt: 'Mağaza görseli — İbadet Rehberim: ibadetin ritmi, cebinde',
+    altYazi: 'İbadet Rehberim',
+  },
+};
+const ekranlar = Object.keys(dosyalar)
+  .sort()
+  .map((yol) => {
+    const ad = yol.split('/').pop()!.replace('.png', '');
+    return { resim: dosyalar[yol].default, ...altYazilar[ad] };
+  });
 ---
 
-<!-- Beyaz bant: krem zeminli ekran kartları burada öne çıkar -->
+<!-- Beyaz bant: koyu yeşil mağaza görselleri burada öne çıkar -->
 <section id="ekranlar" class="bolum cizgi border-y bg-yuzey">
   <div class="kapsayici">
     <p class="eyebrow reveal">Ekranlar</p>
@@ -61,7 +67,7 @@ const ekranlar = [
               <Image
                 src={ekran.resim}
                 alt={ekran.alt}
-                width={380}
+                width={300}
                 densities={[1, 2]}
                 class="resim"
                 loading="lazy"
@@ -99,11 +105,16 @@ const ekranlar = [
   .kare {
     flex-shrink: 0;
     scroll-snap-align: start;
-    width: min(78vw, 380px);
+    width: min(68vw, 280px);
   }
+  /* Görseller tam kanvas: köşe ve tek hafif gölge site tarafında */
   .resim {
     width: 100%;
     height: auto;
+    border-radius: 20px;
+    box-shadow:
+      0 1px 2px rgb(32 34 26 / 6%),
+      0 16px 32px -20px rgb(32 34 26 / 20%);
   }
   figcaption {
     margin-top: 0.6rem;
