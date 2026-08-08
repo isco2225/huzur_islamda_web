@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Ozellikler from '../components/Ozellikler.astro';
+import EkranGoruntuleri from '../components/EkranGoruntuleri.astro';
+import SSS from '../components/SSS.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'İbadet Rehberim — Namaz Vakitleri, Zikirmatik ve Dua';
+const description =
+  "Kur'an ve sünnet ışığında namaz vakitleri, akıllı zikirmatik, dua-hadis-Kur'an içerikleri ve İslami asistan. İbadet Rehberim'i ücretsiz indirin.";
+
+// Yalnızca kodda doğrulanmış bilgiler; mağaza linkleri kodda olmadığından eklenmedi.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'İbadet Rehberim',
+  operatingSystem: 'iOS, Android',
+  applicationCategory: 'LifestyleApplication',
+  description,
+  image: new URL('/og-image.png', Astro.site).href,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'TRY' },
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <main>
+    <Hero />
+    <Ozellikler />
+    <EkranGoruntuleri />
+    <SSS />
+  </main>
+  <Footer />
+</Base>

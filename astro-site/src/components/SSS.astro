@@ -1,0 +1,62 @@
+---
+// İçerik kaynağı: lib/screens/landing_screen.dart (_FaqSection) — birebir
+const faq = [
+  {
+    question: 'İbadet Rehberim ücretsiz mi?',
+    answer:
+      'Evet. Uygulama ücretsizdir; uygulama içinde reklamlar bulunabilir. Haftalık veya yıllık destek paketi (premium) ile reklamsız kullanabilirsiniz.',
+  },
+  {
+    question: 'Namaz vakitleri nasıl hesaplanıyor?',
+    answer:
+      'Namaz vakitleri, Diyanet İşleri Başkanlığının belirlediği hesaplama yöntemiyle hazırlanır ve seçtiğiniz ilçeye göre hesaplanır. İmsak, Güneş, Öğle, İkindi, Akşam ve Yatsı vakitleri liste halinde gösterilir; bir sonraki vakte kalan süre her dakika güncellenir. Hatırlatma bildirimleri ayarlardan açılıp kapatılabilir.',
+  },
+  {
+    question: 'Premium (destek paketi) nedir?',
+    answer:
+      'Haftalık ve yıllık destek paketleri mevcuttur. Premium kullanıcılar uygulama içinde reklam görmez.',
+  },
+  {
+    question: 'İçerikler fetva veya hukuki karar niteliğinde mi?',
+    answer:
+      'Hayır. Uygulamadaki tüm içerikler genel bilgilendirme amaçlıdır; dini veya hukuki açıdan nihai karar mercii değildir. Sorumluluk kullanıcıya aittir.',
+  },
+  {
+    question: 'Verilerim nerede tutuluyor?',
+    answer:
+      'Zikir ve tercih verileriniz cihazınızda saklanır; isterseniz bulutta yedekleyip farklı cihazlardan aynı verilere ulaşabilirsiniz. Giriş, profil ve hesap bilgileriniz güvenli sunucularda tutulur. Detaylar için Gizlilik Politikası sayfamıza bakın; veri silme talebinde bulunabilirsiniz.',
+  },
+  {
+    question: 'Hangi cihazlarda çalışır?',
+    answer:
+      'İbadet Rehberim iOS (iPhone/iPad) ve Android cihazlarda kullanılabilir. Arayüz ve mesajlar Türkçedir.',
+  },
+];
+---
+
+<section class="bg-surface/50">
+  <div class="mx-auto max-w-[1200px] px-5 py-12 md:px-12 md:py-16 lg:py-20">
+    <h2 class="text-center text-[26px] font-bold text-primary md:text-[28px] xl:text-[32px]">
+      Sıkça Sorulan Sorular
+    </h2>
+    <div class="mx-auto mt-6 max-w-[640px] space-y-2.5 md:mt-8 xl:mt-10">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-primary bg-cream">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold text-primary [&::-webkit-details-marker]:hidden">
+              {item.question}
+              <svg
+                viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 fill-primary transition-transform group-open:rotate-180"
+                aria-hidden="true"
+              >
+                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+              </svg>
+            </summary>
+            <p class="px-5 pb-4 leading-[1.5] text-ink">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

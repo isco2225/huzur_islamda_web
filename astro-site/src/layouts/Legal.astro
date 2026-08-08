@@ -1,0 +1,65 @@
+---
+import Base from './Base.astro';
+import Footer from '../components/Footer.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<Base title={frontmatter.title} description={frontmatter.description} ogType="article">
+  <main class="mx-auto max-w-[720px] px-5 py-5 md:px-8 md:py-8">
+    <h1 class="text-[28px] font-bold text-primary md:text-[34px]">
+      {frontmatter.pageTitle}
+    </h1>
+    {
+      frontmatter.updated && (
+        <p class="mt-2 italic text-ink/80">{frontmatter.updated}</p>
+      )
+    }
+    <article class="legal mt-5 md:mt-7">
+      <slot />
+    </article>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Hukuki metin tipografisi — Flutter'daki bodyLarge/height 1.5 düzenine denk */
+  .legal :global(p),
+  .legal :global(li) {
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+  .legal :global(p + p) {
+    margin-top: 0.75rem;
+  }
+  .legal :global(h2) {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  .legal :global(strong) {
+    font-weight: 600;
+    color: #000;
+  }
+  .legal :global(ul) {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .legal :global(li + li) {
+    margin-top: 0.75rem;
+  }
+  .legal :global(blockquote) {
+    margin-top: 2rem;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    padding: 1rem;
+    font-style: italic;
+  }
+  .legal :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+</style>

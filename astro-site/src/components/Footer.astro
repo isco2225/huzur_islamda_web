@@ -1,0 +1,30 @@
+---
+const year = new Date().getFullYear();
+
+const links = [
+  { href: '/privacy_policy', label: 'Gizlilik Politikası' },
+  { href: '/terms_of_use', label: 'Kullanım Koşulları' },
+  { href: '/delete_account', label: 'Veri Silme Talebi' },
+];
+---
+
+<footer class="bg-primary/10">
+  <div class="mx-auto max-w-[1200px] px-5 py-8 text-center md:px-12 md:py-12">
+    <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} class="font-medium text-primary hover:underline">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-5 text-sm text-ink/70 md:mt-7">
+      &copy; {year} İbadet Rehberim. Tüm hakları saklıdır.
+    </p>
+    <!-- TODO: Sosyal medya linkleri Flutter kodunda tanımlı değildi (boş onPressed).
+         Gerçek hesap URL'leri geldiğinde buraya eklenecek. -->
+  </div>
+</footer>

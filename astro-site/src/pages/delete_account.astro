@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+
+const title = 'Veri Silme Talebi | İbadet Rehberim';
+const description =
+  'İbadet Rehberim hesabınızla ilişkili verilerin silinmesi için talep formu. Talebiniz en geç 30 gün içinde işleme alınır.';
+---
+
+<Base title={title} description={description}>
+  <main class="mx-auto max-w-[720px] px-5 py-5 md:px-8 md:py-8">
+    <h1 class="text-[28px] font-bold text-primary md:text-[34px]">Veri Silme Talebi</h1>
+
+    <div class="mt-4 rounded-xl border border-primary/20 bg-surface/60 p-5 md:mt-6">
+      <p class="leading-[1.5]">
+        Hesabınızla ilişkili tüm verilerin silinmesini talep etmek için aşağıdaki formu doldurun.
+        Talebiniz en geç 30 gün içinde işleme alınacaktır. Sorularınız için
+        <a href="/privacy_policy" class="text-primary underline">gizlilik politikamıza</a>
+        bakabilir veya bizimle iletişime geçebilirsiniz.
+      </p>
+    </div>
+
+    <form id="delete-form" class="mt-7 md:mt-9" novalidate>
+      <label for="email" class="block text-sm font-semibold text-primary">
+        E-posta adresi (hesabınızla ilişkili)
+      </label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        placeholder="ornek@email.com"
+        autocomplete="email"
+        class="mt-2 w-full rounded-xl border border-gray-400 bg-white px-4 py-3 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      />
+      <p id="email-error" class="mt-1 hidden text-sm text-error" role="alert"></p>
+
+      <label for="reason" class="mt-5 block text-sm font-semibold text-primary md:mt-7">
+        Neden (isteğe bağlı)
+      </label>
+      <textarea
+        id="reason"
+        name="reason"
+        rows="3"
+        placeholder="İsterseniz neden veri silme talebinde bulunduğunuzu yazabilirsiniz."
+        class="mt-2 w-full rounded-xl border border-gray-400 bg-white px-4 py-3 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      ></textarea>
+
+      <button
+        type="submit"
+        id="submit-btn"
+        class="mt-8 w-full rounded-[15px] bg-primary py-3.5 font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60 md:mt-10 md:py-4"
+      >
+        Talep Gönder
+      </button>
+
+      <p id="form-status" class="mt-4 hidden rounded-xl p-4 text-center" role="status"></p>
+    </form>
+  </main>
+  <Footer />
+</Base>
+
+<!-- Sitedeki tek JavaScript: mağaza uyumluluğu için zorunlu olan veri silme
+     formunun EmailJS'e gönderimi (lib/screens/delete_account_screen.dart ile aynı yapılandırma). -->
+<script>
+  const EMAILJS_PUBLIC_KEY = 'NYh4ChOPW2-Eo3i8M';
+  const EMAILJS_SERVICE_ID = 'service_9sgvp6i';
+  const EMAILJS_TEMPLATE_ID = 'template_7thm9mu';
+  const RECIPIENT_EMAIL = 'ibadetrehberim@gmail.com';
+
+  const form = document.getElementById('delete-form') as HTMLFormElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const reasonInput = document.getElementById('reason') as HTMLTextAreaElement;
+  const emailError = document.getElementById('email-error') as HTMLParagraphElement;
+  const status = document.getElementById('form-status') as HTMLParagraphElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  function validateEmail(): boolean {
+    const value = emailInput.value.trim();
+    let message = '';
+    if (!value) {
+      message = 'E-posta adresi giriniz';
+    } else if (!/^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+      message = 'Geçerli bir e-posta adresi giriniz';
+    }
+    emailError.textContent = message;
+    emailError.classList.toggle('hidden', !message);
+    return !message;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!validateEmail()) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Gönderiliyor…';
+    status.classList.add('hidden');
+
+    const email = emailInput.value.trim();
+    const reason = reasonInput.value.trim() || 'Belirtilmedi';
+
+    try {
+      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          service_id: EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          user_id: EMAILJS_PUBLIC_KEY,
+          template_params: {
+            user_email: email,
+            reason,
+            to_email: RECIPIENT_EMAIL,
+            subject: 'Veri Silme Talebi - İbadet Rehberim',
+            message:
+              'Kullanıcı veri silme talebinde bulunmuştur.\n\n' +
+              `E-posta: ${email}\n` +
+              `Neden: ${reason}`,
+          },
+        }),
+      });
+      if (!response.ok) throw new Error(`Email gönderilemedi: ${response.status}`);
+
+      status.textContent = 'Talebiniz alındı. En kısa sürede işleme alınacaktır.';
+      status.className = 'mt-4 rounded-xl bg-green-100 p-4 text-center text-green-900';
+      form.reset();
+    } catch (error) {
+      status.textContent = `Bir hata oluştu: ${error instanceof Error ? error.message : error}`;
+      status.className = 'mt-4 rounded-xl bg-red-100 p-4 text-center text-red-900';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Talep Gönder';
+    }
+  });
+</script>

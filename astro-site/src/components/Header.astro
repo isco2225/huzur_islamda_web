@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import appIcon from '../assets/app_icon.png';
+---
+
+<header class="bg-cream">
+  <nav aria-label="Üst gezinme" class="mx-auto flex max-w-[1200px] items-center justify-center px-5 py-3 md:py-4">
+    <a href="/" class="flex items-center gap-2 md:gap-3" aria-label="İbadet Rehberim ana sayfa">
+      <Image
+        src={appIcon}
+        alt=""
+        width={72}
+        densities={[1, 2]}
+        class="h-7 w-7 md:h-9 md:w-9"
+        loading="eager"
+      />
+      <span class="text-[17px] font-semibold text-primary md:text-[22px]">İbadet Rehberim</span>
+    </a>
+  </nav>
+</header>
