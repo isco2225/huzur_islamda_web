@@ -7,15 +7,15 @@ const dosyalar = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 const altYazilar = [
-  'Namaz vakitleri, zikirler ve İslami asistan — tek uygulamada',
-  'Günün ayet ve hadisleri: keşfet akışı',
+  'Genel görünüm',
+  'Keşfet akışı: günün ayet ve hadisleri',
   'Namaz vakitleri ve bildirimler',
-  'Kişisel İslami asistan',
+  'İslami asistan',
   'Zikir oluşturma seçenekleri',
-  'Ruh haline göre zikir setleri',
-  'Sade ve odaklı zikirmatik',
+  'Ruh haline göre zikirler',
+  'Zikirmatik',
   'Günlük zikir takibi',
-  'Hazır namaz tesbihatları',
+  'Namaz tesbihatı',
 ];
 const ekranlar = Object.keys(dosyalar)
   .sort((a, b) =>
@@ -26,8 +26,8 @@ const ekranlar = Object.keys(dosyalar)
 
 <section id="ekranlar" class="bolum reveal">
   <div class="kapsayici">
-    <p class="eyebrow">Uygulama içinden</p>
-    <h2 class="mt-3 max-w-[24ch]">Söz değil, ekran.</h2>
+    <p class="eyebrow">Ekranlar</p>
+    <h2 class="mt-3 max-w-[26ch]">Uygulamanın içinden birkaç ekran</h2>
   </div>
 
   <div class="serit-dis">
