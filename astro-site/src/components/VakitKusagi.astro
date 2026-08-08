@@ -1,0 +1,104 @@
+---
+/*
+ * Vakit Kuşağı — sitenin imza öğesi (TASARIM.md §5).
+ * Günün altı vakti, geceden şafağa, gündüze, ikindiye, akşam kızıllığına ve
+ * tekrar geceye akan saf CSS gökyüzü gradyanı üzerinde işaretlenir.
+ * Görsel dosyası yok; 60 sn'lik "nefes" animasyonu reduced-motion'da kapalıdır.
+ */
+const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
+---
+
+<section aria-label="Günün altı vakti" class="kapsayici pb-[clamp(2.5rem,6vw,4rem)]">
+  <div class="kusak">
+    <div class="serit" aria-hidden="true"></div>
+    <ol class="vakitler">
+      {
+        vakitler.map((vakit) => (
+          <li>
+            <span class="nokta" aria-hidden="true"></span>
+            <span class="ad">{vakit}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .kusak {
+    position: relative;
+  }
+
+  /* Gökyüzü şeridi: gece → şafak → gündüz → ikindi → akşam → gece */
+  .serit {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: var(--serit-boyu);
+    border-radius: 999px;
+    background-image: linear-gradient(
+      100deg,
+      var(--color-gece) 0%,
+      #24405c 12%,
+      #e29a55 28%,
+      #f2ecd4 45%,
+      #e5b968 60%,
+      #c4693f 76%,
+      #16283c 90%,
+      var(--color-gece) 100%
+    );
+  }
+
+  .kusak {
+    --serit-boyu: clamp(88px, 12vw, 128px);
+  }
+
+  .vakitler {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .vakitler li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nokta {
+    height: var(--serit-boyu);
+    display: flex;
+    align-items: center;
+  }
+  .nokta::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: var(--color-detay);
+    box-shadow: 0 0 0 3px rgb(250 249 235 / 40%);
+  }
+
+  .ad {
+    margin-top: 0.75rem;
+    font-size: clamp(0.72rem, 1.8vw, 0.92rem);
+    font-weight: 500;
+    color: var(--color-soluk);
+  }
+
+  /* Çok yavaş, zar zor algılanan nefes: yalnız hareket tercihi kısıtlı değilse.
+     %106'lık boyut, gün döngüsünün her kadrajda bütün kalmasını sağlar. */
+  @media (prefers-reduced-motion: no-preference) {
+    .serit {
+      background-size: 106% 100%;
+      animation: nefes 60s ease-in-out infinite alternate;
+    }
+    @keyframes nefes {
+      from {
+        background-position: 0% 50%;
+      }
+      to {
+        background-position: 100% 50%;
+      }
+    }
+  }
+</style>

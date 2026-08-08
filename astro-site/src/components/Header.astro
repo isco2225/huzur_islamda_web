@@ -1,20 +1,50 @@
 ---
 import { Image } from 'astro:assets';
 import appIcon from '../assets/app_icon.png';
+
+// İnce yapışkan menü — TASARIM.md §6.1: 64px, yarı saydam + blur, çapa linkleri + tek İndir butonu
+const linkler = [
+  { href: '/#ozellikler', label: 'Özellikler' },
+  { href: '/#ekranlar', label: 'Ekranlar' },
+  { href: '/#sss', label: 'SSS' },
+];
 ---
 
-<header class="bg-cream">
-  <nav aria-label="Üst gezinme" class="mx-auto flex max-w-[1200px] items-center justify-center px-5 py-3 md:py-4">
-    <a href="/" class="flex items-center gap-2 md:gap-3" aria-label="İbadet Rehberim ana sayfa">
+<header class="cizgi sticky top-0 z-50 border-b bg-zemin/85 backdrop-blur-md">
+  <nav aria-label="Üst gezinme" class="kapsayici flex h-16 items-center justify-between gap-4">
+    <a href="/" class="flex shrink-0 items-center gap-2.5" aria-label="İbadet Rehberim ana sayfa">
       <Image
         src={appIcon}
         alt=""
-        width={72}
+        width={64}
         densities={[1, 2]}
-        class="h-7 w-7 md:h-9 md:w-9"
+        class="h-8 w-8 rounded-lg"
         loading="eager"
       />
-      <span class="text-[17px] font-semibold text-primary md:text-[22px]">İbadet Rehberim</span>
+      <span class="font-baslik text-lg font-semibold text-murekkep">İbadet Rehberim</span>
     </a>
+
+    <div class="flex items-center gap-6">
+      <ul class="hidden items-center gap-6 md:flex">
+        {
+          linkler.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-[0.95rem] font-medium text-soluk transition-colors hover:text-murekkep"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href="/#indir"
+        class="inline-flex h-10 items-center rounded-full bg-vurgu px-5 text-[0.95rem] font-medium text-white transition-colors hover:bg-vurgu-koyu"
+      >
+        İndir
+      </a>
+    </div>
   </nav>
 </header>

@@ -1,27 +1,68 @@
 ---
+// Footer — TASARIM.md §6.8: gece zemininde açıklama, ürün ve hukuki linkler, telif
 const year = new Date().getFullYear();
 
-const links = [
+const urunLinkleri = [
+  { href: '/#ozellikler', label: 'Özellikler' },
+  { href: '/#ekranlar', label: 'Ekranlar' },
+  { href: '/#sss', label: 'Sıkça Sorulan Sorular' },
+];
+const hukukiLinkler = [
   { href: '/privacy_policy', label: 'Gizlilik Politikası' },
   { href: '/terms_of_use', label: 'Kullanım Koşulları' },
   { href: '/delete_account', label: 'Veri Silme Talebi' },
 ];
 ---
 
-<footer class="bg-primary/10">
-  <div class="mx-auto max-w-[1200px] px-5 py-8 text-center md:px-12 md:py-12">
-    <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-      {
-        links.map((link) => (
-          <li>
-            <a href={link.href} class="font-medium text-primary hover:underline">
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <p class="mt-5 text-sm text-ink/70 md:mt-7">
+<footer class="bg-gece">
+  <div class="kapsayici border-t border-zemin/10 py-14">
+    <div class="grid gap-10 md:grid-cols-[2fr_1fr_1fr]">
+      <div class="max-w-[36ch]">
+        <p class="font-baslik text-lg font-semibold text-zemin">İbadet Rehberim</p>
+        <p class="mt-3 text-[0.95rem] leading-[1.7] text-zemin/60">
+          Namaz vakitleri, akıllı zikirmatik, dua-hadis-Kur'an içerikleri ve İslami asistan —
+          tek bir sakin uygulamada.
+        </p>
+      </div>
+
+      <nav aria-label="Ürün">
+        <p class="text-[0.875rem] font-medium text-zemin/60">Ürün</p>
+        <ul class="mt-4 space-y-2.5">
+          {
+            urunLinkleri.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[0.95rem] text-zemin/75 transition-colors hover:text-zemin"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-label="Hukuki">
+        <p class="text-[0.875rem] font-medium text-zemin/60">Hukuki</p>
+        <ul class="mt-4 space-y-2.5">
+          {
+            hukukiLinkler.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[0.95rem] text-zemin/75 transition-colors hover:text-zemin"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <p class="mt-12 border-t border-zemin/10 pt-6 text-[0.875rem] text-zemin/60">
       &copy; {year} İbadet Rehberim. Tüm hakları saklıdır.
     </p>
     <!-- TODO: Sosyal medya linkleri Flutter kodunda tanımlı değildi (boş onPressed).

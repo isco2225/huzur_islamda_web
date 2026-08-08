@@ -8,20 +8,21 @@ const description =
 ---
 
 <Base title={title} description={description}>
-  <main class="mx-auto max-w-[720px] px-5 py-5 md:px-8 md:py-8">
-    <h1 class="text-[28px] font-bold text-primary md:text-[34px]">Veri Silme Talebi</h1>
+  <main class="mx-auto max-w-[720px] px-5 py-12 md:px-8 md:py-16">
+    <h1 class="text-[clamp(2rem,4vw,2.6rem)]">Veri Silme Talebi</h1>
 
-    <div class="mt-4 rounded-xl border border-primary/20 bg-surface/60 p-5 md:mt-6">
-      <p class="leading-[1.5]">
+    <div class="cizgi mt-6 rounded-[20px] border bg-yuzey p-6">
+      <p class="leading-[1.7]">
         Hesabınızla ilişkili tüm verilerin silinmesini talep etmek için aşağıdaki formu doldurun.
-        Talebiniz en geç 30 gün içinde işleme alınacaktır. Sorularınız için
-        <a href="/privacy_policy" class="text-primary underline">gizlilik politikamıza</a>
-        bakabilir veya bizimle iletişime geçebilirsiniz.
+        Talebiniz en geç 30 gün içinde işleme alınacaktır. Sorularınız için <a
+          href="/privacy_policy"
+          class="text-vurgu-koyu underline">gizlilik politikamıza</a
+        > bakabilir veya bizimle iletişime geçebilirsiniz.
       </p>
     </div>
 
-    <form id="delete-form" class="mt-7 md:mt-9" novalidate>
-      <label for="email" class="block text-sm font-semibold text-primary">
+    <form id="delete-form" class="mt-9" novalidate>
+      <label for="email" class="block text-[0.9rem] font-medium text-murekkep">
         E-posta adresi (hesabınızla ilişkili)
       </label>
       <input
@@ -31,11 +32,11 @@ const description =
         required
         placeholder="ornek@email.com"
         autocomplete="email"
-        class="mt-2 w-full rounded-xl border border-gray-400 bg-white px-4 py-3 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="cizgi mt-2 w-full rounded-2xl border bg-yuzey px-4 py-3 placeholder:text-soluk/60 focus:border-vurgu focus:ring-1 focus:ring-vurgu focus:outline-none"
       />
       <p id="email-error" class="mt-1 hidden text-sm text-error" role="alert"></p>
 
-      <label for="reason" class="mt-5 block text-sm font-semibold text-primary md:mt-7">
+      <label for="reason" class="mt-7 block text-[0.9rem] font-medium text-murekkep">
         Neden (isteğe bağlı)
       </label>
       <textarea
@@ -43,18 +44,18 @@ const description =
         name="reason"
         rows="3"
         placeholder="İsterseniz neden veri silme talebinde bulunduğunuzu yazabilirsiniz."
-        class="mt-2 w-full rounded-xl border border-gray-400 bg-white px-4 py-3 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="cizgi mt-2 w-full rounded-2xl border bg-yuzey px-4 py-3 placeholder:text-soluk/60 focus:border-vurgu focus:ring-1 focus:ring-vurgu focus:outline-none"
       ></textarea>
 
       <button
         type="submit"
         id="submit-btn"
-        class="mt-8 w-full rounded-[15px] bg-primary py-3.5 font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60 md:mt-10 md:py-4"
+        class="mt-10 w-full rounded-full bg-vurgu py-4 font-medium text-white transition-colors hover:bg-vurgu-koyu disabled:opacity-60"
       >
         Talep Gönder
       </button>
 
-      <p id="form-status" class="mt-4 hidden rounded-xl p-4 text-center" role="status"></p>
+      <p id="form-status" class="mt-4 hidden rounded-2xl p-4 text-center" role="status"></p>
     </form>
   </main>
   <Footer />
@@ -122,11 +123,11 @@ const description =
       if (!response.ok) throw new Error(`Email gönderilemedi: ${response.status}`);
 
       status.textContent = 'Talebiniz alındı. En kısa sürede işleme alınacaktır.';
-      status.className = 'mt-4 rounded-xl bg-green-100 p-4 text-center text-green-900';
+      status.className = 'mt-4 rounded-2xl bg-green-100 p-4 text-center text-green-900';
       form.reset();
     } catch (error) {
       status.textContent = `Bir hata oluştu: ${error instanceof Error ? error.message : error}`;
-      status.className = 'mt-4 rounded-xl bg-red-100 p-4 text-center text-red-900';
+      status.className = 'mt-4 rounded-2xl bg-red-100 p-4 text-center text-red-900';
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Talep Gönder';

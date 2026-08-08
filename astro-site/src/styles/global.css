@@ -1,23 +1,149 @@
 @import "tailwindcss";
 
-/* Renk paleti: lib/constants/app_colors.dart */
+/*
+ * Token sistemi — TASARIM.md §2.
+ * Marka kaynağı: lib/constants/app_colors.dart (#687d2a zeytin, #faf9eb krem).
+ * Sayfa genelinde 1 vurgu (--color-vurgu) + 1 detay (--color-detay) rengi vardır.
+ */
 @theme {
-  --color-primary: #687d2a;
-  --color-cream: #faf9eb;
-  --color-surface: #f5f5f5;
-  --color-ink: rgba(0, 0, 0, 0.87);
-  --color-error: #b00020;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif;
+  --color-zemin: #faf9eb; /* sayfa arka planı (Flutter background) */
+  --color-yuzey: #ffffff; /* kart/menü yüzeyi */
+  --color-murekkep: #20281a; /* ana metin — koyu zeytin mürekkebi */
+  --color-soluk: #5c6650; /* ikincil metin (zemin üstünde ≥4.5:1) */
+  --color-vurgu: #687d2a; /* marka zeytin yeşili: butonlar */
+  --color-vurgu-koyu: #4c5d1d; /* linkler, hover/aktif (zemin üstünde ≥4.5:1) */
+  --color-detay: #b9944a; /* sıcak altın — yalnız ince çizgi ve vakit noktaları */
+  --color-gece: #0f1e30; /* koyu bölüm zemini (final CTA / footer) */
+  --color-error: #b00020; /* form hataları (app_colors.dart) */
+
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-baslik: "Lora", Georgia, "Times New Roman", serif;
 }
 
 html {
   scroll-behavior: smooth;
 }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 
-/* Klavye odak halkası: erişilebilirlik için görünür kalmalı */
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+/* Yapışkan menü, çapa hedeflerinin üstünü kapatmasın */
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-zemin);
+    color: var(--color-murekkep);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Tipografi ölçeği — TASARIM.md §3 (Türkçe: uppercase dönüşümü YOK) */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-baslik);
+    font-weight: 600;
+    color: var(--color-murekkep);
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 5vw + 1rem, 4rem);
+    line-height: 1.12;
+  }
+  h2 {
+    font-size: clamp(1.75rem, 3vw + 0.75rem, 2.5rem);
+    line-height: 1.2;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-vurgu) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-vurgu-koyu);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* İçerik kapsayıcısı ve bölüm ritmi — TASARIM.md §4 */
+  .kapsayici {
+    margin-inline: auto;
+    max-width: 1120px;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+  .bolum {
+    padding-block: clamp(4rem, 10vw, 7rem);
+  }
+
+  /* Bölüm başı küçük etiket (eyebrow) */
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-vurgu-koyu);
+  }
+
+  /* İnce ayırıcı: gölge yerine 1px çizgi — TASARIM.md §4 */
+  .cizgi {
+    border-color: color-mix(in srgb, var(--color-detay) 20%, transparent);
+  }
+
+  /* Vakit saatleri gibi rakamlar hizalı aksın */
+  .rakam {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/*
+ * Animasyon — TASARIM.md §7. Yalnız transform + opacity.
+ * İçerik JS olmadan tamamen görünürdür; gizli başlangıç durumu yalnızca
+ * html.js altında ve hareket azaltma tercihi yokken uygulanır.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero giriş dizisi: yalnız ilk yüklemede, kademeli */
+  @keyframes belir {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+  .giris-1,
+  .giris-2,
+  .giris-3,
+  .giris-4 {
+    animation: belir 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .giris-2 {
+    animation-delay: 0.1s;
+  }
+  .giris-3 {
+    animation-delay: 0.2s;
+  }
+  .giris-4 {
+    animation-delay: 0.3s;
+  }
+
+  /* Scroll ile belirme */
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  html.js .reveal.goster {
+    opacity: 1;
+    transform: none;
+  }
 }

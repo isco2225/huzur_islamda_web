@@ -1,9 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import VakitKusagi from '../components/VakitKusagi.astro';
+import NasilCalisir from '../components/NasilCalisir.astro';
 import Ozellikler from '../components/Ozellikler.astro';
-import EkranGoruntuleri from '../components/EkranGoruntuleri.astro';
+import EkranSeridi from '../components/EkranSeridi.astro';
 import SSS from '../components/SSS.astro';
+import FinalCTA from '../components/FinalCTA.astro';
 import Footer from '../components/Footer.astro';
 import { playStoreUrl } from '../components/MagazaButonlari.astro';
 
@@ -29,9 +32,12 @@ const schema = {
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
   <main>
     <Hero />
+    <VakitKusagi />
+    <NasilCalisir />
     <Ozellikler />
-    <EkranGoruntuleri />
+    <EkranSeridi />
     <SSS />
+    <FinalCTA />
   </main>
   <Footer />
 </Base>

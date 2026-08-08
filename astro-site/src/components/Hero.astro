@@ -1,33 +1,41 @@
 ---
-import { Image } from 'astro:assets';
 import MagazaButonlari from './MagazaButonlari.astro';
-import screenshot1 from '../assets/screenshots/screenshot-1.jpg';
+import TelefonMockup from './TelefonMockup.astro';
+
+// Rozetler: yalnızca doğrulanmış gerçekler (SSS içerikleri + mağaza durumu)
+const rozetler = ['Ücretsiz', 'Türkçe', 'iOS ve Android'];
 ---
 
-<section class="mx-auto max-w-[1200px] px-5 py-12 md:px-12 md:py-16 lg:py-20">
-  <div class="flex flex-col items-center gap-8 lg:flex-row lg:gap-14">
-    <div class="max-w-[520px] lg:flex-[5]">
-      <h1 class="text-[28px] font-bold leading-[1.2] text-primary md:text-[38px] xl:text-[44px]">
-        İbadet Rehberiniz<br />Her Zaman Yanınızda
-      </h1>
-      <p class="mt-4 text-[17px] leading-[1.55] text-ink md:mt-5">
-        Kur'an ve sünnet ışığında namaz vakitleri, akıllı zikirmatik, dua-hadis-Kur'an
-        içerikleri ve İslami asistan ile ibadetlerinizi düzenli tutun. Ücretsiz indirin.
+<section class="kapsayici pt-[clamp(3rem,8vw,5.5rem)] pb-[clamp(2.5rem,6vw,4rem)]">
+  <div class="grid items-center gap-12 lg:grid-cols-[7fr_5fr] lg:gap-8">
+    <div class="max-w-[560px]">
+      <ul class="giris-1 flex flex-wrap gap-2" aria-label="Uygulama hakkında kısa bilgiler">
+        {
+          rozetler.map((rozet) => (
+            <li class="cizgi rounded-full border px-3.5 py-1 text-[0.85rem] font-medium text-soluk">
+              {rozet}
+            </li>
+          ))
+        }
+      </ul>
+
+      <h1 class="giris-2 mt-6">Günün ritmi, ibadetin huzuru.</h1>
+
+      <p class="giris-3 mt-5 max-w-[46ch] text-[1.125rem] leading-[1.7] text-soluk">
+        İbadet Rehberim; namaz vakitlerinizi, zikirlerinizi ve dua-hadis akışınızı tek bir
+        sakin ekranda toplar. Vakti gelince hatırlatır, gerisine karışmaz.
       </p>
+
+      <div class="giris-4 mt-8">
+        <MagazaButonlari />
+        <p class="mt-4 text-[0.9rem] text-soluk">
+          Ücretsiz indirilir; dilerseniz reklamsız destek paketine geçebilirsiniz.
+        </p>
+      </div>
     </div>
-    <div
-      class="w-[120px] overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(104,125,42,0.12),0_4px_16px_rgba(0,0,0,0.06)] md:w-[140px] md:rounded-[28px] xl:w-[160px]"
-    >
-      <Image
-        src={screenshot1}
-        alt="İbadet Rehberim uygulamasının ana ekranından bir görünüm"
-        width={320}
-        densities={[1, 2]}
-        class="h-auto w-full"
-        loading="eager"
-        fetchpriority="high"
-      />
+
+    <div class="giris-4">
+      <TelefonMockup />
     </div>
-    <MagazaButonlari class="lg:flex-[2]" />
   </div>
 </section>

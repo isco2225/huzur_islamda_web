@@ -1,4 +1,8 @@
 ---
+// Fontlar self-host — TASARIM.md §3 (yalnız gerekli ağırlıklar, font-display: swap)
+import '@fontsource/lora/600.css';
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 
@@ -41,10 +45,42 @@ const ogImage = new URL('/og-image.png', Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- Scroll-reveal kapısı: gizli başlangıç durumu yalnız JS varken uygulanır
+         (CLAUDE.md sıfır-JS kuralının TASARIM.md §7'deki istisnası) -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
     <slot name="head" />
   </head>
-  <body class="bg-cream font-sans text-ink antialiased">
+  <body>
     <Header />
     <slot />
+
+    <script is:inline>
+      (() => {
+        const parcalar = document.querySelectorAll('.reveal');
+        if (!parcalar.length) return;
+        if (
+          !('IntersectionObserver' in window) ||
+          matchMedia('(prefers-reduced-motion: reduce)').matches
+        ) {
+          parcalar.forEach((el) => el.classList.add('goster'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (girdiler) => {
+            for (const g of girdiler) {
+              if (g.isIntersecting) {
+                g.target.classList.add('goster');
+                io.unobserve(g.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px' }
+        );
+        parcalar.forEach((el) => io.observe(el));
+      })();
+    </script>
   </body>
 </html>
