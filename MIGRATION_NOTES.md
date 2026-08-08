@@ -69,9 +69,12 @@ Kaynak: `lib/constants/app_colors.dart`, `lib/constants/app_theme.dart`, `web/ma
 
 ## 4. Mağaza linkleri / iletişim / sosyal medya
 
-- **Google Play / App Store URL'leri kodda YOK** — landing'deki mağaza butonları boş
-  (`onPressed: () {}`). Astro'da butonlar `TODO` işaretli, `href="#"` + `aria-disabled`
-  olarak kondu. → KULLANICIYA SORU: gerçek mağaza URL'leri nedir?
+- **Google Play linki kullanıcıdan alındı (2026-08-08):**
+  `https://play.google.com/store/apps/details?id=com.omran.huzur_islamda&hl=tr` —
+  hero'daki buton bu adrese gidiyor; JSON-LD'ye `installUrl` olarak eklendi.
+  **App Store'da henüz yayında değil** — App Store butonu "App Store'da Yakında" olarak
+  devre dışı; URL geldiğinde `src/components/MagazaButonlari.astro` içindeki
+  `appStoreUrl` doldurulunca buton otomatik aktifleşir.
 - **Sosyal medya linkleri kodda YOK** — footer'daki 3 ikon boş `onPressed`. Astro'ya
   taşınMADI (ölü link basmamak için). → KULLANICIYA SORU: sosyal medya hesapları var mı?
 - Veri silme formu alıcısı: `ibadetrehberim@gmail.com` (EmailJS ile,
@@ -143,7 +146,8 @@ Yayın sonrası:
 
 ## 9. Kullanıcıdan beklenen eksikler (TODO)
 
-1. App Store ve Google Play mağaza URL'leri (hero'daki iki buton için).
+1. ~~Google Play URL'i~~ (alındı, 2026-08-08). App Store URL'i uygulama yayınlanınca
+   `astro-site/src/components/MagazaButonlari.astro` → `appStoreUrl` alanına yazılacak.
 2. Hukuki sayfalardaki iletişim e-postası: `destek@uygulamaadi.com` placeholder —
    gerçek adres onayı (muhtemelen `ibadetrehberim@gmail.com`).
 3. Sosyal medya hesap linkleri (varsa; yoksa footer ikonsuz kalacak).
