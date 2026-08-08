@@ -1,16 +1,38 @@
-# huzur_islamda_web
+# İbadet Rehberim — Tanıtım Web Sitesi
 
-A new Flutter project.
+"İbadet Rehberim" mobil uygulamasının tanıtım sitesi (ibadetrehberim.com).
+Site, [Astro](https://astro.build) ile inşa edilmiş tamamen statik bir sitedir;
+kaynak kodu `astro-site/` klasöründedir.
 
-## Getting Started
+## Geliştirme
 
-This project is a starting point for a Flutter application.
+```bash
+cd astro-site
+npm install
+npm run dev       # geliştirme sunucusu
+npm run build     # üretim çıktısı → dist/
+npm run preview   # dist/ önizlemesi
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Sayfalar
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Path | İçerik |
+|---|---|
+| `/` | Ana sayfa (hero, Vakit Kuşağı, özellikler, SSS) |
+| `/privacy_policy` | Gizlilik Politikası |
+| `/terms_of_use` | Kullanım Koşulları |
+| `/delete_account` | Veri Silme Talebi formu |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`/privacy_policy` path'i mağaza konsollarında kayıtlıdır; değiştirilmemelidir.
+
+## Deploy
+
+GitHub Pages (`gh-pages` branşı, özel alan adı `ibadetrehberim.com` — CNAME
+`astro-site/public/` altındadır):
+
+```bash
+cd astro-site && npm run build && npx gh-pages -d dist
+```
+
+Tasarım şartnamesi için `TASARIM.md`, geçiş envanteri için `MIGRATION_NOTES.md`
+dosyalarına bakın.
