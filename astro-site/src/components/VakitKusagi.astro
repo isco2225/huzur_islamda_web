@@ -30,32 +30,38 @@ const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
     position: relative;
   }
 
-  /* Gökyüzü şeridi: gece → şafak → gündüz → ikindi → akşam → gece.
-     Duraklar GORSELLER.md'deki şafak gradyanı renk kilidinden alınmıştır
-     (kart-vakitler ve hero görselleriyle birebir aynı palet); gün ortası
-     etrafında aynalanarak altı vaktin döngüsü kurulur. */
+  /* Gökyüzü şeridi: gece → şafak → sabah → gün ortası → ikindi → günbatımı → gece.
+     Palet, GORSELLER.md şafak ailesinden türetilmiştir; gül tonları (şafak ve
+     günbatımı) dar birer geçiş olarak kullanılır ki altınla karışıp
+     çamurlaşmasın. Gün ortası en aydınlık noktadır. */
   .serit {
     position: absolute;
     inset-inline: 0;
     top: 0;
     height: var(--serit-boyu);
-    border-radius: 999px;
+    border-radius: 24px;
     background-image: linear-gradient(
       100deg,
       #0e1b2a 0%,
-      #2e3a5c 12%,
-      #966962 26%,
-      #e8b04b 38%,
-      #f1c77a 50%,
-      #e8b04b 62%,
-      #966962 76%,
-      #2e3a5c 88%,
+      #22335a 9%,
+      #966962 17%,
+      #e8a45c 25%,
+      #f6d18c 37%,
+      #fae3a8 50%,
+      #f1c77a 63%,
+      #d89a55 74%,
+      #a06058 83%,
+      #2e3a5c 92%,
       #0e1b2a 100%
     );
+    /* Üst kenarda tek piksellik ışık, altta gölge: şerit cama dönüşmeden derinlik kazanır */
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 20%),
+      inset 0 -1px 0 rgb(14 27 42 / 25%);
   }
 
   .kusak {
-    --serit-boyu: clamp(88px, 12vw, 128px);
+    --serit-boyu: clamp(76px, 10vw, 108px);
   }
 
   .vakitler {
@@ -74,13 +80,17 @@ const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
     display: flex;
     align-items: center;
   }
+  /* Krem nokta + yarı saydam koyu halka: hem gece lacivertinde hem gün
+     ortası altınında okunur (altın nokta altın zeminde kayboluyordu) */
   .nokta::before {
     content: '';
     width: 9px;
     height: 9px;
     border-radius: 999px;
-    background: var(--color-detay);
-    box-shadow: 0 0 0 3px rgb(250 249 235 / 40%);
+    background: var(--color-zemin);
+    box-shadow:
+      0 0 0 3px rgb(14 27 42 / 22%),
+      0 1px 3px rgb(14 27 42 / 35%);
   }
 
   .ad {

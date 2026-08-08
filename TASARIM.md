@@ -33,7 +33,7 @@ Bileşenlere ham hex gömülmez.
 | `--color-soluk` | `#4C5545` | ikincil metin (zemin üstünde ~7:1) |
 | `--color-vurgu` | `#677D2A` | zeytin yeşili: butonlar, hap etiketler |
 | `--color-vurgu-koyu` | `#16431A` | linkler, hover/aktif, başlık vurgusu |
-| `--color-detay` | `#B9944A` | sıcak altın: yalnız ince çizgiler ve vakit noktaları |
+| `--color-detay` | `#B9944A` | sıcak altın: yalnız ince çizgiler/kenarlar |
 | `--color-gece` | `#0E1B2A` | final CTA + footer zemini |
 
 Kurallar:
@@ -86,10 +86,13 @@ krem (Nav + Hero + Vakit Kuşağı)
 Sitenin hatırlanacağı tek özgün öğe. Hero'nun altında, konteyner içinde tam
 yuvarlak bir şerit; günün altı vakti üzerinde işaretli.
 
-- Gradyan durakları görsel varlıklarla **kilitlidir** (GORSELLER.md şafak
-  paleti), gün ortası etrafında aynalanır:
-  `#0E1B2A → #2E3A5C → #966962 → #E8B04B → #F1C77A (gün ortası) → aynalı geri dönüş`.
-- Noktalar `--color-detay`, açık halka gölgeli; adlar şeridin altında.
+- Gradyan, GORSELLER.md şafak ailesinden türetilmiş **asimetrik bir gün
+  anlatısıdır**; gül tonları dar geçişlerdir (altınla karışıp çamurlaşmasın):
+  `#0E1B2A → #22335A → #966962 (dar) → #E8A45C → #F6D18C → #FAE3A8 (gün ortası,
+  en aydınlık) → #F1C77A → #D89A55 → #A06058 (dar) → #2E3A5C → #0E1B2A`.
+- Köşe 24px (kart diliyle aynı); üst kenarda 1px iç ışık, altta 1px iç gölge.
+- Noktalar **krem** (`--color-zemin`) + yarı saydam koyu halka — hem gece
+  lacivertinde hem gün ortası altınında okunur. Adlar şeridin altında.
 - Nefes animasyonu: `background-size: 106%`, 60 sn, `alternate` — zar zor
   algılanır; `prefers-reduced-motion`'da kapalı.
 - Noktalar görünüme girerken İmsak'tan Yatsı'ya kademeli belirir (günün akışı
