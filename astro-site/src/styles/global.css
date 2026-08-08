@@ -9,7 +9,7 @@
   --color-zemin: #faf8eb; /* uygulama krem zemini */
   --color-yuzey: #ffffff; /* kart/menü yüzeyi */
   --color-murekkep: #20221a; /* ana metin */
-  --color-soluk: #5c6650; /* ikincil metin (zemin üstünde ≥4.5:1) */
+  --color-soluk: #4c5545; /* ikincil metin (zemin üstünde ~7:1) */
   --color-vurgu: #677d2a; /* zeytin yeşili (birincil): butonlar */
   --color-vurgu-koyu: #16431a; /* koyu orman yeşili: linkler, hover/aktif */
   --color-detay: #b9944a; /* sıcak altın — yalnız ince çizgi ve vakit noktaları */
@@ -85,13 +85,24 @@ html {
     padding-block: clamp(4rem, 10vw, 7rem);
   }
 
-  /* Bölüm başı küçük etiket (eyebrow) */
+  /* Bölüm başı küçük etiket (eyebrow) — hap biçimi bölüme çıpa atar */
   .eyebrow {
     display: inline-block;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     color: var(--color-vurgu-koyu);
+    background: color-mix(in srgb, var(--color-vurgu) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-vurgu) 22%, transparent);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+  }
+
+  /* Tek, çok hafif, renksiz gölge — kartları zeminden ayırır (TASARIM.md §4) */
+  .golge {
+    box-shadow:
+      0 1px 2px rgb(32 34 26 / 4%),
+      0 16px 32px -20px rgb(32 34 26 / 14%);
   }
 
   /* İnce ayırıcı: gölge yerine 1px çizgi — TASARIM.md §4 */

@@ -36,12 +36,16 @@ const faq = [
 
 <section id="sss" class="bolum kapsayici">
   <p class="eyebrow reveal">SSS</p>
-  <h2 class="reveal mt-3 max-w-[24ch]" style="--gecikme: 0.08s">Sıkça sorulan sorular</h2>
+  <h2 class="reveal mt-4 max-w-[24ch]" style="--gecikme: 0.08s">Sıkça sorulan sorular</h2>
 
-  <div class="cizgi mt-10 max-w-[720px] border-t">
+  <!-- Beyaz kart kabı: satırlar krem zeminde kaybolmaz -->
+  <div class="cizgi golge mt-10 max-w-[720px] rounded-[20px] border bg-yuzey px-6 md:px-8">
     {
       faq.map((item, i) => (
-        <details class="reveal cizgi group border-b" style={`--gecikme: ${0.1 + i * 0.07}s`}>
+        <details
+          class="reveal cizgi group border-b last:border-b-0"
+          style={`--gecikme: ${0.1 + i * 0.07}s`}
+        >
           <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[1.05rem] font-medium text-murekkep [&::-webkit-details-marker]:hidden">
             {item.question}
             <svg
