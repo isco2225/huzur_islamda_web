@@ -1,119 +1,144 @@
 ---
 /*
- * Vakit Kuşağı — sitenin imza öğesi (TASARIM.md §5).
- * Günün altı vakti, geceden şafağa, gündüze, ikindiye, akşam kızıllığına ve
- * tekrar geceye akan saf CSS gökyüzü gradyanı üzerinde işaretlenir.
- * Görsel dosyası yok; 60 sn'lik "nefes" animasyonu reduced-motion'da kapalıdır.
+ * Vakit Yayı — sitenin imza öğesi (TASARIM.md §5).
+ * Namaz vakitleri güneşin gökyüzündeki konumuyla tanımlanır; öğe de tam bunu
+ * çizer: ince bir ufuk çizgisi, güneşin doğuştan batışa yayı ve yay üzerinde
+ * vakitler. İmsak ile Yatsı ufkun gece tarafındadır. Küçük güneş, yayı 60
+ * saniyede bir kez kateder (SMIL; prefers-reduced-motion'da sabit güneş
+ * gösterilir). Tamamı inline SVG + CSS — görsel dosyası yok.
+ *
+ * Geometri: elips merkezi (500,210), rx=370, ry=155.
+ * Öğle (500,55) tepe · İkindi θ=45° → (762,100) · Güneş/Akşam ufukta.
  */
-const vakitler = ['İmsak', 'Güneş', 'Öğle', 'İkindi', 'Akşam', 'Yatsı'];
 ---
 
 <section aria-label="Günün altı vakti" class="kapsayici pb-[clamp(2.5rem,6vw,4rem)]">
-  <div class="kusak reveal">
-    <div class="serit" aria-hidden="true"></div>
-    <ol class="vakitler">
-      {
-        // Noktalar günün akışı gibi İmsak'tan Yatsı'ya sırayla belirir
-        vakitler.map((vakit, i) => (
-          <li class="reveal" style={`--gecikme: ${0.25 + i * 0.1}s`}>
-            <span class="nokta" aria-hidden="true"></span>
-            <span class="ad">{vakit}</span>
-          </li>
-        ))
-      }
-    </ol>
-  </div>
+  <figure class="yay reveal">
+    <svg viewBox="0 0 1000 300" class="yay-svg" role="img" aria-labelledby="yay-baslik">
+      <title id="yay-baslik">
+        Günün altı vakti: Güneş, Öğle, İkindi ve Akşam güneşin gökyüzü yayı üzerinde;
+        İmsak ve Yatsı ufkun gece tarafında
+      </title>
+      <defs>
+        <linearGradient id="yay-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#22335a"></stop>
+          <stop offset="0.16" stop-color="#e8a45c"></stop>
+          <stop offset="0.5" stop-color="#f1c77a"></stop>
+          <stop offset="0.84" stop-color="#d89a55"></stop>
+          <stop offset="1" stop-color="#22335a"></stop>
+        </linearGradient>
+        <!-- userSpaceOnUse: yatay çizgide objectBoundingBox gradyanı çizilmez -->
+        <linearGradient id="ufuk-grad" gradientUnits="userSpaceOnUse" x1="20" y1="0" x2="980" y2="0">
+          <stop offset="0" stop-color="#0e1b2a"></stop>
+          <stop offset="0.14" stop-color="#b9944a" stop-opacity="0.45"></stop>
+          <stop offset="0.86" stop-color="#b9944a" stop-opacity="0.45"></stop>
+          <stop offset="1" stop-color="#0e1b2a"></stop>
+        </linearGradient>
+      </defs>
+
+      <!-- Ufuk çizgisi: uçları geceye kararır -->
+      <line x1="20" y1="210" x2="980" y2="210" stroke="url(#ufuk-grad)" stroke-width="2"></line>
+
+      <!-- Güneşin yolu -->
+      <path
+        id="gunes-yolu"
+        d="M 130 210 A 370 155 0 0 1 870 210"
+        fill="none"
+        stroke="url(#yay-grad)"
+        stroke-width="4"
+        stroke-linecap="round"></path>
+
+      <!-- Yayı 60 sn'de kateden güneş -->
+      <g class="gunes" aria-hidden="true">
+        <circle r="16" fill="#fae3a8" opacity="0.35"></circle>
+        <circle r="8" fill="#fae3a8" stroke="#fff6dc" stroke-width="2"></circle>
+        <animateMotion dur="60s" repeatCount="indefinite">
+          <mpath href="#gunes-yolu"></mpath>
+        </animateMotion>
+      </g>
+      <!-- Hareket azaltma tercihinde: sabit güneş -->
+      <g class="gunes-sabit" transform="translate(640 67)" aria-hidden="true">
+        <circle r="16" fill="#fae3a8" opacity="0.35"></circle>
+        <circle r="8" fill="#fae3a8" stroke="#fff6dc" stroke-width="2"></circle>
+      </g>
+
+      <!-- Vakitler: noktalar + adlar (İmsak'tan Yatsı'ya kademeli belirir) -->
+      <g class="vakitler reveal-grup">
+        <g>
+          <circle cx="48" cy="210" r="7" class="nokta-gece"></circle>
+          <text x="48" y="290" text-anchor="middle" class="ad ad-gece">İmsak</text>
+        </g>
+        <g>
+          <circle cx="130" cy="210" r="7" class="nokta-gun"></circle>
+          <text x="130" y="254" text-anchor="middle" class="ad">Güneş</text>
+        </g>
+        <g>
+          <circle cx="500" cy="55" r="7" class="nokta-gun"></circle>
+          <text x="500" y="30" text-anchor="middle" class="ad">Öğle</text>
+        </g>
+        <g>
+          <circle cx="762" cy="100" r="7" class="nokta-gun"></circle>
+          <text x="752" y="148" text-anchor="middle" class="ad">İkindi</text>
+        </g>
+        <g>
+          <circle cx="870" cy="210" r="7" class="nokta-gun"></circle>
+          <text x="870" y="254" text-anchor="middle" class="ad">Akşam</text>
+        </g>
+        <g>
+          <circle cx="950" cy="210" r="7" class="nokta-gece"></circle>
+          <text x="950" y="290" text-anchor="middle" class="ad ad-gece">Yatsı</text>
+        </g>
+      </g>
+    </svg>
+  </figure>
 </section>
 
 <style>
-  .kusak {
-    position: relative;
+  .yay-svg {
+    display: block;
+    width: 100%;
+    max-width: 880px;
+    height: auto;
+    margin-inline: auto;
   }
 
-  /* Gökyüzü şeridi: gece → şafak → sabah → gün ortası → ikindi → günbatımı → gece.
-     Palet, GORSELLER.md şafak ailesinden türetilmiştir; gül tonları (şafak ve
-     günbatımı) dar birer geçiş olarak kullanılır ki altınla karışıp
-     çamurlaşmasın. Gün ortası en aydınlık noktadır. */
-  .serit {
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: var(--serit-boyu);
-    border-radius: 24px;
-    background-image: linear-gradient(
-      100deg,
-      #0e1b2a 0%,
-      #22335a 9%,
-      #966962 17%,
-      #e8a45c 25%,
-      #f6d18c 37%,
-      #fae3a8 50%,
-      #f1c77a 63%,
-      #d89a55 74%,
-      #a06058 83%,
-      #2e3a5c 92%,
-      #0e1b2a 100%
-    );
-    /* Üst kenarda tek piksellik ışık, altta gölge: şerit cama dönüşmeden derinlik kazanır */
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 20%),
-      inset 0 -1px 0 rgb(14 27 42 / 25%);
+  /* Gündüz noktaları: krem + koyu halka; gece noktaları: lacivert + krem halka */
+  .nokta-gun {
+    fill: var(--color-zemin);
+    stroke: rgb(14 27 42 / 35%);
+    stroke-width: 2.5;
   }
-
-  .kusak {
-    --serit-boyu: clamp(76px, 10vw, 108px);
-  }
-
-  .vakitler {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .vakitler li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .nokta {
-    height: var(--serit-boyu);
-    display: flex;
-    align-items: center;
-  }
-  /* Krem nokta + yarı saydam koyu halka: hem gece lacivertinde hem gün
-     ortası altınında okunur (altın nokta altın zeminde kayboluyordu) */
-  .nokta::before {
-    content: '';
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--color-zemin);
-    box-shadow:
-      0 0 0 3px rgb(14 27 42 / 22%),
-      0 1px 3px rgb(14 27 42 / 35%);
+  .nokta-gece {
+    fill: #22335a;
+    stroke: rgb(250 248 235 / 55%);
+    stroke-width: 2.5;
   }
 
   .ad {
-    margin-top: 0.75rem;
-    font-size: clamp(0.72rem, 1.8vw, 0.92rem);
+    font-size: 30px;
     font-weight: 500;
-    color: var(--color-soluk);
+    fill: var(--color-murekkep);
+  }
+  /* Dar ekranda viewBox küçüldüğü için etiketler büyütülür (~15px görünür boyut) */
+  @media (max-width: 640px) {
+    .ad {
+      font-size: 42px;
+    }
+  }
+  .ad-gece {
+    fill: var(--color-soluk);
   }
 
-  /* Çok yavaş, zar zor algılanan nefes: yalnız hareket tercihi kısıtlı değilse.
-     %106'lık boyut, gün döngüsünün her kadrajda bütün kalmasını sağlar. */
-  @media (prefers-reduced-motion: no-preference) {
-    .serit {
-      background-size: 106% 100%;
-      animation: nefes 60s ease-in-out infinite alternate;
+  /* Güneş: hareket tercihi kısıtlıysa sabit hali gösterilir */
+  .gunes-sabit {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gunes {
+      display: none;
     }
-    @keyframes nefes {
-      from {
-        background-position: 0% 50%;
-      }
-      to {
-        background-position: 100% 50%;
-      }
+    .gunes-sabit {
+      display: initial;
     }
   }
 </style>

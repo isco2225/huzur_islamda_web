@@ -81,22 +81,24 @@ krem (Nav + Hero + Vakit Kuşağı)
 - Hazır görsel kartlarına (GORSELLER.md) site tarafında ek gölge/kenar/köşe
   **uygulanmaz** — çerçeve ve gölge görselin içindedir.
 
-## 5. İmza öğesi: Vakit Kuşağı
+## 5. İmza öğesi: Vakit Yayı
 
-Sitenin hatırlanacağı tek özgün öğe. Hero'nun altında, konteyner içinde tam
-yuvarlak bir şerit; günün altı vakti üzerinde işaretli.
+Sitenin hatırlanacağı tek özgün öğe. Hero'nun altında, güneşin gökyüzündeki
+yolunu çizen bir diyagram — namaz vakitleri zaten güneşin konumuyla tanımlanır;
+öğe bu gerçeği görselleştirir. Tamamı inline SVG + CSS; görsel dosyası yok
+(`VakitKusagi.astro`).
 
-- Gradyan, GORSELLER.md şafak ailesinden türetilmiş **asimetrik bir gün
-  anlatısıdır**; gül tonları dar geçişlerdir (altınla karışıp çamurlaşmasın):
-  `#0E1B2A → #22335A → #966962 (dar) → #E8A45C → #F6D18C → #FAE3A8 (gün ortası,
-  en aydınlık) → #F1C77A → #D89A55 → #A06058 (dar) → #2E3A5C → #0E1B2A`.
-- Köşe 24px (kart diliyle aynı); üst kenarda 1px iç ışık, altta 1px iç gölge.
-- Noktalar **krem** (`--color-zemin`) + yarı saydam koyu halka — hem gece
-  lacivertinde hem gün ortası altınında okunur. Adlar şeridin altında.
-- Nefes animasyonu: `background-size: 106%`, 60 sn, `alternate` — zar zor
-  algılanır; `prefers-reduced-motion`'da kapalı.
-- Noktalar görünüme girerken İmsak'tan Yatsı'ya kademeli belirir (günün akışı
-  metaforu).
+- **İnce ufuk çizgisi** (uçları geceye kararan gradyan) ve üzerinde güneşin
+  doğuştan batışa **yayı** (gradyan: `#22335A → #E8A45C → #F1C77A →
+  #D89A55 → #22335A`).
+- **Vakit yerleşimi anlamlıdır:** Güneş ve Akşam ufuk üstünde (doğuş/batış),
+  Öğle yayın tepesinde, İkindi inişte; **İmsak ve Yatsı ufkun gece tarafında**
+  (lacivert noktalar, soluk etiketler).
+- Gündüz noktaları krem + koyu halka, gece noktaları lacivert + krem halka.
+- **Güneş animasyonu:** küçük haleli güneş, yayı 60 sn'de bir kez kateder
+  (SMIL `animateMotion`); `prefers-reduced-motion`'da hareketli güneş gizlenir,
+  sabit güneş gösterilir.
+- Noktalar görünüme girerken İmsak'tan Yatsı'ya kademeli belirir.
 - Karşılığında sayfada başka dekoratif gradyan, desen, illüstrasyon **yoktur**.
   (Gece bölümü düz koyu zemindir, gradyan değildir.)
 
@@ -141,7 +143,7 @@ Hareket ölçülüdür; şu dört kalem bütçenin tamamıdır:
    **JS'siz içerik tamamen görünür.**
 3. **Hover mikro etkileşimleri:** butonlarda koyulaşma + 1px kalkış, kartlarda
    kenar belirginleşmesi + 2px kalkış; 150–250 ms.
-4. **Vakit Kuşağı nefesi** (§5).
+4. **Vakit Yayı güneşi** (§5): yay boyunca 60 sn'lik yolculuk.
 
 Kurallar: yalnız `transform` ve `opacity` (CLS = 0); `prefers-reduced-motion:
 reduce` durumunda tümü kapalı, içerik doğrudan görünür. **Yasak:** parallax,
