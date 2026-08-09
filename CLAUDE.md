@@ -36,7 +36,8 @@ inceleme ile yapılır. Test çerçevesi ekleme.
 
 ## Mimari
 
-**Tek sayfa + üç yardımcı sayfa.** `index.astro` dokuz bileşeni sırayla dizer
+**Ana sayfa + iki özellik sayfası + üç yardımcı sayfa.** `index.astro` dokuz
+bileşeni sırayla dizer
 (Hero → VakitKusagi → NasilCalisir → Ozellikler → EkranSeridi → SSS → FinalCTA
 → Footer); bölümler kendi stilini kendi içinde taşır, sayfa yalnız sıralama
 yapar. Bir bölüm eklemek/çıkarmak = `index.astro`'da bir satır.
@@ -83,8 +84,9 @@ astro-site/src/
   layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro
   components/  Header, Hero, VakitKusagi, NasilCalisir, Ozellikler,
                EkranSeridi, SSS, FinalCTA, Footer, MagazaButonlari
-  pages/       index.astro, privacy_policy.md, terms_of_use.md,
-               delete_account.astro
+  pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
+               privacy_policy.md, terms_of_use.md, delete_account.astro,
+               404.astro
   styles/      global.css (@theme token'ları + tipografi + animasyon)
   assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, akis-*,
                store/) — hepsi astro:assets <Image /> ile

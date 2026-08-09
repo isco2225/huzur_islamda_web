@@ -1,0 +1,133 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import MagazaButonlari from '../components/MagazaButonlari.astro';
+import kartSayac from '../assets/gorseller/kart-zikir-sayac.png';
+import kartTesbihat from '../assets/gorseller/kart-zikir-tesbihat.png';
+
+// İçerik kaynağı: UYGULAMA_OZELLIKLERI.md §7 + SSS ("Verilerim nerede
+// tutuluyor?"). Yalnız belgelenmiş davranışlar anlatılır.
+const title = 'Zikirmatik — Zikir Sayacı ve Namaz Tesbihatı | İbadet Rehberim';
+const description =
+  'Zikir oluşturun, dokunarak sayın, gününüzü takip edin. Namaz tesbihatı tek dokunuşla kurulur; zikirleriniz çevrimdışı da çalışır, isterseniz bulutta yedeklenir.';
+
+const maddeler = [
+  {
+    baslik: 'Üç yolla zikir oluşturun',
+    metin:
+      'İsim ve hedef sayı girerek kendiniz oluşturun (varsayılan 33), namaz sonrası okunacak tesbihat setini tek dokunuşla kurun — 33\'er kez Sübhanallah, Elhamdülillah ve Allahu Ekber — ya da huzur, sabır, şükür gibi ruh halinize göre hazırlanan setlerden birini seçin.',
+  },
+  {
+    baslik: 'Sayın ve takip edin',
+    metin:
+      'Her zikirde hedef ve mevcut sayı bir arada görünür. Zikrin kartına dokununca sayaç açılır; tamamladıklarınız işaretlenir, gruptaki zikirlerde birini bitirince sıradakine geçersiniz.',
+  },
+  {
+    baslik: "Akşam 22.00'de küçük bir hatırlatma",
+    metin:
+      'Zikirleriniz yarım kaldıysa aynı gün akşam 22.00\'de hatırlatma gelir; günü tamamladıysanız o günün hatırlatması kendiliğinden iptal olur. İstemezseniz ayarlardan kapatırsınız.',
+  },
+  {
+    baslik: 'Çevrimdışı da çalışır',
+    metin:
+      'Zikirleriniz cihazınızda saklanır; internet olmadan da sayarsınız. İsterseniz bulutta yedekleyip farklı cihazlardan aynı verilere ulaşırsınız.',
+  },
+];
+
+const kirinti = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana sayfa', item: new URL('/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'Zikirmatik' },
+  ],
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(kirinti)} />
+  <main>
+    <section class="kapsayici pt-[clamp(3rem,8vw,5.5rem)] pb-[clamp(2.5rem,6vw,4rem)]">
+      <div class="grid items-center gap-12 lg:grid-cols-[7fr_5fr] lg:gap-8">
+        <div class="max-w-[560px]">
+          <p class="giris-1 eyebrow">Zikirmatik</p>
+          <h1 class="giris-2 mt-6">
+            Sayan ve hatırlatan <span class="text-vurgu-koyu">akıllı zikirmatik</span>
+          </h1>
+          <p class="giris-3 mt-5 max-w-[46ch] text-[1.125rem] leading-[1.7] text-soluk">
+            Zikrinizi oluşturun, hedefinizi belirleyin, dokunarak sayın. Namaz
+            tesbihatı tek dokunuşla kurulur; yarım kalan zikirlerinizi akşam uygulama
+            hatırlatır.
+          </p>
+          <div class="giris-4 mt-8">
+            <MagazaButonlari />
+          </div>
+        </div>
+
+        <!-- Çerçeve, köşe ve gölge görselin içindedir (GORSELLER.md §3) -->
+        <div class="giris-4">
+          <Image
+            src={kartSayac}
+            alt="Zikirmatik ekranı: Sübhanallah zikrinde 50/100 ilerleme halkası"
+            width={420}
+            densities={[1, 2]}
+            class="mx-auto h-auto w-[min(85%,420px)]"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="bolum cizgi border-y bg-yuzey">
+      <div class="kapsayici">
+        <h2 class="reveal max-w-[26ch]">Zikir saymanın dört kolaylığı</h2>
+        <ul class="mt-12 grid gap-10 md:grid-cols-2 md:gap-x-8 md:gap-y-12">
+          {
+            maddeler.map((madde, i) => (
+              <li class="reveal cizgi border-t pt-6" style={`--gecikme: ${0.1 + i * 0.1}s`}>
+                <h3 class="text-[1.35rem]">{madde.baslik}</h3>
+                <p class="mt-3 max-w-[52ch] leading-[1.7] text-soluk">{madde.metin}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="bolum kapsayici">
+      <div class="grid items-center gap-12 lg:grid-cols-[5fr_7fr] lg:gap-8">
+        <div class="order-2 lg:order-1">
+          <Image
+            src={kartTesbihat}
+            alt="Namaz Tesbihatı penceresi: 33'er kez Subhanallah, Elhamdulillah ve Allahu Ekber oluşturma"
+            width={420}
+            densities={[1, 2]}
+            class="reveal mx-auto h-auto w-[min(85%,420px)]"
+            loading="lazy"
+          />
+        </div>
+        <div class="order-1 max-w-[560px] lg:order-2">
+          <h2 class="reveal max-w-[24ch]">Namaz tesbihatı, tek dokunuşla</h2>
+          <p class="reveal mt-5 max-w-[52ch] leading-[1.7] text-soluk" style="--gecikme: 0.1s">
+            "Namaz için zikirler" seçeneği, namaz sonrası okunacak seti sizin yerinize
+            kurar: 33'er kez Sübhanallah, Elhamdülillah ve Allahu Ekber. Birini
+            bitirince sıradakine geçer, tesbihatınızı bölmeden tamamlarsınız.
+          </p>
+          <p class="reveal mt-4 max-w-[52ch] leading-[1.7] text-soluk" style="--gecikme: 0.2s">
+            Vakitleri kaçırmamak için
+            <a href="/namaz-vakitleri" class="text-vurgu-koyu underline">namaz vakitleri</a>
+            özelliğine bakabilir, merak ettikleriniz için
+            <a href="/#sss" class="text-vurgu-koyu underline">sıkça sorulan sorulara</a>
+            göz atabilirsiniz.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+  <Footer />
+</Base>
