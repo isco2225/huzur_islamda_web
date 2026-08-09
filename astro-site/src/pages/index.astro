@@ -28,6 +28,16 @@ const schema = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'TRY' },
 };
 
+// Site adı şeması: Google'ın sonuçlarda "İbadet Rehberim" adını doğru
+// göstermesi için (yalnız ana sayfada olması yeterli).
+const siteSema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'İbadet Rehberim',
+  url: new URL('/', Astro.site).href,
+  inLanguage: 'tr',
+};
+
 // SSS bölümündeki gerçek soru-cevaplardan FAQPage şeması (kaynak: SSS.astro)
 const sssSema = {
   '@context': 'https://schema.org',
@@ -43,6 +53,7 @@ const sssSema = {
 <Base title={title} description={description}>
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(sssSema)} />
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(siteSema)} />
   <main>
     <Hero />
     <VakitKusagi />
