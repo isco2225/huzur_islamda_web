@@ -1,0 +1,30 @@
+---
+// Alt sayfaların tepesinde "ana sayfaya dön" bağlantısı. Header'daki logo da
+// ana sayfaya gider ama bu görünür bir yol değil (mobilde menü linkleri
+// gizli); alt sayfaya inen ziyaretçiye açık bir geri dönüş kapısı gerekir.
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<a
+  href="/"
+  class={`inline-flex min-h-[44px] items-center gap-1.5 text-[0.95rem] font-medium text-soluk transition-colors hover:text-murekkep ${className}`}
+>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="h-4 w-4"
+    aria-hidden="true"
+  >
+    <path d="m12 19-7-7 7-7"></path>
+    <path d="M19 12H5"></path>
+  </svg>
+  Ana sayfaya dön
+</a>
