@@ -90,7 +90,7 @@ astro-site/src/
   styles/      global.css (@theme token'ları + tipografi + animasyon)
   assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, akis-*,
                store/) — hepsi astro:assets <Image /> ile
-astro-site/public/   CNAME, robots.txt, app-ads.txt, favicon, icons/, og.png
+astro-site/public/   robots.txt, app-ads.txt, favicon, icons/, og.png
 gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 ```
 
@@ -131,13 +131,20 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 
 ## Deploy
 
-GitHub Pages, `gh-pages` branşı, özel alan adı `ibadetrehberim.com` (CNAME
-`astro-site/public/` altında; `gh-pages` paketi bağımlılık değil, `npx` ile
-çalışır):
+Vercel, GitHub entegrasyonu ile: `main`'e push edilen her commit otomatik
+olarak canlıya (`ibadetrehberim.com`) çıkar. Elle deploy komutu yoktur;
+`gh-pages` dönemi kapandı. Diğer branch'ler/PR'lar otomatik önizleme URL'i
+alır. Proje ayarlarında Root Directory `astro-site`'tır.
 
-```bash
-cd astro-site && npm run build && npx gh-pages -d dist
-```
+**Commit/push onay kuralı:** Push canlı siteyi doğrudan etkilediği için
+commit atmadan önce KULLANICIYA SOR: yapılan değişiklikleri özetle, commit
+mesajını göster ve "bu commit ile push'layayım mı?" diye onay al. Onay
+gelmeden commit/push yapma. Push'tan önce `npm run build` + `npx astro check`
+lokalde temiz olmalı.
+
+**Commit mesajları İngilizce** yazılır (emir kipi, kısa özet satırı; örn.
+`Move deploy to Vercel`). Sitenin metin/kod dili Türkçe olsa da commit
+geçmişi İngilizcedir.
 
 ## Bekleyen eksikler (kullanıcıdan)
 
