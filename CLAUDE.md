@@ -153,4 +153,3 @@ geçmişi İngilizcedir.
 - Hukuki sayfalardaki iletişim bloğu placeholder (`destek@uygulamaadi.com`) —
   gerçek adres onayı bekliyor.
 - Sosyal medya linkleri (varsa footer'a eklenecek).
-- `app-ads.txt` gerçek AdMob satırı.
