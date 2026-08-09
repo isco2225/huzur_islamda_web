@@ -18,7 +18,7 @@ npm run preview   # dist/ önizlemesi
 
 | Path | İçerik |
 |---|---|
-| `/` | Ana sayfa (hero, Vakit Kuşağı, özellikler, SSS) |
+| `/` | Ana sayfa (hero, Gün Döngüsü, özellikler, SSS) |
 | `/privacy_policy` | Gizlilik Politikası |
 | `/terms_of_use` | Kullanım Koşulları |
 | `/delete_account` | Veri Silme Talebi formu |

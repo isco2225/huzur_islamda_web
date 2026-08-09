@@ -57,8 +57,8 @@ TASARIM.md §2.3'teki yedek palet artık kullanılmaz; §2.2 token'larına şu d
 ```
 Uygulamadaki kırmızı (#B5001D) sitede **kullanılmaz** (yalnız ekran içeriğinde görünür).
 
-### Şafak gradyanı (Vakit Kuşağı ile birebir uyum)
-`kart-vakitler` ve `hero-safak` bu duraklarla üretildi. **Vakit Kuşağı'nın CSS'inde aynı durakları kullan** ki görsellerle site dikişsiz eşleşsin:
+### Şafak gradyanı (Gün Döngüsü ile birebir uyum)
+`kart-vakitler` ve `hero-safak` bu duraklarla üretildi. **Gün Döngüsü'nün şafak katmanında aynı durakları kullan** ki görsellerle site dikişsiz eşleşsin:
 
 ```css
 background: linear-gradient(180deg,

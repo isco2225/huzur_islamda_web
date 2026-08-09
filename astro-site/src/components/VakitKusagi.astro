@@ -1,144 +1,342 @@
 ---
 /*
- * Vakit Yayı — sitenin imza öğesi (TASARIM.md §5).
- * Namaz vakitleri güneşin gökyüzündeki konumuyla tanımlanır; öğe de tam bunu
- * çizer: ince bir ufuk çizgisi, güneşin doğuştan batışa yayı ve yay üzerinde
- * vakitler. İmsak ile Yatsı ufkun gece tarafındadır. Küçük güneş, yayı 60
- * saniyede bir kez kateder (SMIL; prefers-reduced-motion'da sabit güneş
- * gösterilir). Tamamı inline SVG + CSS — görsel dosyası yok.
+ * Gün Döngüsü — sitenin imza öğesi (TASARIM.md §5).
  *
- * Geometri: elips merkezi (500,210), rx=370, ry=155.
- * Öğle (500,55) tepe · İkindi θ=45° → (762,100) · Güneş/Akşam ufukta.
+ * Diyagram değil sahnedir: güneş ufkun ardından doğar, göğü kateder, batar;
+ * gökyüzü onunla birlikte geceden şafağa, gündüzden akşama döner ve gece
+ * yıldızlar geri gelir. Altta günün altı vakti, sırası gelen vakit aydınlanır.
+ *
+ * Tamamı HTML + CSS: görsel dosyası da client JS de yok.
+ *
+ * Hareketin kurulumu (TASARIM.md §7: yalnız transform + opacity):
+ *  - Güneşin yayı iç içe iki katmandır. Dış katman yatayda lineer kayar, iç
+ *    katman dikeyde sinüs basamaklarıyla iner çıkar; bileşkesi düzgün bir yay
+ *    olur. Böylece konum için `top/left` değil yalnız `transform` kullanılır.
+ *  - Gök katmanları üst üste durur, aralarında `opacity` ile geçilir.
+ *  - Vakit şeridinde tek bir `@keyframes` vardır; her vakit kendi anına
+ *    **negatif `animation-delay`** ile oturur (delay = Tᵢ − döngü). Tek
+ *    zaman çizelgesi olduğu için sahne ile şerit hiçbir zaman kaymaz.
+ *
+ * Saatler uygulamanın kendi Ezan Vakitleri ekranından alınmıştır
+ * (İstanbul, 8 Ağustos Cumartesi) — örnek bir gündür, uydurma değildir.
  */
+
+const DONGU = 30; // sn — sahnedeki her animasyonun ortak süresi
+
+// t: vaktin döngü içindeki anı (sn). Güneşin ufku geçtiği anlarla hizalıdır:
+// doğuş ≈ 3.6 sn, tepe = 15 sn, batış ≈ 26.4 sn.
+const vakitler = [
+  { ad: 'İmsak', saat: '04:19', t: 0.8 },
+  { ad: 'Güneş', saat: '06:00', t: 4.0 },
+  { ad: 'Öğle', saat: '13:15', t: 14.6 },
+  { ad: 'İkindi', saat: '17:07', t: 20.6 },
+  { ad: 'Akşam', saat: '20:20', t: 26.2 },
+  { ad: 'Yatsı', saat: '21:54', t: 28.2 },
+];
+
+// Elle seçilmiş yıldız yerleşimi (ufkun üstünde kalır): [sol %, üst %, çap px, parlaklık]
+const yildizlar = [
+  [6, 14, 2, 0.7], [13, 32, 1.5, 0.5], [21, 9, 2, 0.8], [28, 24, 1.5, 0.45],
+  [34, 44, 2, 0.6], [41, 15, 1.5, 0.55], [47, 30, 2.5, 0.85], [54, 8, 1.5, 0.5],
+  [60, 38, 2, 0.6], [66, 19, 1.5, 0.45], [72, 28, 2, 0.7], [78, 11, 2.5, 0.8],
+  [85, 36, 1.5, 0.5], [91, 21, 2, 0.65], [17, 52, 1.5, 0.4], [57, 50, 1.5, 0.4],
+];
 ---
 
 <section aria-label="Günün altı vakti" class="kapsayici pb-[clamp(2.5rem,6vw,4rem)]">
-  <figure class="yay reveal">
-    <svg viewBox="0 0 1000 300" class="yay-svg" role="img" aria-labelledby="yay-baslik">
-      <title id="yay-baslik">
-        Günün altı vakti: Güneş, Öğle, İkindi ve Akşam güneşin gökyüzü yayı üzerinde;
-        İmsak ve Yatsı ufkun gece tarafında
-      </title>
-      <defs>
-        <linearGradient id="yay-grad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#22335a"></stop>
-          <stop offset="0.16" stop-color="#e8a45c"></stop>
-          <stop offset="0.5" stop-color="#f1c77a"></stop>
-          <stop offset="0.84" stop-color="#d89a55"></stop>
-          <stop offset="1" stop-color="#22335a"></stop>
-        </linearGradient>
-        <!-- userSpaceOnUse: yatay çizgide objectBoundingBox gradyanı çizilmez -->
-        <linearGradient id="ufuk-grad" gradientUnits="userSpaceOnUse" x1="20" y1="0" x2="980" y2="0">
-          <stop offset="0" stop-color="#0e1b2a"></stop>
-          <stop offset="0.14" stop-color="#b9944a" stop-opacity="0.45"></stop>
-          <stop offset="0.86" stop-color="#b9944a" stop-opacity="0.45"></stop>
-          <stop offset="1" stop-color="#0e1b2a"></stop>
-        </linearGradient>
-      </defs>
+  <figure class="cerceve golge reveal">
+    <!-- Sahne dekoratiftir; bilgi aşağıdaki şeritte gerçek metin olarak durur -->
+    <div class="sahne" aria-hidden="true">
+      <div class="gok gok-gece"></div>
+      <div class="gok gok-gunduz"></div>
+      <div class="gok gok-safak"></div>
+      <div class="gok gok-aksam"></div>
 
-      <!-- Ufuk çizgisi: uçları geceye kararır -->
-      <line x1="20" y1="210" x2="980" y2="210" stroke="url(#ufuk-grad)" stroke-width="2"></line>
+      <div class="yildizlar">
+        {
+          yildizlar.map(([sol, ust, capi, parlak]) => (
+            <span
+              style={`left:${sol}%; top:${ust}%; width:${capi}px; height:${capi}px; opacity:${parlak}`}
+            />
+          ))
+        }
+      </div>
 
-      <!-- Güneşin yolu -->
-      <path
-        id="gunes-yolu"
-        d="M 130 210 A 370 155 0 0 1 870 210"
-        fill="none"
-        stroke="url(#yay-grad)"
-        stroke-width="4"
-        stroke-linecap="round"></path>
+      <!-- Güneş: dış katman yatayda, iç katman dikeyde → bileşkesi yay -->
+      <div class="gunes-yatay">
+        <div class="gunes-dikey"><div class="gunes"></div></div>
+      </div>
 
-      <!-- Yayı 60 sn'de kateden güneş -->
-      <g class="gunes" aria-hidden="true">
-        <circle r="16" fill="#fae3a8" opacity="0.35"></circle>
-        <circle r="8" fill="#fae3a8" stroke="#fff6dc" stroke-width="2"></circle>
-        <animateMotion dur="60s" repeatCount="indefinite">
-          <mpath href="#gunes-yolu"></mpath>
-        </animateMotion>
-      </g>
-      <!-- Hareket azaltma tercihinde: sabit güneş -->
-      <g class="gunes-sabit" transform="translate(640 67)" aria-hidden="true">
-        <circle r="16" fill="#fae3a8" opacity="0.35"></circle>
-        <circle r="8" fill="#fae3a8" stroke="#fff6dc" stroke-width="2"></circle>
-      </g>
+      <!-- Yeryüzü: güneşten sonra çizilir, böylece güneş ardına doğar/batar -->
+      <div class="yer"></div>
+    </div>
 
-      <!-- Vakitler: noktalar + adlar (İmsak'tan Yatsı'ya kademeli belirir) -->
-      <g class="vakitler reveal-grup">
-        <g>
-          <circle cx="48" cy="210" r="7" class="nokta-gece"></circle>
-          <text x="48" y="290" text-anchor="middle" class="ad ad-gece">İmsak</text>
-        </g>
-        <g>
-          <circle cx="130" cy="210" r="7" class="nokta-gun"></circle>
-          <text x="130" y="254" text-anchor="middle" class="ad">Güneş</text>
-        </g>
-        <g>
-          <circle cx="500" cy="55" r="7" class="nokta-gun"></circle>
-          <text x="500" y="30" text-anchor="middle" class="ad">Öğle</text>
-        </g>
-        <g>
-          <circle cx="762" cy="100" r="7" class="nokta-gun"></circle>
-          <text x="752" y="148" text-anchor="middle" class="ad">İkindi</text>
-        </g>
-        <g>
-          <circle cx="870" cy="210" r="7" class="nokta-gun"></circle>
-          <text x="870" y="254" text-anchor="middle" class="ad">Akşam</text>
-        </g>
-        <g>
-          <circle cx="950" cy="210" r="7" class="nokta-gece"></circle>
-          <text x="950" y="290" text-anchor="middle" class="ad ad-gece">Yatsı</text>
-        </g>
-      </g>
-    </svg>
+    <figcaption class="serit-kabi">
+      <div class="serit-sarmal">
+        <span class="vurgu" aria-hidden="true"></span>
+        <ol class="serit">
+          {
+            vakitler.map(({ ad, saat }) => (
+              <li>
+                <span class="ad">{ad}</span>
+                <time class="saat rakam">{saat}</time>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <p class="kaynak">Örnek bir gün — İstanbul, 8 Ağustos Cumartesi</p>
+    </figcaption>
   </figure>
 </section>
 
 <style>
-  .yay-svg {
-    display: block;
-    width: 100%;
-    max-width: 880px;
-    height: auto;
-    margin-inline: auto;
+  .cerceve {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-detay) 30%, transparent);
+    border-radius: 24px;
+    background: var(--color-gece);
   }
 
-  /* Gündüz noktaları: krem + koyu halka; gece noktaları: lacivert + krem halka */
-  .nokta-gun {
-    fill: var(--color-zemin);
-    stroke: rgb(14 27 42 / 35%);
-    stroke-width: 2.5;
-  }
-  .nokta-gece {
-    fill: #22335a;
-    stroke: rgb(250 248 235 / 55%);
-    stroke-width: 2.5;
+  .sahne {
+    position: relative;
+    /*
+     * Yükseklik doğrudan verilir. `aspect-ratio` + `min-height` ikilisinde
+     * yükseklik min-height'a takılınca kutunun genişliği en-boy oranından
+     * büyüyor; güneşin yatay yüzdesi de kartın görünen genişliğine göre değil
+     * o taşan kutuya göre hesaplandığı için dar ekranda kadraj dışına çıkıyordu.
+     */
+    height: clamp(190px, 25vw, 300px);
+    overflow: hidden;
   }
 
+  /* ---- Gökyüzü katmanları: üst üste durur, aralarında opacity ile geçilir ---- */
+  .gok {
+    position: absolute;
+    inset: 0;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .gok-gece {
+    background: linear-gradient(180deg, #05090f 0%, #0a1320 42%, #131f33 74%, #1c2b45 100%);
+  }
+  .gok-gunduz {
+    opacity: 1; /* animasyonsuz temel durum = altın saat (bkz. reduced-motion) */
+    background: linear-gradient(180deg, #7d99b3 0%, #c3c7c0 46%, #e6d6ae 78%, #f1c77a 100%);
+    animation-name: gunduz;
+  }
+  .gok-safak {
+    opacity: 0;
+    /* Duraklar GORSELLER.md §3 "şafak gradyanı" ile birebir: kart-vakitler ve
+       hero-safak görselleri bu duraklarla üretildi, sahne onlarla eşleşir. */
+    background: linear-gradient(
+      180deg,
+      #0e1b2a 0%,
+      #2e3a5c 45%,
+      #966962 72%,
+      #e8b04b 92%,
+      #f1c77a 100%
+    );
+    animation-name: safak;
+  }
+  .gok-aksam {
+    opacity: 0;
+    background: linear-gradient(180deg, #1a2338 0%, #4b3f55 34%, #96604f 60%, #d8894a 84%, #f1b064 100%);
+    animation-name: aksam;
+  }
+
+  @keyframes gunduz {
+    0%, 10% { opacity: 0; }
+    24%, 70% { opacity: 1; }
+    82%, 100% { opacity: 0; }
+  }
+  @keyframes safak {
+    0%, 4% { opacity: 0; }
+    12%, 17% { opacity: 1; }
+    28%, 100% { opacity: 0; }
+  }
+  @keyframes aksam {
+    0%, 74% { opacity: 0; }
+    84%, 90% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+
+  /* ---- Yıldızlar: yalnız gece ---- */
+  .yildizlar {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: yildiz 30s linear infinite;
+  }
+  .yildizlar span {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff6dc;
+  }
+  @keyframes yildiz {
+    0%, 5% { opacity: 1; }
+    14%, 87% { opacity: 0; }
+    96%, 100% { opacity: 1; }
+  }
+
+  /* ---- Güneş ---- */
+  .gunes-yatay {
+    position: absolute;
+    inset: 0;
+    transform: translateX(70%);
+    animation: gun-yatay 30s linear infinite;
+  }
+  .gunes-dikey {
+    position: absolute;
+    inset: 0;
+    transform: translateY(-40%);
+    animation: gun-dikey 30s linear infinite;
+  }
+  .gunes {
+    --capi: clamp(76px, 10vw, 118px);
+    position: absolute;
+    left: 0;
+    top: 86%; /* ufuk hizası; yay bu noktanın etrafında kurulur */
+    width: var(--capi);
+    height: var(--capi);
+    margin-top: calc(var(--capi) / -2);
+    margin-left: calc(var(--capi) / -2);
+    border-radius: 50%;
+    /* İlk katman keskin disk, ikinci katman gerçek düşüşlü hale */
+    background:
+      radial-gradient(
+        circle,
+        #fffcf0 0%,
+        #fbdc9b 17%,
+        #f0b25c 25%,
+        rgb(240 178 92 / 0%) 26%
+      ),
+      radial-gradient(
+        circle,
+        rgb(251 231 180 / 62%) 0%,
+        rgb(241 199 122 / 26%) 34%,
+        rgb(232 164 92 / 0%) 70%
+      );
+    animation: gun-boyut 30s linear infinite;
+  }
+
+  /* Yatayda sabit hız; uçlarda gece boyunca ufkun ardında bekler */
+  @keyframes gun-yatay {
+    0%, 8% { transform: translateX(8%); }
+    92%, 100% { transform: translateX(92%); }
+  }
+  /* Dikeyde sinüs basamakları (sin πt) → yay gerçekten yuvarlak çıkar */
+  @keyframes gun-dikey {
+    0%, 8% { transform: translateY(14%); }
+    18.5% { transform: translateY(-16.6%); }
+    29% { transform: translateY(-42.6%); }
+    39.5% { transform: translateY(-59.9%); }
+    50% { transform: translateY(-66%); }
+    60.5% { transform: translateY(-59.9%); }
+    71% { transform: translateY(-42.6%); }
+    81.5% { transform: translateY(-16.6%); }
+    92%, 100% { transform: translateY(14%); }
+  }
+  /* Ufka yakınken atmosfer güneşi büyütür, tepede küçülüp parlar */
+  @keyframes gun-boyut {
+    0%, 12% { transform: scale(1.22); }
+    50% { transform: scale(0.96); }
+    88%, 100% { transform: scale(1.22); }
+  }
+
+  /* ---- Yeryüzü ---- */
+  .yer {
+    position: absolute;
+    inset: 86% 0 0 0;
+    background: var(--color-gece);
+    border-top: 1px solid color-mix(in srgb, var(--color-detay) 45%, transparent);
+  }
+
+  /* ---- Vakit şeridi: gerçek metin, sahnenin altında ---- */
+  .serit-kabi {
+    background: var(--color-gece);
+    padding: clamp(0.7rem, 1.6vw, 0.9rem) clamp(0.75rem, 3vw, 1.75rem)
+      clamp(0.6rem, 1.3vw, 0.8rem);
+  }
+  .serit {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: clamp(0.15rem, 1vw, 0.75rem);
+  }
+  .serit li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    text-align: center;
+  }
+
+  /*
+   * Sırası gelen vakti, altında kayan tek bir panel gösterir. Altı ayrı
+   * animasyon yerine tek keyframe: panel her vakitte durur, sonrakine kayar.
+   * Döngü başa dönerken geri kaymayı görmemek için uçlarda söner.
+   */
+  .serit-sarmal {
+    position: relative;
+  }
+  .serit {
+    position: relative;
+    z-index: 1;
+  }
+  .vurgu {
+    position: absolute;
+    top: -0.3rem;
+    bottom: -0.3rem;
+    left: 0;
+    z-index: 0;
+    width: calc(100% / 6);
+    border: 1px solid color-mix(in srgb, var(--color-detay) 30%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-detay) 13%, transparent);
+    transform: translateX(400%);
+    animation: vurgu-kay 30s linear infinite;
+  }
+  @keyframes vurgu-kay {
+    0% { transform: translateX(0%); opacity: 0; }
+    2.7% { transform: translateX(0%); opacity: 1; }
+    11.3% { transform: translateX(0%); }
+    13.3%, 46.7% { transform: translateX(100%); }
+    48.7%, 66.7% { transform: translateX(200%); }
+    68.7%, 85.3% { transform: translateX(300%); }
+    87.3%, 92% { transform: translateX(400%); }
+    94%, 98% { transform: translateX(500%); opacity: 1; }
+    100% { transform: translateX(500%); opacity: 0; }
+  }
   .ad {
-    font-size: 30px;
+    font-size: clamp(0.68rem, 1.7vw, 0.85rem);
+    color: rgb(250 248 235 / 62%);
+  }
+  .saat {
+    font-size: clamp(0.85rem, 2.2vw, 1.1rem);
     font-weight: 500;
-    fill: var(--color-murekkep);
+    color: var(--color-zemin);
   }
-  /* Dar ekranda viewBox küçüldüğü için etiketler büyütülür (~15px görünür boyut) */
-  @media (max-width: 640px) {
-    .ad {
-      font-size: 42px;
-    }
-  }
-  .ad-gece {
-    fill: var(--color-soluk);
+  .kaynak {
+    margin-top: clamp(0.45rem, 1.2vw, 0.65rem);
+    text-align: center;
+    font-size: 0.74rem;
+    color: rgb(250 248 235 / 45%);
   }
 
-  /* Güneş: hareket tercihi kısıtlıysa sabit hali gösterilir */
-  .gunes-sabit {
-    display: none;
-  }
+  /*
+   * Hareket azaltma tercihi: animasyonların tamamı kapanır. Geriye elemanların
+   * animasyonsuz temel durumu kalır — güneşi ufkun üstünde tutan bir altın saat
+   * karesi ve eşit ağırlıkta okunan vakit şeridi.
+   */
   @media (prefers-reduced-motion: reduce) {
-    .gunes {
-      display: none;
-    }
-    .gunes-sabit {
-      display: initial;
+    .gok,
+    .yildizlar,
+    .gunes-yatay,
+    .gunes-dikey,
+    .gunes,
+    .vurgu {
+      animation: none;
     }
   }
 </style>
