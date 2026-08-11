@@ -1,7 +1,6 @@
 ---
-import { Image } from 'astro:assets';
 import MagazaButonlari from './MagazaButonlari.astro';
-import mockupVakitler from '../assets/gorseller/mockup-vakitler.png';
+import AsistanSohbeti from './AsistanSohbeti.astro';
 
 // Rozetler: yalnızca doğrulanmış gerçekler (SSS içerikleri + mağaza durumu)
 const rozetler = ['Ücretsiz', 'Türkçe', 'iOS ve Android'];
@@ -37,17 +36,10 @@ const rozetler = ['Ücretsiz', 'Türkçe', 'iOS ve Android'];
       </div>
     </div>
 
-    <!-- Çerçeve ve gölge görselin içindedir; ekstra zemin/çerçeve eklenmez (GORSELLER.md §3) -->
+    <!-- Kodlanmış asistan sohbet sahnesi (AsistanSohbeti.astro): mesajlar sırayla
+         akar. Görsel dosyası yoktur; GORSELLER.md §2'deki bilinçli istisnadır. -->
     <div class="giris-4">
-      <Image
-        src={mockupVakitler}
-        alt="İbadet Rehberim ezan vakitleri ekranı: günün altı vakti ve sonraki vakte kalan süre"
-        width={360}
-        densities={[1, 2]}
-        class="mx-auto h-auto w-[min(85%,360px)]"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <AsistanSohbeti />
     </div>
   </div>
 </section>

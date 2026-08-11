@@ -1,0 +1,267 @@
+---
+/*
+ * Asistan Sohbeti — hero'daki telefon sahnesi.
+ *
+ * Uygulamanın İslami asistan ekranının HTML/CSS ile kodlanmış hali; mesajlar
+ * tek ortak döngüde (--dongu: 16s) sırayla belirip gerçek bir yazışma gibi
+ * akar, döngü sonunda sahne temizlenip baştan başlar. GORSELLER.md'nin
+ * "mockup yeniden çizilmez" kuralının bilinçli istisnasıdır (GORSELLER.md §2).
+ *
+ * Diyalog metni uygulamanın gerçek asistan ekranından (mockup-asistan
+ * kaynağındaki yazışma) kelimesi kelimesine alınmıştır; içerik uydurulmaz.
+ * Animasyon yalnız transform + opacity kullanır (TASARIM.md §7); hareket
+ * azaltma tercihinde döngü durur ve yazışmanın tamamı sabit görünür.
+ */
+---
+
+<figure class="telefon golge" aria-label="İbadet Rehberim yapay zekâ asistan ekranı: dua, hadis ve İslami sorular için sohbet">
+  <div class="ekran">
+    <div class="durum" aria-hidden="true">
+      <span class="saat rakam">15:17</span>
+      <svg viewBox="0 0 34 12" class="durum-simgeleri">
+        <rect x="0" y="6" width="2.5" height="6" rx="1" fill="currentColor" />
+        <rect x="4" y="4" width="2.5" height="8" rx="1" fill="currentColor" />
+        <rect x="8" y="1.5" width="2.5" height="10.5" rx="1" fill="currentColor" />
+        <rect x="16" y="1.5" width="14" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <rect x="18" y="3.5" width="8" height="5" rx="1" fill="currentColor" />
+        <rect x="31.2" y="4" width="2" height="4" rx="1" fill="currentColor" />
+      </svg>
+    </div>
+
+    <div class="baslik">
+      <strong>Asistan</strong>
+      <span class="hak rakam" aria-hidden="true">5 Hak</span>
+    </div>
+
+    <div class="sohbet">
+      <p class="mesaj kullanici m1">Peygamberimizin en sık okuduğu dualar nelerdir?</p>
+
+      <div class="mesaj asistan m2">
+        <span class="etiket">Asistan</span>
+        <p>
+          Efendimiz (s.a.v.) en çok <b>“Rabbenâ âtinâ”</b> duasını okurdu. Sabah ve
+          akşam ise <b>“Sübhanallahi ve bihamdihî”</b> zikrini yüz kez tekrar etmeyi
+          tavsiye ederdi.
+        </p>
+      </div>
+
+      <p class="mesaj alinti m3">
+        Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr.
+      </p>
+
+      <p class="mesaj kullanici m4">Anlamını da yazar mısın?</p>
+
+      <div class="mesaj asistan m5">
+        <span class="etiket">Asistan</span>
+        <p>
+          Elbette: <i>“Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver
+          ve bizi ateş azabından koru.”</i> (Bakara, 201)
+        </p>
+      </div>
+    </div>
+
+    <div class="giris" aria-hidden="true">
+      <span class="yer-tutucu">Mesajınızı yazın...</span>
+      <span class="gonder">
+        <svg viewBox="0 0 16 16"><path d="M14 8 L2 2 L5 8 L2 14 Z" fill="currentColor" /></svg>
+      </span>
+    </div>
+
+    <nav class="sekmeler" aria-hidden="true">
+      <span class="sekme">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M8 9.5 H16 M8 13 H16 M8 16.5 H12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+        Akış
+      </span>
+      <span class="sekme etkin">
+        <svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M12 8 V4.5 M12 4.5 h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><circle cx="9.5" cy="13" r="1.2" fill="currentColor" /><circle cx="14.5" cy="13" r="1.2" fill="currentColor" /></svg>
+        Asistan
+      </span>
+      <span class="sekme">
+        <svg viewBox="0 0 24 24"><path d="M6.5 16 V13.5 Q6.5 8.5 12 6.5 Q17.5 8.5 17.5 13.5 V16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="M12 6.5 V4.2 M12 4.2 h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><path d="M4.5 16 H19.5 M4.5 19 H19.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><path d="M10.2 19 V16.8 A1.8 1.8 0 0 1 13.8 16.8 V19" fill="none" stroke="currentColor" stroke-width="1.4" /></svg>
+        Vakitler
+      </span>
+      <span class="sekme">
+        <svg viewBox="0 0 24 24"><path d="M12 3.5 L13.8 10.2 L20.5 12 L13.8 13.8 L12 20.5 L10.2 13.8 L3.5 12 L10.2 10.2 Z" fill="currentColor" /></svg>
+        Zikir
+      </span>
+      <span class="sekme">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M5.5 19.5 A6.5 5.5 0 0 1 18.5 19.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+        Profil
+      </span>
+    </nav>
+  </div>
+</figure>
+
+<style>
+  .telefon {
+    --dongu: 16s;
+    /* Telefon sahnesi kendi "cihaz fontu" ile çizilir: gerçek uygulama hissi +
+       küçük puntoda ekran fontlarının daha keskin okunması */
+    --telefon-yazi: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--telefon-yazi);
+    container-type: inline-size;
+    margin-inline: auto;
+    width: min(85%, 360px);
+    aspect-ratio: 985 / 1962;
+    padding: clamp(6px, 2.4cqw, 10px);
+    border-radius: clamp(28px, 11cqw, 44px);
+    background: var(--color-murekkep);
+  }
+  .ekran {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: clamp(22px, 9cqw, 36px);
+    background: var(--color-zemin);
+  }
+
+  /* ── Durum çubuğu + başlık ── */
+  .durum {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(8px, 3cqw, 12px) clamp(14px, 5.4cqw, 20px) 0;
+    color: var(--color-murekkep);
+  }
+  .saat { font-size: clamp(9px, 3.2cqw, 12px); font-weight: 600; }
+  .durum-simgeleri { width: clamp(26px, 9cqw, 34px); height: auto; }
+  .baslik {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: clamp(6px, 2.2cqw, 9px) clamp(14px, 5.4cqw, 20px);
+  }
+  .baslik strong { font-size: clamp(12px, 4.4cqw, 16px); font-weight: 700; color: var(--color-murekkep); }
+  .hak {
+    position: absolute;
+    right: clamp(14px, 5.4cqw, 20px);
+    font-size: clamp(8px, 2.9cqw, 10.5px);
+    font-weight: 700;
+    color: var(--color-zemin);
+    background: var(--color-vurgu-koyu);
+    border-radius: 999px;
+    padding: clamp(2px, 0.8cqw, 3px) clamp(6px, 2.2cqw, 9px);
+  }
+
+  /* ── Sohbet akışı ── */
+  .sohbet {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 2.2cqw, 9px);
+    padding: clamp(6px, 2.2cqw, 9px) clamp(10px, 3.8cqw, 14px);
+    overflow: hidden;
+  }
+  .mesaj {
+    max-width: 88%;
+    font-size: clamp(10px, 3.6cqw, 13px);
+    line-height: 1.55;
+  }
+  .kullanici {
+    align-self: flex-end;
+    color: var(--color-zemin);
+    background: var(--color-vurgu);
+    border-radius: 14px 14px 4px 14px;
+    padding: clamp(6px, 2.2cqw, 9px) clamp(9px, 3.2cqw, 12px);
+  }
+  .asistan {
+    align-self: flex-start;
+    width: 88%;
+    color: var(--color-murekkep);
+    background: var(--color-yuzey);
+    border: 1px solid color-mix(in srgb, var(--color-vurgu) 18%, transparent);
+    border-radius: 4px 14px 14px 14px;
+    padding: clamp(7px, 2.6cqw, 10px) clamp(9px, 3.2cqw, 12px);
+  }
+  .etiket {
+    display: block;
+    margin-bottom: clamp(2px, 0.8cqw, 4px);
+    font-size: clamp(8px, 2.8cqw, 10px);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--color-vurgu-koyu);
+  }
+  .asistan b { font-weight: 700; }
+  .alinti {
+    align-self: flex-start;
+    font-style: italic;
+    color: color-mix(in srgb, var(--color-murekkep) 82%, var(--color-soluk));
+    background: color-mix(in srgb, var(--color-soluk) 9%, var(--color-yuzey));
+    border-radius: 14px;
+    padding: clamp(6px, 2.2cqw, 9px) clamp(9px, 3.2cqw, 12px);
+  }
+
+  /* ── Mesaj girişi + sekme çubuğu ── */
+  .giris {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 2.2cqw, 8px);
+    margin: 0 clamp(10px, 3.8cqw, 14px) clamp(6px, 2.2cqw, 9px);
+    padding: clamp(5px, 1.9cqw, 8px) clamp(5px, 1.9cqw, 8px) clamp(5px, 1.9cqw, 8px) clamp(10px, 3.8cqw, 14px);
+    background: var(--color-yuzey);
+    border: 1px solid color-mix(in srgb, var(--color-murekkep) 10%, transparent);
+    border-radius: 999px;
+  }
+  .yer-tutucu {
+    flex: 1;
+    font-size: clamp(9px, 3.2cqw, 11.5px);
+    color: color-mix(in srgb, var(--color-soluk) 70%, transparent);
+  }
+  .gonder {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: clamp(20px, 7.4cqw, 28px);
+    height: clamp(20px, 7.4cqw, 28px);
+    border-radius: 50%;
+    color: var(--color-zemin);
+    background: var(--color-vurgu);
+  }
+  .gonder svg { width: 55%; height: 55%; }
+  .sekmeler {
+    display: flex;
+    justify-content: space-around;
+    padding: clamp(5px, 1.9cqw, 8px) clamp(6px, 2.2cqw, 9px) clamp(9px, 3.4cqw, 13px);
+    border-top: 1px solid color-mix(in srgb, var(--color-murekkep) 8%, transparent);
+    background: var(--color-zemin);
+  }
+  .sekme {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1px, 0.5cqw, 3px);
+    font-size: clamp(7px, 2.5cqw, 9px);
+    font-weight: 600;
+    color: var(--color-soluk);
+  }
+  .sekme svg { width: clamp(14px, 5.2cqw, 19px); height: auto; }
+  .etkin { color: var(--color-vurgu-koyu); font-weight: 800; }
+  /* Uygulamadaki gibi: seçili sekmenin ikonu açık yeşil bir hap içinde durur */
+  .etkin svg {
+    padding: clamp(1.5px, 0.6cqw, 2.5px) clamp(5px, 1.9cqw, 8px);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-vurgu) 16%, transparent);
+    box-sizing: content-box;
+  }
+
+  /* ── Yazışma akışı: tek döngü, mesajlar sırayla belirir ── */
+  .m1 { animation: msj1 var(--dongu) linear infinite; }
+  .m2 { animation: msj2 var(--dongu) linear infinite; }
+  .m3 { animation: msj3 var(--dongu) linear infinite; }
+  .m4 { animation: msj4 var(--dongu) linear infinite; }
+  .m5 { animation: msj5 var(--dongu) linear infinite; }
+  @keyframes msj1 { 0%, 2% { opacity: 0; transform: translateY(10px); } 5% { opacity: 1; transform: none; } 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }
+  @keyframes msj2 { 0%, 16% { opacity: 0; transform: translateY(10px); } 19% { opacity: 1; transform: none; } 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }
+  @keyframes msj3 { 0%, 30% { opacity: 0; transform: translateY(10px); } 33% { opacity: 1; transform: none; } 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }
+  @keyframes msj4 { 0%, 46% { opacity: 0; transform: translateY(10px); } 49% { opacity: 1; transform: none; } 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }
+  @keyframes msj5 { 0%, 60% { opacity: 0; transform: translateY(10px); } 63% { opacity: 1; transform: none; } 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: none; } }
+
+  /* Hareket azaltma: akış durur, yazışmanın tamamı sabit görünür */
+  @media (prefers-reduced-motion: reduce) {
+    .m1, .m2, .m3, .m4, .m5 {
+      animation: none;
+    }
+  }
+</style>

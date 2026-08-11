@@ -32,7 +32,12 @@ Kartlarda köşe yuvarlaklığı (36px) ve gölge **görselin içindedir**.
 
 ## 2. Yerleşim planı (TASARIM.md eşlemesi)
 
-1. **Hero (§6.2):** Sağ sütunda `mockup-vakitler.png`. Şeffaf olduğu için krem zeminde doğrudan durur; arkasına ekstra zemin/çerçeve ekleme. `loading="eager"` + `fetchpriority="high"`.
+1. **Hero (§6.2):** Sağ sütunda kodlanmış asistan sohbet sahnesi
+   (`AsistanSohbeti.astro`) — "mockup'lar HTML/CSS ile yeniden çizilmez"
+   kuralının **bilinçli tek istisnası** (kullanıcı kararı, Ağustos 2026):
+   mesajların sırayla akabilmesi için ekran görsel yerine kodla çizildi.
+   Diyalog metni `mockup-asistan`'daki gerçek yazışmadır; içerik uydurulmaz.
+   Başka bölüm bu istisnayı emsal alamaz.
 2. **Ekran şeridi (§6.5):** 6 kart, `scroll-snap` şeridinde. Önerilen sıra: vakitler → zikir-sayac → asistan → zikirlerim → kesfet → gonderi. Görüntüleme genişliği ~360–420px, `loading="lazy"`.
 3. **Özellik kartları (§6.4):** Kural değişmedi — mini demolar HTML/CSS ile yapılır; bu görseller orada kullanılmaz (aynı ekranların sitede iki kez büyük boy görünmesini engellemek için). Tek istisna: madde 6'daki zikir akışı.
 4. **`hero-safak.png` (opsiyonel):** En fazla **tek** yerde: final CTA'nın hemen üstünde tam genişlik vitrin bandı olarak. Kullanmamak da geçerli bir karar; kullanılırsa başka hiçbir bölümde tekrar etme.
