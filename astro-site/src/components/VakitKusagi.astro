@@ -1,93 +1,106 @@
 ---
 /*
- * Gün Döngüsü — sitenin imza öğesi (TASARIM.md §5).
+ * Gün Döngüsü v2 — sitenin imza öğesi.
  *
- * Diyagram değil sahnedir: güneş ufkun ardından doğar, göğü kateder, batar;
- * gökyüzü onunla birlikte geceden şafağa, gündüzden akşama döner ve gece
- * yıldızlar geri gelir. Altta günün altı vakti, sırası gelen vakit aydınlanır.
+ * Sahne Claude Design teslimidir ("Ezan Vakitleri Banner" handoff'u) ve
+ * olduğu gibi uyarlanmıştır: İstanbul silüeti (Galata Kulesi, külliye,
+ * Kız Kulesi) üzerinde gece → imsak → doğuş → öğle → ikindi → akşam →
+ * yatsı → kapanış kartı döngüsü. Akşam vaktinde uygulamanın bildirim
+ * kartı, kapanışta vakit özeti + "İmsaka kalan" sayacı görünür.
  *
- * Tamamı HTML + CSS: görsel dosyası da client JS de yok.
+ * Tamamı HTML + CSS + inline SVG; client JS ve harici varlık yok.
+ * Tüm hareket tek ortak döngüye bağlıdır (--dongu: 16s, linear) ve yalnız
+ * transform + opacity anime edilir (TASARIM.md §7). Sahne kendi renk
+ * paletini scene-local değişkenlerde taşır; site token'larına yalnız
+ * çerçeve, fontlar ve kaynak satırı bağlanır.
  *
- * Hareketin kurulumu (TASARIM.md §7: yalnız transform + opacity):
- *  - Güneşin yayı iç içe iki katmandır. Dış katman yatayda lineer kayar, iç
- *    katman dikeyde sinüs basamaklarıyla iner çıkar; bileşkesi düzgün bir yay
- *    olur. Böylece konum için `top/left` değil yalnız `transform` kullanılır.
- *  - Gök katmanları üst üste durur, aralarında `opacity` ile geçilir.
- *  - Vakit şeridinde tek bir `@keyframes` vardır; her vakit kendi anına
- *    **negatif `animation-delay`** ile oturur (delay = Tᵢ − döngü). Tek
- *    zaman çizelgesi olduğu için sahne ile şerit hiçbir zaman kaymaz.
+ * Zaman çizelgesi (döngü yüzdesi): gece 0–3 · imsak 3–13 · doğuş 16–26 ·
+ * öğle 29–39 · ikindi 42–52 · akşam + bildirim 55–72 · yatsı + ay 70–80 ·
+ * kapanış kartı 82–96 · geceye dönüş 96–100.
  *
  * Saatler uygulamanın kendi Ezan Vakitleri ekranından alınmıştır
- * (İstanbul, 8 Ağustos Cumartesi) — örnek bir gündür, uydurma değildir.
+ * (İstanbul, 8 Ağustos Cumartesi) — örnek bir gündür, uydurma değildir;
+ * "İmsaka kalan 6 sa 25 dk" da 21:54 → 04:19 aralığının gerçek hesabıdır.
  */
-
-const DONGU = 30; // sn — sahnedeki her animasyonun ortak süresi
-
-// t: vaktin döngü içindeki anı (sn). Güneşin ufku geçtiği anlarla hizalıdır:
-// doğuş ≈ 3.6 sn, tepe = 15 sn, batış ≈ 26.4 sn.
-const vakitler = [
-  { ad: 'İmsak', saat: '04:19', t: 0.8 },
-  { ad: 'Güneş', saat: '06:00', t: 4.0 },
-  { ad: 'Öğle', saat: '13:15', t: 14.6 },
-  { ad: 'İkindi', saat: '17:07', t: 20.6 },
-  { ad: 'Akşam', saat: '20:20', t: 26.2 },
-  { ad: 'Yatsı', saat: '21:54', t: 28.2 },
-];
-
-// Elle seçilmiş yıldız yerleşimi (ufkun üstünde kalır): [sol %, üst %, çap px, parlaklık]
-const yildizlar = [
-  [6, 14, 2, 0.7], [13, 32, 1.5, 0.5], [21, 9, 2, 0.8], [28, 24, 1.5, 0.45],
-  [34, 44, 2, 0.6], [41, 15, 1.5, 0.55], [47, 30, 2.5, 0.85], [54, 8, 1.5, 0.5],
-  [60, 38, 2, 0.6], [66, 19, 1.5, 0.45], [72, 28, 2, 0.7], [78, 11, 2.5, 0.8],
-  [85, 36, 1.5, 0.5], [91, 21, 2, 0.65], [17, 52, 1.5, 0.4], [57, 50, 1.5, 0.4],
-];
+import { Image } from 'astro:assets';
+import appIcon from '../assets/app_icon.png';
 ---
 
-<section aria-label="Günün altı vakti" class="kapsayici pb-[clamp(2.5rem,6vw,4rem)]">
-  <figure class="cerceve golge reveal">
-    <!-- Sahne dekoratiftir; bilgi aşağıdaki şeritte gerçek metin olarak durur -->
-    <div class="sahne" aria-hidden="true">
-      <div class="gok gok-gece"></div>
-      <div class="gok gok-gunduz"></div>
-      <div class="gok gok-safak"></div>
-      <div class="gok gok-aksam"></div>
+<section aria-label="Günün altı vakti — gün döngüsü animasyonu" class="kapsayici pb-[clamp(2.5rem,6vw,4rem)]">
+  <div class="cerceve golge reveal">
+    <div class="sahne">
+      <div class="gok gok-tan" aria-hidden="true"></div>
+      <div class="gok gok-gunduz" aria-hidden="true"></div>
+      <div class="gok gok-aksam" aria-hidden="true"></div>
 
-      <div class="yildizlar">
-        {
-          yildizlar.map(([sol, ust, capi, parlak]) => (
-            <span
-              style={`left:${sol}%; top:${ust}%; width:${capi}px; height:${capi}px; opacity:${parlak}`}
-            />
-          ))
-        }
+      <div class="yildizlar" aria-hidden="true">
+        <i style="left:6%;top:14%"></i><i style="left:14%;top:38%"></i><i style="left:22%;top:9%"></i>
+        <i style="left:31%;top:27%"></i><i style="left:40%;top:12%"></i><i style="left:48%;top:34%"></i>
+        <i style="left:56%;top:8%"></i><i style="left:63%;top:24%"></i><i style="left:71%;top:15%"></i>
+        <i style="left:79%;top:33%"></i><i style="left:87%;top:10%"></i><i style="left:94%;top:26%"></i>
       </div>
 
-      <!-- Güneş: dış katman yatayda, iç katman dikeyde → bileşkesi yay -->
-      <div class="gunes-yatay">
-        <div class="gunes-dikey"><div class="gunes"></div></div>
+      <div class="isilti isilti-tan" aria-hidden="true"></div>
+      <div class="isilti isilti-aksam" aria-hidden="true"></div>
+
+      <div class="gunes" aria-hidden="true">
+        <div class="gunes-govde"><div class="gunes-kizil"></div></div>
       </div>
 
-      <!-- Yeryüzü: güneşten sonra çizilir, böylece güneş ardına doğar/batar -->
-      <div class="yer"></div>
+      <div class="ay" aria-hidden="true"><div class="ay-govde"><div class="ay-kesik"></div></div></div>
+
+      <!-- Masaüstü silüet: Galata Kulesi, külliye, Kız Kulesi -->
+      <svg class="siluet siluet-masa" viewBox="0 0 1920 300" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+        <path fill="var(--sil-gunduz)" d="M0 300 L0 205 L54 205 L54 178 L110 178 L110 214 L176 214 L176 188 L240 188 L240 240 L306 240 L306 112 L296 112 L296 94 L304 94 L330 26 L356 94 L364 94 L364 112 L354 112 L354 240 L420 240 L420 208 L488 208 L488 232 L556 232 L556 200 L620 200 L620 236 L700 236 L700 222 L725 222 L725 150 L720 150 L720 140 L725 140 L725 110 L720 110 L720 100 L725 100 L725 70 L730 30 L735 70 L735 100 L740 100 L740 110 L735 110 L735 140 L740 140 L740 150 L735 150 L735 222 L844 222 L844 162 L840 162 L840 152 L844 152 L844 98 L848 64 L852 98 L852 152 L856 152 L856 162 L852 162 L852 222 L870 222 L870 202 A30 30 0 0 1 930 202 L938 202 L938 168 A62 76 0 0 1 1062 168 L1062 202 L1070 202 A30 30 0 0 1 1130 202 L1130 222 L1148 222 L1148 162 L1144 162 L1144 152 L1148 152 L1148 98 L1152 64 L1156 98 L1156 152 L1160 152 L1160 162 L1156 162 L1156 222 L1265 222 L1265 150 L1260 150 L1260 140 L1265 140 L1265 110 L1260 110 L1260 100 L1265 100 L1265 70 L1270 30 L1275 70 L1275 100 L1280 100 L1280 110 L1275 110 L1275 140 L1280 140 L1280 150 L1275 150 L1275 222 L1300 222 L1300 240 L1360 240 L1360 212 L1430 212 L1430 238 L1500 238 L1500 206 L1566 206 L1566 234 L1640 234 L1640 246 L1728 246 L1728 158 L1720 158 L1720 146 L1740 146 L1740 112 L1750 84 L1760 112 L1760 146 L1780 146 L1780 158 L1772 158 L1772 246 L1830 246 L1830 218 L1886 218 L1886 236 L1920 236 L1920 300 Z M996 94 L1000 60 L1004 94 Z"/>
+        <path class="sil-gece" fill="var(--sil-gece)" d="M0 300 L0 205 L54 205 L54 178 L110 178 L110 214 L176 214 L176 188 L240 188 L240 240 L306 240 L306 112 L296 112 L296 94 L304 94 L330 26 L356 94 L364 94 L364 112 L354 112 L354 240 L420 240 L420 208 L488 208 L488 232 L556 232 L556 200 L620 200 L620 236 L700 236 L700 222 L725 222 L725 150 L720 150 L720 140 L725 140 L725 110 L720 110 L720 100 L725 100 L725 70 L730 30 L735 70 L735 100 L740 100 L740 110 L735 110 L735 140 L740 140 L740 150 L735 150 L735 222 L844 222 L844 162 L840 162 L840 152 L844 152 L844 98 L848 64 L852 98 L852 152 L856 152 L856 162 L852 162 L852 222 L870 222 L870 202 A30 30 0 0 1 930 202 L938 202 L938 168 A62 76 0 0 1 1062 168 L1062 202 L1070 202 A30 30 0 0 1 1130 202 L1130 222 L1148 222 L1148 162 L1144 162 L1144 152 L1148 152 L1148 98 L1152 64 L1156 98 L1156 152 L1160 152 L1160 162 L1156 162 L1156 222 L1265 222 L1265 150 L1260 150 L1260 140 L1265 140 L1265 110 L1260 110 L1260 100 L1265 100 L1265 70 L1270 30 L1275 70 L1275 100 L1280 100 L1280 110 L1275 110 L1275 140 L1280 140 L1280 150 L1275 150 L1275 222 L1300 222 L1300 240 L1360 240 L1360 212 L1430 212 L1430 238 L1500 238 L1500 206 L1566 206 L1566 234 L1640 234 L1640 246 L1728 246 L1728 158 L1720 158 L1720 146 L1740 146 L1740 112 L1750 84 L1760 112 L1760 146 L1780 146 L1780 158 L1772 158 L1772 246 L1830 246 L1830 218 L1886 218 L1886 236 L1920 236 L1920 300 Z M996 94 L1000 60 L1004 94 Z"/>
+        <g class="pencereler" fill="var(--pencere)">
+          <rect x="26" y="222" width="10" height="14" rx="2"/><rect x="140" y="232" width="10" height="14" rx="2"/>
+          <rect x="206" y="210" width="10" height="14" rx="2"/><rect x="322" y="150" width="10" height="14" rx="2"/>
+          <rect x="450" y="226" width="10" height="14" rx="2"/><rect x="584" y="220" width="10" height="14" rx="2"/>
+          <rect x="660" y="252" width="10" height="14" rx="2"/><rect x="760" y="238" width="10" height="14" rx="2"/>
+          <rect x="1240" y="238" width="10" height="14" rx="2"/><rect x="1392" y="232" width="10" height="14" rx="2"/>
+          <rect x="1530" y="226" width="10" height="14" rx="2"/><rect x="1854" y="236" width="10" height="14" rx="2"/>
+        </g>
+      </svg>
+      <!-- Dar ekran silüeti: külliyeye kırpılmış -->
+      <svg class="siluet siluet-cep" viewBox="560 0 860 300" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+        <path fill="var(--sil-gunduz)" d="M560 300 L560 232 L556 232 L556 200 L620 200 L620 236 L700 236 L700 222 L725 222 L725 150 L720 150 L720 140 L725 140 L725 110 L720 110 L720 100 L725 100 L725 70 L730 30 L735 70 L735 100 L740 100 L740 110 L735 110 L735 140 L740 140 L740 150 L735 150 L735 222 L844 222 L844 162 L840 162 L840 152 L844 152 L844 98 L848 64 L852 98 L852 152 L856 152 L856 162 L852 162 L852 222 L870 222 L870 202 A30 30 0 0 1 930 202 L938 202 L938 168 A62 76 0 0 1 1062 168 L1062 202 L1070 202 A30 30 0 0 1 1130 202 L1130 222 L1148 222 L1148 162 L1144 162 L1144 152 L1148 152 L1148 98 L1152 64 L1156 98 L1156 152 L1160 152 L1160 162 L1156 162 L1156 222 L1265 222 L1265 150 L1260 150 L1260 140 L1265 140 L1265 110 L1260 110 L1260 100 L1265 100 L1265 70 L1270 30 L1275 70 L1275 100 L1280 100 L1280 110 L1275 110 L1275 140 L1280 140 L1280 150 L1275 150 L1275 222 L1300 222 L1300 240 L1360 240 L1360 212 L1420 212 L1420 300 Z M996 94 L1000 60 L1004 94 Z"/>
+        <path class="sil-gece" fill="var(--sil-gece)" d="M560 300 L560 232 L556 232 L556 200 L620 200 L620 236 L700 236 L700 222 L725 222 L725 150 L720 150 L720 140 L725 140 L725 110 L720 110 L720 100 L725 100 L725 70 L730 30 L735 70 L735 100 L740 100 L740 110 L735 110 L735 140 L740 140 L740 150 L735 150 L735 222 L844 222 L844 162 L840 162 L840 152 L844 152 L844 98 L848 64 L852 98 L852 152 L856 152 L856 162 L852 162 L852 222 L870 222 L870 202 A30 30 0 0 1 930 202 L938 202 L938 168 A62 76 0 0 1 1062 168 L1062 202 L1070 202 A30 30 0 0 1 1130 202 L1130 222 L1148 222 L1148 162 L1144 162 L1144 152 L1148 152 L1148 98 L1152 64 L1156 98 L1156 152 L1160 152 L1160 162 L1156 162 L1156 222 L1265 222 L1265 150 L1260 150 L1260 140 L1265 140 L1265 110 L1260 110 L1260 100 L1265 100 L1265 70 L1270 30 L1275 70 L1275 100 L1280 100 L1280 110 L1275 110 L1275 140 L1280 140 L1280 150 L1275 150 L1275 222 L1300 222 L1300 240 L1360 240 L1360 212 L1420 212 L1420 300 Z M996 94 L1000 60 L1004 94 Z"/>
+        <g class="pencereler" fill="var(--pencere)">
+          <rect x="584" y="220" width="10" height="14" rx="2"/><rect x="660" y="252" width="10" height="14" rx="2"/>
+          <rect x="700" y="248" width="10" height="14" rx="2"/><rect x="760" y="238" width="10" height="14" rx="2"/>
+          <rect x="1240" y="238" width="10" height="14" rx="2"/><rect x="1330" y="246" width="10" height="14" rx="2"/>
+          <rect x="1392" y="232" width="10" height="14" rx="2"/>
+        </g>
+      </svg>
+
+      <div class="vakit vakit-1"><small>Vakit</small><strong>İmsak</strong><b></b><em class="rakam">04:19</em></div>
+      <div class="vakit vakit-2"><small>Vakit</small><strong>Güneş</strong><b></b><em class="rakam">06:00</em></div>
+      <div class="vakit vakit-3 vakit-koyu"><small>Vakit</small><strong>Öğle</strong><b></b><em class="rakam">13:15</em></div>
+      <div class="vakit vakit-4 vakit-koyu"><small>Vakit</small><strong>İkindi</strong><b></b><em class="rakam">17:07</em></div>
+      <div class="vakit vakit-5"><small>Vakit</small><strong>Akşam</strong><b></b><em class="rakam">20:20</em></div>
+      <div class="vakit vakit-6"><small>Vakit</small><strong>Yatsı</strong><b></b><em class="rakam">21:54</em></div>
+
+      <div class="bildirim">
+        <Image src={appIcon} alt="" class="simge" />
+        <div><h4>İbadet Rehberim</h4><p>Akşam ezanı vakti girdi · 20:20</p></div>
+        <span>şimdi</span>
+      </div>
+
+      <div class="kart-sarma">
+        <div class="kart">
+          <Image src={appIcon} alt="" class="simge" />
+          <div class="kart-baslik">
+            <h3>Ezan Vakitleri</h3>
+            <p>İstanbul, Türkiye · 8 Ağustos, Cumartesi</p>
+          </div>
+          <div class="rozet"><strong>İmsak</strong><i>Sıradaki</i><em class="rakam">04:19</em></div>
+          <div class="sayac"><small>İmsaka kalan</small><strong>6 sa 25 dk</strong></div>
+        </div>
+      </div>
     </div>
-
-    <figcaption class="serit-kabi">
-      <div class="serit-sarmal">
-        <span class="vurgu" aria-hidden="true"></span>
-        <ol class="serit">
-          {
-            vakitler.map(({ ad, saat }) => (
-              <li>
-                <span class="ad">{ad}</span>
-                <time class="saat rakam">{saat}</time>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-      <p class="kaynak">Örnek bir gün — İstanbul, 8 Ağustos Cumartesi</p>
-    </figcaption>
-  </figure>
+  </div>
+  <p class="kaynak">Örnek bir gün — İstanbul, 8 Ağustos Cumartesi</p>
 </section>
 
 <style>
@@ -95,248 +108,260 @@ const yildizlar = [
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--color-detay) 30%, transparent);
     border-radius: 24px;
-    background: var(--color-gece);
+    background: #0d1f16;
   }
 
+  /* ── Sahne: renk paleti scene-local, hareket tek döngüde ── */
   .sahne {
+    --dongu: 16s;
+    --gece-ust: #0d1f16;
+    --gece-alt: #1a3626;
+    --tan-ust: #14301f;
+    --tan-alt: #b57a4a;
+    --gunduz-ust: #79aab4;
+    --gunduz-alt: #dde3cc;
+    --aksam-ust: #3d5a45;
+    --aksam-alt: #d98a55;
+    --krem: #f7f4e8;
+    --fildisi: #f6f3e4;
+    --murekkep: #1f3320;
+    --vurgu: #6d8f3d;
+    --acik: #a9c87f;
+    --koyu-yesil: #1d3a28;
+    --secili: #cfdfb0;
+    --pencere: #ecc26f;
+    --sil-gunduz: #28402e;
+    --sil-gece: #0a1810;
+    --gunes-altin: #ffdf8f;
+    --gunes-kizil: #e2603c;
+    --yildiz: #e9efdf;
+
     position: relative;
-    /*
-     * Yükseklik doğrudan verilir. `aspect-ratio` + `min-height` ikilisinde
-     * yükseklik min-height'a takılınca kutunun genişliği en-boy oranından
-     * büyüyor; güneşin yatay yüzdesi de kartın görünen genişliğine göre değil
-     * o taşan kutuya göre hesaplandığı için dar ekranda kadraj dışına çıkıyordu.
-     */
-    height: clamp(190px, 25vw, 300px);
+    width: 100%;
+    height: 300px;
     overflow: hidden;
+    container-type: inline-size;
+    background: linear-gradient(180deg, var(--gece-ust), var(--gece-alt));
+  }
+  @media (max-width: 430px) {
+    .sahne { height: 280px; }
   }
 
-  /* ---- Gökyüzü katmanları: üst üste durur, aralarında opacity ile geçilir ---- */
-  .gok {
+  /* ── Gökyüzü katmanları (opaklıkla geçiş) ── */
+  .gok { position: absolute; inset: 0; }
+  .gok-tan { background: linear-gradient(180deg, var(--tan-ust) 30%, var(--tan-alt)); opacity: 0; animation: tanKat var(--dongu) linear infinite; }
+  .gok-gunduz { background: linear-gradient(180deg, var(--gunduz-ust), var(--gunduz-alt)); opacity: 0; animation: gunduzKat var(--dongu) linear infinite; }
+  .gok-aksam { background: linear-gradient(180deg, var(--aksam-ust), var(--aksam-alt)); opacity: 1; animation: aksamKat var(--dongu) linear infinite; }
+  @keyframes tanKat { 0%, 4% { opacity: 0; } 12% { opacity: 0.9; } 24%, 100% { opacity: 0; } }
+  @keyframes gunduzKat { 0%, 20% { opacity: 0; } 33% { opacity: 1; } 50% { opacity: 1; } 64%, 100% { opacity: 0; } }
+  @keyframes aksamKat { 0%, 50% { opacity: 0; } 60% { opacity: 1; } 66% { opacity: 1; } 76%, 100% { opacity: 0; } }
+
+  /* ── Yıldızlar ── */
+  .yildizlar { position: absolute; inset: 0; opacity: 0; animation: geceKapisi var(--dongu) linear infinite; }
+  .yildizlar i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--yildiz); animation: kirp var(--dongu) linear infinite; }
+  .yildizlar i:nth-child(2n) { width: 2px; height: 2px; animation-delay: -4s; }
+  .yildizlar i:nth-child(3n) { animation-delay: -9s; }
+  .yildizlar i:nth-child(5n) { animation-delay: -13s; }
+  @keyframes geceKapisi { 0% { opacity: 1; } 18% { opacity: 0; } 62% { opacity: 0; } 72%, 100% { opacity: 1; } }
+  @keyframes kirp { 0%, 100% { opacity: 0.9; } 25% { opacity: 0.35; } 50% { opacity: 0.8; } 75% { opacity: 0.3; } }
+
+  /* ── Ufuk ışıltıları ── */
+  .isilti {
     position: absolute;
-    inset: 0;
-    animation-duration: 30s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-  .gok-gece {
-    background: linear-gradient(180deg, #05090f 0%, #0a1320 42%, #131f33 74%, #1c2b45 100%);
-  }
-  .gok-gunduz {
-    opacity: 1; /* animasyonsuz temel durum = altın saat (bkz. reduced-motion) */
-    background: linear-gradient(180deg, #7d99b3 0%, #c3c7c0 46%, #e6d6ae 78%, #f1c77a 100%);
-    animation-name: gunduz;
-  }
-  .gok-safak {
+    width: 46cqw;
+    height: 200px;
     opacity: 0;
-    /* Duraklar GORSELLER.md §3 "şafak gradyanı" ile birebir: kart-vakitler ve
-       hero-safak görselleri bu duraklarla üretildi, sahne onlarla eşleşir. */
-    background: linear-gradient(
-      180deg,
-      #0e1b2a 0%,
-      #2e3a5c 45%,
-      #966962 72%,
-      #e8b04b 92%,
-      #f1c77a 100%
-    );
-    animation-name: safak;
+    background: radial-gradient(ellipse at center, rgb(233 166 94 / 80%) 0%, rgb(233 166 94 / 0%) 62%);
   }
-  .gok-aksam {
-    opacity: 0;
-    background: linear-gradient(180deg, #1a2338 0%, #4b3f55 34%, #96604f 60%, #d8894a 84%, #f1b064 100%);
-    animation-name: aksam;
+  .isilti-tan { left: -8cqw; bottom: -30px; animation: tanIsilti var(--dongu) linear infinite; }
+  .isilti-aksam {
+    right: -6cqw;
+    bottom: -30px;
+    opacity: 0.5;
+    background: radial-gradient(ellipse at center, rgb(226 96 60 / 75%) 0%, rgb(226 96 60 / 0%) 62%);
+    animation: aksamIsilti var(--dongu) linear infinite;
   }
+  @keyframes tanIsilti { 0%, 3% { opacity: 0; } 9% { opacity: 0.55; } 20%, 100% { opacity: 0; } }
+  @keyframes aksamIsilti { 0%, 52% { opacity: 0; } 62% { opacity: 0.55; } 74%, 100% { opacity: 0; } }
 
-  @keyframes gunduz {
-    0%, 10% { opacity: 0; }
-    24%, 70% { opacity: 1; }
-    82%, 100% { opacity: 0; }
-  }
-  @keyframes safak {
-    0%, 4% { opacity: 0; }
-    12%, 17% { opacity: 1; }
-    28%, 100% { opacity: 0; }
-  }
-  @keyframes aksam {
-    0%, 74% { opacity: 0; }
-    84%, 90% { opacity: 1; }
-    97%, 100% { opacity: 0; }
-  }
-
-  /* ---- Yıldızlar: yalnız gece ---- */
-  .yildizlar {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    animation: yildiz 30s linear infinite;
-  }
-  .yildizlar span {
-    position: absolute;
-    border-radius: 50%;
-    background: #fff6dc;
-  }
-  @keyframes yildiz {
-    0%, 5% { opacity: 1; }
-    14%, 87% { opacity: 0; }
-    96%, 100% { opacity: 1; }
-  }
-
-  /* ---- Güneş ---- */
-  .gunes-yatay {
-    position: absolute;
-    inset: 0;
-    transform: translateX(70%);
-    animation: gun-yatay 30s linear infinite;
-  }
-  .gunes-dikey {
-    position: absolute;
-    inset: 0;
-    transform: translateY(-40%);
-    animation: gun-dikey 30s linear infinite;
-  }
+  /* ── Güneş: konum yalnız translate ile, yay keyframe basamaklarında ── */
   .gunes {
-    --capi: clamp(76px, 10vw, 118px);
     position: absolute;
     left: 0;
-    top: 86%; /* ufuk hizası; yay bu noktanın etrafında kurulur */
-    width: var(--capi);
-    height: var(--capi);
-    margin-top: calc(var(--capi) / -2);
-    margin-left: calc(var(--capi) / -2);
+    top: 0;
+    opacity: 1;
+    transform: translate(74cqw, 168px);
+    animation: gunesYol var(--dongu) linear infinite, gunesGoster var(--dongu) linear infinite;
+  }
+  .gunes-govde {
+    position: relative;
+    width: clamp(56px, 9.6cqw, 100px);
+    height: clamp(56px, 9.6cqw, 100px);
+    margin-left: calc(clamp(56px, 9.6cqw, 100px) / -2);
+    margin-top: calc(clamp(56px, 9.6cqw, 100px) / -2);
     border-radius: 50%;
-    /* İlk katman keskin disk, ikinci katman gerçek düşüşlü hale */
-    background:
-      radial-gradient(
-        circle,
-        #fffcf0 0%,
-        #fbdc9b 17%,
-        #f0b25c 25%,
-        rgb(240 178 92 / 0%) 26%
-      ),
-      radial-gradient(
-        circle,
-        rgb(251 231 180 / 62%) 0%,
-        rgb(241 199 122 / 26%) 34%,
-        rgb(232 164 92 / 0%) 70%
-      );
-    animation: gun-boyut 30s linear infinite;
+    background: radial-gradient(circle at 42% 38%, #fff3cf 0%, var(--gunes-altin) 68%);
+    box-shadow: 0 0 60px 18px rgb(246 189 102 / 45%);
   }
-
-  /* Yatayda sabit hız; uçlarda gece boyunca ufkun ardında bekler */
-  @keyframes gun-yatay {
-    0%, 8% { transform: translateX(8%); }
-    92%, 100% { transform: translateX(92%); }
-  }
-  /* Dikeyde sinüs basamakları (sin πt) → yay gerçekten yuvarlak çıkar */
-  @keyframes gun-dikey {
-    0%, 8% { transform: translateY(14%); }
-    18.5% { transform: translateY(-16.6%); }
-    29% { transform: translateY(-42.6%); }
-    39.5% { transform: translateY(-59.9%); }
-    50% { transform: translateY(-66%); }
-    60.5% { transform: translateY(-59.9%); }
-    71% { transform: translateY(-42.6%); }
-    81.5% { transform: translateY(-16.6%); }
-    92%, 100% { transform: translateY(14%); }
-  }
-  /* Ufka yakınken atmosfer güneşi büyütür, tepede küçülüp parlar */
-  @keyframes gun-boyut {
-    0%, 12% { transform: scale(1.22); }
-    50% { transform: scale(0.96); }
-    88%, 100% { transform: scale(1.22); }
-  }
-
-  /* ---- Yeryüzü ---- */
-  .yer {
+  .gunes-kizil {
     position: absolute;
-    inset: 86% 0 0 0;
-    background: var(--color-gece);
-    border-top: 1px solid color-mix(in srgb, var(--color-detay) 45%, transparent);
+    inset: 0;
+    border-radius: 50%;
+    opacity: 0.65;
+    background: radial-gradient(circle at 42% 38%, #ffd9b0 0%, var(--gunes-kizil) 70%);
+    animation: kizilTon var(--dongu) linear infinite;
+  }
+  @keyframes gunesYol {
+    0%, 10% { transform: translate(6cqw, 265px); }
+    16% { transform: translate(11.5cqw, 185px); animation-timing-function: ease-in-out; }
+    38% { transform: translate(46cqw, 62px); animation-timing-function: ease-in-out; }
+    50% { transform: translate(58cqw, 92px); animation-timing-function: ease-in-out; }
+    62% { transform: translate(74cqw, 168px); animation-timing-function: ease-in-out; }
+    68%, 100% { transform: translate(85cqw, 262px); }
+  }
+  @keyframes gunesGoster { 0%, 12% { opacity: 0; } 17% { opacity: 1; } 63% { opacity: 1; } 69%, 100% { opacity: 0; } }
+  @keyframes kizilTon { 0% { opacity: 0.7; } 20% { opacity: 0; } 52% { opacity: 0; } 64%, 100% { opacity: 0.72; } }
+
+  /* ── Ay ── */
+  .ay { position: absolute; right: 12cqw; top: 36px; opacity: 0; transform: translateY(150px); animation: ayYol var(--dongu) linear infinite; }
+  .ay-govde {
+    position: relative;
+    width: clamp(34px, 5.4cqw, 56px);
+    height: clamp(34px, 5.4cqw, 56px);
+    border-radius: 50%;
+    background: #f2eed8;
+    overflow: hidden;
+    box-shadow: 0 0 26px rgb(240 236 214 / 45%);
+  }
+  .ay-kesik { position: absolute; left: 30%; top: -16%; width: 94%; height: 94%; border-radius: 50%; background: var(--gece-ust); }
+  @keyframes ayYol {
+    0%, 70% { opacity: 0; transform: translateY(150px); }
+    78% { opacity: 1; transform: translateY(0); }
+    92% { opacity: 1; transform: translateY(0); }
+    97%, 100% { opacity: 0; transform: translateY(0); }
   }
 
-  /* ---- Vakit şeridi: gerçek metin, sahnenin altında ---- */
-  .serit-kabi {
-    background: var(--color-gece);
-    padding: clamp(0.7rem, 1.6vw, 0.9rem) clamp(0.75rem, 3vw, 1.75rem)
-      clamp(0.6rem, 1.3vw, 0.8rem);
+  /* ── İstanbul silüeti ── */
+  .siluet { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; display: block; }
+  .siluet-cep { display: none; }
+  @media (max-width: 560px) {
+    .siluet-masa { display: none; }
+    .siluet-cep { display: block; }
   }
-  .serit {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: clamp(0.15rem, 1vw, 0.75rem);
+  .sil-gece { opacity: 1; animation: silGece var(--dongu) linear infinite; }
+  @keyframes silGece { 0% { opacity: 1; } 22% { opacity: 1; } 33% { opacity: 0; } 58% { opacity: 0; } 74%, 100% { opacity: 1; } }
+  .pencereler { opacity: 0.5; animation: geceKapisi var(--dongu) linear infinite; }
+  .pencereler rect { animation: kirp var(--dongu) linear infinite; }
+  .pencereler rect:nth-child(2n) { animation-delay: -6s; }
+  .pencereler rect:nth-child(3n) { animation-delay: -11s; }
+
+  /* ── Vakit etiketi: sırası gelen vakit sol üstte belirir ── */
+  .vakit {
+    position: absolute;
+    left: clamp(14px, 3.6cqw, 42px);
+    top: clamp(22px, 5.4cqw, 48px);
+    color: var(--fildisi);
+    opacity: 0;
+    text-shadow: 0 1px 16px rgb(8 18 12 / 30%);
   }
-  .serit li {
+  .vakit-koyu { color: var(--murekkep); text-shadow: none; }
+  .vakit small { display: block; font-size: clamp(9px, 1.25cqw, 13px); font-weight: 700; letter-spacing: 0.32em; opacity: 0.62; }
+  .vakit strong { display: block; font-family: var(--font-baslik); font-weight: 600; font-size: clamp(24px, 5.2cqw, 52px); line-height: 1.12; }
+  .vakit b { display: block; width: clamp(24px, 4cqw, 42px); height: 3px; border-radius: 2px; background: var(--acik); margin: clamp(3px, 0.7cqw, 8px) 0; }
+  .vakit-koyu b { background: var(--vurgu); }
+  .vakit em { font-style: normal; font-weight: 800; font-size: clamp(15px, 2.9cqw, 29px); opacity: 0.92; }
+  .vakit-1 { animation: v1 var(--dongu) linear infinite; }
+  .vakit-2 { animation: v2 var(--dongu) linear infinite; }
+  .vakit-3 { animation: v3 var(--dongu) linear infinite; }
+  .vakit-4 { animation: v4 var(--dongu) linear infinite; }
+  .vakit-5 { opacity: 1; animation: v5 var(--dongu) linear infinite; }
+  .vakit-6 { animation: v6 var(--dongu) linear infinite; }
+  @keyframes v1 { 0%, 3% { opacity: 0; transform: translateY(12px); } 5.5% { opacity: 1; transform: none; } 11.5% { opacity: 1; } 13%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes v2 { 0%, 16% { opacity: 0; transform: translateY(12px); } 18.5% { opacity: 1; transform: none; } 24.5% { opacity: 1; } 26%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes v3 { 0%, 29% { opacity: 0; transform: translateY(12px); } 31.5% { opacity: 1; transform: none; } 37.5% { opacity: 1; } 39%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes v4 { 0%, 42% { opacity: 0; transform: translateY(12px); } 44.5% { opacity: 1; transform: none; } 50.5% { opacity: 1; } 52%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes v5 { 0%, 55% { opacity: 0; transform: translateY(12px); } 57.5% { opacity: 1; transform: none; } 65.5% { opacity: 1; } 67%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes v6 { 0%, 70% { opacity: 0; transform: translateY(12px); } 72.5% { opacity: 1; transform: none; } 78% { opacity: 1; } 79.5%, 100% { opacity: 0; transform: translateY(-6px); } }
+
+  /* ── Bildirim kartı (akşam vaktinde) ── */
+  .bildirim {
+    position: absolute;
+    top: clamp(8px, 2.2cqw, 22px);
+    right: clamp(8px, 2.2cqw, 22px);
+    width: clamp(212px, 30cqw, 306px);
+    background: var(--krem);
+    border-radius: 14px;
+    padding: clamp(7px, 1cqw, 11px) clamp(9px, 1.3cqw, 14px);
+    box-shadow: 0 12px 34px rgb(6 14 9 / 45%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
-    text-align: center;
+    gap: clamp(7px, 1cqw, 11px);
+    opacity: 1;
+    animation: bildirimAn var(--dongu) linear infinite;
   }
+  .simge { flex: none; width: clamp(26px, 3.6cqw, 38px); height: clamp(26px, 3.6cqw, 38px); border-radius: 24%; }
+  .bildirim h4 { font-size: clamp(11px, 1.35cqw, 14px); font-weight: 800; color: var(--murekkep); }
+  .bildirim p { font-size: clamp(10px, 1.22cqw, 12.5px); font-weight: 500; color: #4c5a45; }
+  .bildirim span { font-size: clamp(8.5px, 1cqw, 10.5px); font-weight: 600; color: #8a927e; align-self: flex-start; }
+  @keyframes bildirimAn { 0%, 57% { opacity: 0; transform: translateY(-16px); } 60% { opacity: 1; transform: none; } 69% { opacity: 1; transform: none; } 72%, 100% { opacity: 0; transform: translateY(-10px); } }
 
-  /*
-   * Sırası gelen vakti, altında kayan tek bir panel gösterir. Altı ayrı
-   * animasyon yerine tek keyframe: panel her vakitte durur, sonrakine kayar.
-   * Döngü başa dönerken geri kaymayı görmemek için uçlarda söner.
-   */
-  .serit-sarmal {
-    position: relative;
+  /* ── Kapanış kartı: vakit özeti + sayaç ── */
+  .kart-sarma { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .kart {
+    width: min(92cqw, 660px);
+    background: var(--krem);
+    border-radius: 18px;
+    padding: clamp(10px, 1.6cqw, 16px) clamp(12px, 1.9cqw, 20px);
+    box-shadow: 0 22px 64px rgb(4 10 6 / 55%);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(8px, 1.4cqw, 14px);
+    opacity: 0;
+    animation: kartAn var(--dongu) linear infinite;
   }
-  .serit {
-    position: relative;
-    z-index: 1;
+  .kart .simge { width: clamp(34px, 4.4cqw, 46px); height: clamp(34px, 4.4cqw, 46px); }
+  .kart-baslik { margin-right: auto; }
+  .kart-baslik h3 { font-family: var(--font-baslik); font-weight: 600; color: var(--murekkep); font-size: clamp(16px, 2.1cqw, 22px); line-height: 1.15; }
+  .kart-baslik p { font-size: clamp(9.5px, 1.15cqw, 12px); font-weight: 600; color: #77836b; }
+  .rozet {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 0.9cqw, 9px);
+    background: var(--secili);
+    border-radius: 11px;
+    padding: clamp(6px, 0.9cqw, 9px) clamp(9px, 1.3cqw, 13px);
   }
-  .vurgu {
-    position: absolute;
-    top: -0.3rem;
-    bottom: -0.3rem;
-    left: 0;
-    z-index: 0;
-    width: calc(100% / 6);
-    border: 1px solid color-mix(in srgb, var(--color-detay) 30%, transparent);
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--color-detay) 13%, transparent);
-    transform: translateX(400%);
-    animation: vurgu-kay 30s linear infinite;
+  .rozet strong { font-size: clamp(12.5px, 1.5cqw, 16px); font-weight: 800; color: var(--murekkep); }
+  .rozet i {
+    font-style: normal;
+    font-size: clamp(7.5px, 0.95cqw, 9.5px);
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    color: var(--krem);
+    background: var(--vurgu);
+    border-radius: 999px;
+    padding: 2px 8px;
   }
-  @keyframes vurgu-kay {
-    0% { transform: translateX(0%); opacity: 0; }
-    2.7% { transform: translateX(0%); opacity: 1; }
-    11.3% { transform: translateX(0%); }
-    13.3%, 46.7% { transform: translateX(100%); }
-    48.7%, 66.7% { transform: translateX(200%); }
-    68.7%, 85.3% { transform: translateX(300%); }
-    87.3%, 92% { transform: translateX(400%); }
-    94%, 98% { transform: translateX(500%); opacity: 1; }
-    100% { transform: translateX(500%); opacity: 0; }
-  }
-  .ad {
-    font-size: clamp(0.68rem, 1.7vw, 0.85rem);
-    color: rgb(250 248 235 / 62%);
-  }
-  .saat {
-    font-size: clamp(0.85rem, 2.2vw, 1.1rem);
-    font-weight: 500;
-    color: var(--color-zemin);
-  }
+  .rozet em { font-style: italic; font-size: clamp(12.5px, 1.5cqw, 16px); font-weight: 600; color: var(--murekkep); }
+  .sayac { background: var(--koyu-yesil); border-radius: 11px; padding: clamp(5px, 0.8cqw, 8px) clamp(10px, 1.4cqw, 14px); }
+  .sayac small { display: block; font-size: clamp(7.5px, 0.95cqw, 9.5px); font-weight: 800; letter-spacing: 0.16em; color: var(--acik); }
+  .sayac strong { font-size: clamp(13px, 1.8cqw, 19px); font-weight: 800; color: var(--krem); }
+  @keyframes kartAn { 0%, 82% { opacity: 0; transform: translateY(22px); } 85% { opacity: 1; transform: none; } 93% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+
   .kaynak {
     margin-top: clamp(0.45rem, 1.2vw, 0.65rem);
     text-align: center;
     font-size: 0.74rem;
-    color: rgb(250 248 235 / 45%);
+    color: var(--color-soluk);
   }
 
-  /*
-   * Hareket azaltma tercihi: animasyonların tamamı kapanır. Geriye elemanların
-   * animasyonsuz temel durumu kalır — güneşi ufkun üstünde tutan bir altın saat
-   * karesi ve eşit ağırlıkta okunan vakit şeridi.
-   */
+  /* Hareket azaltma: tüm animasyonlar kapalı; temel durum akşam karesidir
+     (akşam göğü, batan güneş, Akşam etiketi + bildirim kartı). */
   @media (prefers-reduced-motion: reduce) {
-    .gok,
-    .yildizlar,
-    .gunes-yatay,
-    .gunes-dikey,
-    .gunes,
-    .vurgu {
-      animation: none;
+    .sahne,
+    .sahne :global(*) {
+      animation: none !important;
     }
   }
 </style>
