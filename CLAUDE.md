@@ -36,7 +36,7 @@ inceleme ile yapılır. Test çerçevesi ekleme.
 
 ## Mimari
 
-**Ana sayfa + iki özellik sayfası + üç yardımcı sayfa.** `index.astro` dokuz
+**Ana sayfa + üç özellik sayfası + üç yardımcı sayfa.** `index.astro` dokuz
 bileşeni sırayla dizer
 (Hero → VakitKusagi → NasilCalisir → Ozellikler → EkranSeridi → SSS → FinalCTA
 → Footer); bölümler kendi stilini kendi içinde taşır, sayfa yalnız sıralama
@@ -76,6 +76,12 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   dosya adının kökünü (`01-vakitler`) `altYazilar` haritasındaki `alt` +
   `altYazi` ile eşler. Klasöre dosya eklemek şeride kart ekler; haritaya
   karşılığını yazmayı unutma.
+- **Özellik sayfaları tek kalıptır.** `namaz-vakitleri`, `zikirmatik` ve
+  `dua-hadis-ayet` aynı iskeleti izler: `GeriDon` → içerik bölümleri →
+  `FinalCTA` → `Footer`, head slot'unda BreadcrumbList JSON-LD. İçerik yalnız
+  UYGULAMA_OZELLIKLERI.md'nin ilgili bölümlerinden yazılır (her sayfanın
+  frontmatter yorumunda kaynağı belirtilir) ve sayfalar birbirine gövde
+  metninden linklenir. Yeni özellik sayfası bu kalıbı kopyalar.
 
 ### Klasörler
 
@@ -83,10 +89,10 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
 astro-site/src/
   layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro
   components/  Header, Hero, VakitKusagi, NasilCalisir, Ozellikler,
-               EkranSeridi, SSS, FinalCTA, Footer, MagazaButonlari
+               EkranSeridi, SSS, FinalCTA, Footer, MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
-               privacy_policy.md, terms_of_use.md, delete_account.astro,
-               404.astro
+               dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
+               delete_account.astro, 404.astro
   styles/      global.css (@theme token'ları + tipografi + animasyon)
   assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, akis-*,
                store/) — hepsi astro:assets <Image /> ile
@@ -99,6 +105,9 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 - **URL'ler kırılmamalı:** `/privacy_policy` mağaza konsollarında kayıtlıdır.
   `/terms_of_use` ve `/delete_account` da yayında olan path'lerdir. Yeniden
   adlandırma yapma.
+- **İç linkler `/` ile biter:** `astro-site/vercel.json` `trailingSlash: true`
+  ayarlıdır; sayfalara verilen iç linkler `/namaz-vakitleri/` gibi eğik
+  çizgiyle yazılır, yoksa Vercel 308 yönlendirmesi araya girer.
 - **Hukuki metinler** (gizlilik politikası, kullanım koşulları) kelimesi
   kelimesine korunur; yeniden yazma, özetleme, "iyileştirme" yasak. Hata görsen
   bile olduğu gibi bırak, yalnızca not düş.
