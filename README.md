@@ -8,10 +8,11 @@ kaynak kodu `astro-site/` klasöründedir.
 
 ```bash
 cd astro-site
-npm install
+npm install       # Node >= 22.12 gerekir
 npm run dev       # geliştirme sunucusu
 npm run build     # üretim çıktısı → dist/
 npm run preview   # dist/ önizlemesi
+npx astro check   # tip/tanı kontrolü
 ```
 
 ## Sayfalar
@@ -19,6 +20,9 @@ npm run preview   # dist/ önizlemesi
 | Path | İçerik |
 |---|---|
 | `/` | Ana sayfa (hero, Gün Döngüsü, özellikler, SSS) |
+| `/namaz-vakitleri/` | Özellik sayfası: namaz vakitleri |
+| `/zikirmatik/` | Özellik sayfası: zikirmatik |
+| `/dua-hadis-ayet/` | Özellik sayfası: dua, hadis ve ayet içerikleri |
 | `/privacy_policy` | Gizlilik Politikası |
 | `/terms_of_use` | Kullanım Koşulları |
 | `/delete_account` | Veri Silme Talebi formu |
@@ -27,12 +31,10 @@ npm run preview   # dist/ önizlemesi
 
 ## Deploy
 
-GitHub Pages (`gh-pages` branşı, özel alan adı `ibadetrehberim.com` — CNAME
-`astro-site/public/` altındadır):
+Vercel, GitHub entegrasyonu ile: `main`'e push edilen her commit otomatik
+olarak canlıya (`ibadetrehberim.com`) çıkar; elle deploy komutu yoktur. Diğer
+branch'ler/PR'lar otomatik önizleme URL'i alır. Proje ayarlarında Root
+Directory `astro-site`'tır.
 
-```bash
-cd astro-site && npm run build && npx gh-pages -d dist
-```
-
-Tasarım şartnamesi için `TASARIM.md`, geçiş envanteri için `MIGRATION_NOTES.md`
-dosyalarına bakın.
+Tasarım şartnamesi için `TASARIM.md`, görsel envanteri için `GORSELLER.md`,
+geçiş envanteri için `MIGRATION_NOTES.md` dosyalarına bakın.

@@ -36,11 +36,12 @@ inceleme ile yapılır. Test çerçevesi ekleme.
 
 ## Mimari
 
-**Ana sayfa + üç özellik sayfası + üç yardımcı sayfa.** `index.astro` dokuz
+**Ana sayfa + üç özellik sayfası + üç yardımcı sayfa.** `index.astro` sekiz
 bileşeni sırayla dizer
 (Hero → VakitKusagi → NasilCalisir → Ozellikler → EkranSeridi → SSS → FinalCTA
-→ Footer); bölümler kendi stilini kendi içinde taşır, sayfa yalnız sıralama
-yapar. Bir bölüm eklemek/çıkarmak = `index.astro`'da bir satır.
+→ Footer); `Header`'ı ise her sayfada `Base.astro` basar. Bölümler kendi
+stilini kendi içinde taşır, sayfa yalnız sıralama yapar. Bir bölüm
+eklemek/çıkarmak = `index.astro`'da bir satır.
 
 Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
 
@@ -55,7 +56,9 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   **export eder**; `index.astro` bunu JSON-LD `installUrl` için import eder.
   Linki değiştirirken iki yeri değil bu bir yeri güncelle. `appStoreUrl` boş
   string olduğu sürece App Store butonu "Yakında" pasif haline düşer — dolunca
-  kendiliğinden aktifleşir.
+  kendiliğinden aktifleşir. Aynı kalıp SSS'te de var: `SSS.astro` `faq`
+  dizisini export eder, `index.astro` FAQPage JSON-LD'yi bundan üretir —
+  SSS içeriği değişince şema kendiliğinden güncellenir.
 - **Head genişletme.** `Base.astro` `title`/`description`/`ogType` props'u alır;
   canonical ve mutlak `og:image` URL'ini `astro.config.mjs`'teki `site`
   değerinden türetir (o değer değişirse tüm meta etiketleri değişir). Sayfaya
