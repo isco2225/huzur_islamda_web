@@ -91,14 +91,17 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
 ```
 astro-site/src/
   layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro
-  components/  Header, Hero, VakitKusagi, NasilCalisir, Ozellikler,
-               EkranSeridi, SSS, FinalCTA, Footer, MagazaButonlari, GeriDon
+  components/  Header, Hero, AsistanSohbeti (hero'daki kodlanmış sohbet
+               sahnesi — GORSELLER.md'deki "mockup yeniden çizilmez"
+               kuralının bilinçli tek istisnası), VakitKusagi, NasilCalisir,
+               Ozellikler, EkranSeridi, SSS, FinalCTA, Footer,
+               MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
                dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
                delete_account.astro, 404.astro
   styles/      global.css (@theme token'ları + tipografi + animasyon)
-  assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, akis-*,
-               store/) — hepsi astro:assets <Image /> ile
+  assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, store/)
+               — hepsi astro:assets <Image /> ile
 astro-site/public/   robots.txt, app-ads.txt, favicon, icons/, og.png
 gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 ```

@@ -25,8 +25,9 @@ Bu depoda, siteye hazır **bitmiş görsel varlıklar** var: uygulamanın gerçe
 | `hero/hero-safak.png` | 2400×1700 | Üç telefonlu yelpaze, şafak zeminli |
 | `hero/hero-seffaf.png` | 2400×1700, şeffaf | Aynı yelpaze, zeminsiz (yedek/alternatif) |
 | `hero/og-arkaplan.png` | 1200×630 | Sosyal paylaşım görseli; sol yarısı bilinçli boş |
-| `akis/akis-zikir.png` | 3200×1400 | **Zikir akışı bandı:** menü → tesbihat onayı → liste → sayaç, oklarla bağlı 4 telefon, marka zeminli |
-| `akis/akis-zikir-seffaf.png` | 3200×1400, şeffaf | Aynı akış, zeminsiz (alternatif) |
+
+`akis/` klasörü (zikir akışı bandı, 4 telefonlu) kullanıcı kararıyla Ağustos
+2026'da siteden ve depodan kaldırıldı; gerekirse git geçmişinden geri alınır.
 
 Kartlarda köşe yuvarlaklığı (36px) ve gölge **görselin içindedir**.
 
@@ -39,10 +40,10 @@ Kartlarda köşe yuvarlaklığı (36px) ve gölge **görselin içindedir**.
    Diyalog metni `mockup-asistan`'daki gerçek yazışmadır; içerik uydurulmaz.
    Başka bölüm bu istisnayı emsal alamaz.
 2. **Ekran şeridi (§6.5):** 6 kart, `scroll-snap` şeridinde. Önerilen sıra: vakitler → zikir-sayac → asistan → zikirlerim → kesfet → gonderi. Görüntüleme genişliği ~360–420px, `loading="lazy"`.
-3. **Özellik kartları (§6.4):** Kural değişmedi — mini demolar HTML/CSS ile yapılır; bu görseller orada kullanılmaz (aynı ekranların sitede iki kez büyük boy görünmesini engellemek için). Tek istisna: madde 6'daki zikir akışı.
+3. **Özellik kartları (§6.4):** Kural değişmedi — mini demolar HTML/CSS ile yapılır; bu görseller orada kullanılmaz (aynı ekranların sitede iki kez büyük boy görünmesini engellemek için).
 4. **`hero-safak.png` (opsiyonel):** En fazla **tek** yerde: final CTA'nın hemen üstünde tam genişlik vitrin bandı olarak. Kullanmamak da geçerli bir karar; kullanılırsa başka hiçbir bölümde tekrar etme.
 5. **`og.png`:** `BaseLayout` içinde `og:image` ve `twitter:image` olarak **mutlak URL** ile (`https://ibadetrehberim.com/og.png`).
-6. **Zikir akışı bandı (`akis/akis-zikir.png`):** Zikir özelliğinin anlatıldığı yerde tam genişlik kullanılır — "Nasıl çalışır" içinde kendi alt bölümü olarak ya da özellikler bölümünde zikir satırının görseli olarak. Bu bandı kullanınca zikir için ayrıca HTML/CSS mini demo yapılmaz; band, özelliğin dört adımlık hikâyesini zaten anlatıyor. Mobilde bandı yatay kaydırmalı göster (`overflow-x` + `scroll-snap`) ki telefonlar okunaksız küçülmesin; masaüstünde konteynerden hafif taşan tam genişlik yerleşim serbest. `kart-zikir-menu` ve `kart-zikir-tesbihat` yedektir: şerit (§6.5) altı kartlık küratörlü halinde kalır, bu ikisi ancak kullanıcı isterse şeride eklenir.
+6. **Yedekler:** `kart-zikir-menu` ve `kart-zikir-tesbihat` yedektir: şerit (§6.5) altı kartlık küratörlü halinde kalır, bu ikisi ancak kullanıcı isterse şeride eklenir.
 
 ## 3. Teknik kurallar
 
@@ -80,7 +81,6 @@ background: linear-gradient(180deg,
 - `hero-safak`: "İbadet Rehberim uygulamasının üç ekranı: zikirmatik, ezan vakitleri ve asistan"
 - `kart-zikir-menu`: "Zikir menüsü: zikir oluştur, ruh haline göre zikirler ve namaz için zikirler seçenekleri"
 - `kart-zikir-tesbihat`: "Namaz Tesbihatı penceresi: 33'er kez Subhanallah, Elhamdulillah ve Allahu Ekber oluşturma"
-- `akis-zikir`: "Zikir akışı: menüden Namaz Tesbihatı seçimi, oluşan zikir listesi ve zikirmatik sayacı"
 
 ## 4. Bitti sayılma ölçütleri
 

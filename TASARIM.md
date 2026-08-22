@@ -75,7 +75,7 @@ krem (Nav + Hero)
   renksiz gölge** (`.golge`). İkinci gölge katmanı ya da renkli gölge yok.
 - **Eyebrow:** her bölüm başında hap (pill) biçimli küçük etiket — `vurgu` %10
   zemin, %22 kenar, tam yuvarlak.
-- Köşeler: kartlar 20px, akış bandı kabı 24px, hap/buton 999px.
+- Köşeler: kartlar 20px, hap/buton 999px.
 - İçerik genişliği `max-width: 1120px` (`.kapsayici`), yatay padding
   `clamp(1.25rem, 4vw, 2.5rem)`; bölüm dikey ritmi
   `padding-block: clamp(4rem, 10vw, 7rem)` (`.bolum`).
@@ -130,7 +130,7 @@ duruyordu; (2) tek karede duran çamurlu aynalı gradyan.
 
 ## 6. Sayfa akışı (index)
 
-**Nav → Hero → Gün Döngüsü → Nasıl çalışır → Özellikler (+ zikir akış bandı)
+**Nav → Hero → Gün Döngüsü → Nasıl çalışır → Özellikler
 → Ekranlar → SSS → Final CTA → Footer**
 
 - **Nav:** yapışkan, 64px, yarı saydam krem + blur, altın hairline; solda logo +
@@ -143,9 +143,8 @@ duruyordu; (2) tek karede duran çamurlu aynalı gradyan.
   üst hairline'lı. Görünür numara (01/02) kullanılmaz — sıra bilgisini yalnız
   Gün Döngüsü taşır.
 - **Özellikler:** 4 kart; fiil öncelikli başlık + 1–2 doğal cümle + kartın
-  içinde küçük HTML/CSS demo (gerçek içerikle). İstisna: zikir özelliği demo
-  yerine bölüm sonundaki **akış bandı** (`akis-zikir.png`, çerçeveli beyaz kap,
-  mobilde yatay kaydırma) ile anlatılır. İkonlar tek set inline SVG (Lucide
+  içinde küçük HTML/CSS demo (gerçek içerikle). (Zikir akış bandı kullanıcı
+  kararıyla Ağustos 2026'da kaldırıldı.) İkonlar tek set inline SVG (Lucide
   çizgi stili); emoji ikon yasak.
 - **Ekranlar:** beyaz bant; 6 küratörlü kart, CSS-only `scroll-snap` şeridi,
   kısa alt yazılar. Sıra ve alt metinler GORSELLER.md'den.
@@ -183,9 +182,8 @@ imleç takibi, otomatik video, sonsuz dikkat çekiciler, animasyon kütüphanele
 - Mobile-first; kırılımlar `640 / 768 / 1024px`.
 - Hero `<1024px` tek sütun (mockup altta, `min(85%, 360px)`); `≥1024px`
   `7fr/5fr` iki sütun.
-- Ekran şeridi ve akış bandı mobilde kenardan kenara / yatay kaydırmalı;
-  masaüstünde konteynerle hizalı. Akış bandı görseli 860px altına küçülmez
-  (okunabilirlik), kaydırılır.
+- Ekran şeridi mobilde kenardan kenara / yatay kaydırmalı; masaüstünde
+  konteynerle hizalı.
 - Dokunma hedefleri ≥44×44px; buton metinleri kısaltılmaz, sarar.
 - Doğrulama genişlikleri: **360, 390, 768, 1024, 1280, 1536px** — taşma, kırık
   satır ve CLS kontrolü.
