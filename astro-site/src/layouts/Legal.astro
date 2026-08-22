@@ -4,9 +4,20 @@ import Footer from '../components/Footer.astro';
 import GeriDon from '../components/GeriDon.astro';
 
 const { frontmatter } = Astro.props;
+
+// Özellik sayfalarındaki BreadcrumbList kalıbının aynısı (tek kaynak: frontmatter)
+const kirinti = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana sayfa', item: new URL('/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: frontmatter.pageTitle },
+  ],
+};
 ---
 
 <Base title={frontmatter.title} description={frontmatter.description} ogType="article">
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(kirinti)} />
   <main class="mx-auto max-w-[720px] px-5 py-12 md:px-8 md:py-16">
     <GeriDon class="mb-6" />
     <h1 class="text-[clamp(2rem,4vw,2.6rem)]">

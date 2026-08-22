@@ -84,4 +84,4 @@ background: linear-gradient(180deg,
 
 ## 4. Bitti sayılma ölçütleri
 
-`npm run preview`'da: hero'da vakitler mockup'ı eager yükleniyor ve yerleşim kayması yok; şeritte 6 kart doğru sırayla kayıyor; `view-source`'ta `og:image` mutlak URL; Lighthouse hedefleri (CLAUDE.md Aşama 6) korunuyor. Görsellerle ilgili bir sorun (bozuk dosya, eksik klasör) varsa uydurma çözüm üretme, kullanıcıya bildir.
+`npm run preview`'da: hero'daki kodlanmış sohbet sahnesi yerleşim kayması olmadan görünüyor; şeritte 6 kart doğru sırayla kayıyor; `view-source`'ta `og:image` mutlak URL; Lighthouse hedefleri (CLAUDE.md Aşama 6) korunuyor. Görsellerle ilgili bir sorun (bozuk dosya, eksik klasör) varsa uydurma çözüm üretme, kullanıcıya bildir.
