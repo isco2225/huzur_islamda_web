@@ -28,10 +28,10 @@ npm install       # Node >= 22.12 gerekir
 npm run dev       # geliştirme sunucusu
 npm run build     # üretim çıktısı → dist/
 npm run preview   # dist/ önizlemesi
-npx astro check   # tip/tanı kontrolü (@astrojs/check + TS strict)
+npm run check     # tip/tanı kontrolü (astro check; @astrojs/check + TS strict)
 ```
 
-Test altyapısı yoktur; doğrulama `npx astro check` + `npm run build` + görsel
+Test altyapısı yoktur; doğrulama `npm run check` + `npm run build` + görsel
 inceleme ile yapılır. Test çerçevesi ekleme.
 
 ## Mimari
@@ -67,7 +67,9 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
 - **Hukuki sayfalar markdown'dır.** `privacy_policy.md` ve `terms_of_use.md`
   frontmatter'daki `layout:` ile `Legal.astro`'ya bağlanır ve
   `title`/`pageTitle`/`description`/`updated` alanlarını oradan besler. Metin
-  tipografisi Legal.astro'nun scoped `:global()` stillerindedir.
+  tipografisi Legal.astro'nun scoped `:global()` stillerindedir. Legal.astro
+  ayrıca `pageTitle`'dan BreadcrumbList JSON-LD üretir (özellik sayfalarındaki
+  kalıbın aynısı; `delete_account.astro` kendi şemasını kendisi taşır).
 - **Scroll-reveal sözleşmesi.** Bir öğeyi kademeli göstermek için `.reveal`
   sınıfı + `style="--gecikme: 0.2s"` yeterlidir; yatay şerit gibi çocukları
   ekran dışında kalan kapsayıcılarda ebeveyne `.reveal-grup` verilir (çocuklar
@@ -91,16 +93,19 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
 ```
 astro-site/src/
   layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro
-  components/  Header, Hero, AsistanSohbeti (hero'daki kodlanmış sohbet
-               sahnesi — GORSELLER.md'deki "mockup yeniden çizilmez"
-               kuralının bilinçli tek istisnası), VakitKusagi, NasilCalisir,
-               Ozellikler, EkranSeridi, SSS, FinalCTA, Footer,
+  components/  Header, Hero, TanitimVideosu (hero'daki tanıtım videosu —
+               sessiz/döngülü mp4; autoplay Base.astro reveal script'inden
+               `data-otooynat` ile tetiklenir, hareket azaltmada poster
+               sabit kalır), AsistanSohbeti (eski kodlanmış sohbet sahnesi;
+               şu an kullanılmıyor, geri dönüş için duruyor), VakitKusagi,
+               NasilCalisir, Ozellikler, EkranSeridi, SSS, FinalCTA, Footer,
                MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
                dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
                delete_account.astro, 404.astro
   styles/      global.css (@theme token'ları + tipografi + animasyon)
-  assets/      app_icon.png, gorseller/ (mockup-*, kart-*, hero-*, store/)
+  assets/      app_icon.png, video/ (tanitim.mp4 + poster),
+               gorseller/ (mockup-*, kart-*, hero-*, store/)
                — hepsi astro:assets <Image /> ile
 astro-site/public/   robots.txt, app-ads.txt, favicon, icons/, og.png
 gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
@@ -113,7 +118,11 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
   adlandırma yapma.
 - **İç linkler `/` ile biter:** `astro-site/vercel.json` `trailingSlash: true`
   ayarlıdır; sayfalara verilen iç linkler `/namaz-vakitleri/` gibi eğik
-  çizgiyle yazılır, yoksa Vercel 308 yönlendirmesi araya girer.
+  çizgiyle yazılır, yoksa Vercel 308 yönlendirmesi araya girer. Aynı dosya tüm
+  yanıtlara güvenlik başlıklarını da ekler (CSP `frame-ancestors 'none'`,
+  `X-Frame-Options` vb.); başlık değişikliği buradan yapılır ve CSP'ye
+  `script-src` eklenecekse `/delete_account` EmailJS fetch'i ile inline
+  JSON-LD script'leri gözetilmelidir.
 - **Hukuki metinler** (gizlilik politikası, kullanım koşulları) kelimesi
   kelimesine korunur; yeniden yazma, özetleme, "iyileştirme" yasak. Hata görsen
   bile olduğu gibi bırak, yalnızca not düş.
@@ -134,7 +143,7 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 
 ## Kalite çıtası (değişiklik sonrası doğrula)
 
-1. `npm run build` hatasız; `npx astro check` temiz.
+1. `npm run build` hatasız; `npm run check` temiz.
 2. SEO: her sayfada tek `<h1>`, benzersiz title/description, canonical, OG
    etiketleri; sitemap çalışır durumda.
 3. Görseller `astro:assets` `<Image />` ile; anlamlı `alt` (hazır metinler
@@ -154,7 +163,7 @@ alır. Proje ayarlarında Root Directory `astro-site`'tır.
 **Commit/push onay kuralı:** Push canlı siteyi doğrudan etkilediği için
 commit atmadan önce KULLANICIYA SOR: yapılan değişiklikleri özetle, commit
 mesajını göster ve "bu commit ile push'layayım mı?" diye onay al. Onay
-gelmeden commit/push yapma. Push'tan önce `npm run build` + `npx astro check`
+gelmeden commit/push yapma. Push'tan önce `npm run build` + `npm run check`
 lokalde temiz olmalı.
 
 **Commit mesajları İngilizce** yazılır (emir kipi, kısa özet satırı; örn.

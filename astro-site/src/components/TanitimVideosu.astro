@@ -1,0 +1,54 @@
+---
+/*
+ * Tanıtım Videosu — hero'daki telefon sahnesi.
+ *
+ * Uygulamanın 34 saniyelik sessiz tanıtım videosu (720×1280, ~1 MB, H.264).
+ * Video kendi telefon mockup'ını ve koyu yeşil marka zeminini içerdiği için
+ * ayrıca çerçeve çizilmez; yumuşak köşeli bir kart olarak durur.
+ *
+ * Oynatma Base.astro'daki scroll-reveal script'inden tetiklenir
+ * (`data-otooynat`): hareket azaltma tercihinde ya da JS yokken video
+ * oynamaz, poster karesi sabit görünür — AsistanSohbeti'ndeki sözleşmenin
+ * aynısı. Kaynak dosya: gorseller deposundaki "Ibadet Rehberim Tanitim.mp4".
+ */
+import { getImage } from 'astro:assets';
+import posterKaynak from '../assets/video/tanitim-poster.png';
+import tanitimVideo from '../assets/video/tanitim.mp4';
+
+const poster = await getImage({ src: posterKaynak, format: 'webp', width: 720 });
+---
+
+<figure
+  class="video-kart golge"
+  aria-label="İbadet Rehberim tanıtım videosu: ezan vakitleri, zikirmatik ve asistan ekranlarının kısa turu"
+>
+  <video
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={poster.src}
+    width="720"
+    height="1280"
+    data-otooynat
+  >
+    <source src={tanitimVideo} type="video/mp4" />
+  </video>
+</figure>
+
+<style>
+  .video-kart {
+    margin-inline: auto;
+    width: min(85%, 360px);
+    border-radius: clamp(20px, 6vw, 32px);
+    overflow: hidden;
+    /* Videonun kendi koyu yeşil zemini yüklenene dek köşeler boş kalmasın */
+    background: var(--color-murekkep);
+  }
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+  }
+</style>

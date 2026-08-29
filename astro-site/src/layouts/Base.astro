@@ -65,12 +65,19 @@ const ogImageAlt = 'İbadet Rehberim uygulamasının ekranları: zikirmatik, eza
 
     <script is:inline>
       (() => {
+        const hareketAzalt = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Tanıtım videosu autoplay'i buradan tetiklenir: hareket azaltmada ya da
+        // JS yokken video oynamaz, poster karesi sabit kalır (TanitimVideosu.astro)
+        if (!hareketAzalt) {
+          document.querySelectorAll('video[data-otooynat]').forEach((v) => {
+            v.play().catch(() => {});
+          });
+        }
+
         const parcalar = document.querySelectorAll('.reveal, .reveal-grup');
         if (!parcalar.length) return;
-        if (
-          !('IntersectionObserver' in window) ||
-          matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
+        if (!('IntersectionObserver' in window) || hareketAzalt) {
           parcalar.forEach((el) => el.classList.add('goster'));
           return;
         }
