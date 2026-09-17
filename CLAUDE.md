@@ -102,7 +102,7 @@ astro-site/src/
                MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
                dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
-               delete_account.astro, 404.astro
+               delete_account.astro, destek.astro, 404.astro
   styles/      global.css (@theme token'ları + tipografi + animasyon)
   assets/      app_icon.png, video/ (tanitim.mp4 + poster),
                gorseller/ (mockup-*, kart-*, hero-*, store/)
@@ -114,7 +114,7 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
 ## Kritik kurallar
 
 - **URL'ler kırılmamalı:** `/privacy_policy` mağaza konsollarında kayıtlıdır.
-  `/terms_of_use` ve `/delete_account` da yayında olan path'lerdir. Yeniden
+  `/terms_of_use`, `/delete_account` ve `/destek` (App Store Connect "Support URL") da yayında olan path'lerdir. Yeniden
   adlandırma yapma.
 - **İç linkler `/` ile biter:** `astro-site/vercel.json` `trailingSlash: true`
   ayarlıdır; sayfalara verilen iç linkler `/namaz-vakitleri/` gibi eğik

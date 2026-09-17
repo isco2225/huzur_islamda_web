@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import GeriDon from '../components/GeriDon.astro';
+import Footer from '../components/Footer.astro';
+
+// App Store "Support URL" sayfası (Guideline 1.5): kullanıcının soru sorup
+// yardım isteyebileceği iletişim bilgisi. Adres, /delete_account formunun
+// kullandığı gerçek kutudur. Yol adları uygulamadaki etiketlerle birebir aynıdır.
+const destekEposta = 'ibadetrehberim@gmail.com';
+
+const title = 'Destek | İbadet Rehberim';
+const description =
+  'İbadet Rehberim hakkında soru sorun, sorun bildirin veya yardım isteyin. Abonelik, hesap silme ve gizlilik konularında yol gösterir.';
+
+const konular = [
+  {
+    baslik: 'Aboneliğimi nasıl iptal ederim?',
+    metin:
+      'Abonelikler App Store veya Google Play üzerinden yönetilir. iPhone ve iPad’de Ayarlar > adınız > Abonelikler, Android’de Google Play > Profil > Ödemeler ve abonelikler > Abonelikler yolunu izleyin. İptal, mevcut dönemin sonunda geçerli olur.',
+  },
+  {
+    baslik: 'Premium’um görünmüyor, ne yapmalıyım?',
+    metin:
+      'Uygulamada Premium ekranını açıp “Satın Alımları Geri Yükle” bağlantısına dokunun. Satın alma yaptığınız mağaza hesabıyla oturum açtığınızdan emin olun. Sorun sürerse bize e-posta gönderin.',
+  },
+  {
+    baslik: 'Hesabımı nasıl silerim?',
+    metin:
+      'Uygulamada Profil > Ayarlar > Hesap bölümündeki “Hesabı Sil” seçeneğini kullanın. Uygulamaya erişemiyorsanız veri silme talep formunu doldurabilirsiniz.',
+  },
+  {
+    baslik: 'Hata veya öneri bildirmek istiyorum',
+    metin:
+      'Yaşadığınız sorunu, cihaz modelinizi ve uygulama sürümünü (Ayarlar ekranının en altında yazar) e-postanıza ekleyin. Böylece size daha hızlı yardımcı olabiliriz.',
+  },
+];
+
+const kirinti = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana sayfa', item: new URL('/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'Destek' },
+  ],
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(kirinti)} />
+  <main class="mx-auto max-w-[720px] px-5 py-12 md:px-8 md:py-16">
+    <GeriDon class="mb-6" />
+    <h1 class="text-[clamp(2rem,4vw,2.6rem)]">Destek</h1>
+    <p class="mt-4 leading-[1.7] text-soluk">
+      İbadet Rehberim ile ilgili her soru, sorun ve öneriniz için bize yazabilirsiniz.
+    </p>
+
+    <div class="cizgi mt-8 rounded-[20px] border bg-yuzey p-6">
+      <p class="text-[0.9rem] font-medium text-soluk">Bize ulaşın</p>
+      <a
+        href={`mailto:${destekEposta}?subject=${encodeURIComponent('İbadet Rehberim Destek')}`}
+        class="mt-2 inline-flex min-h-[44px] items-center text-[1.15rem] font-medium text-vurgu-koyu underline break-all"
+      >
+        {destekEposta}
+      </a>
+      <p class="mt-2 leading-[1.7]">
+        E-postanıza konuyu kısaca yazmanız yeterli. Tüm mesajları okuyup yanıtlıyoruz.
+      </p>
+    </div>
+
+    <h2 class="mt-12 text-[clamp(1.4rem,3vw,1.75rem)]">Sık karşılaşılan konular</h2>
+    <div class="mt-6 space-y-4">
+      {
+        konular.map((konu) => (
+          <section class="cizgi rounded-[20px] border bg-yuzey p-6">
+            <h3 class="text-[1.1rem] font-semibold">{konu.baslik}</h3>
+            <p class="mt-2 leading-[1.7]">{konu.metin}</p>
+          </section>
+        ))
+      }
+    </div>
+
+    <p class="mt-10 leading-[1.7]">
+      Daha fazlası için{' '}
+      <a href="/#sss" class="text-vurgu-koyu underline">sıkça sorulan sorulara</a>,{' '}
+      <a href="/privacy_policy/" class="text-vurgu-koyu underline">gizlilik politikasına</a>,{' '}
+      <a href="/terms_of_use/" class="text-vurgu-koyu underline">kullanım koşullarına</a>{' '}
+      ve{' '}
+      <a href="/delete_account/" class="text-vurgu-koyu underline">veri silme talep formuna</a>{' '}
+      göz atabilirsiniz.
+    </p>
+  </main>
+  <Footer />
+</Base>
