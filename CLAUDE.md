@@ -174,6 +174,4 @@ geçmişi İngilizcedir.
 
 - App Store URL'i → yayınlanınca `MagazaButonlari.astro` içindeki `appStoreUrl`
   doldurulacak (buton otomatik aktifleşir).
-- Hukuki sayfalardaki iletişim bloğu placeholder (`destek@uygulamaadi.com`) —
-  gerçek adres onayı bekliyor.
 - Sosyal medya linkleri (varsa footer'a eklenecek).

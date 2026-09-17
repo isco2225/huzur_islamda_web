@@ -71,7 +71,7 @@ Kullanıcı olarak kişisel verileriniz üzerinde aşağıdaki haklara sahipsini
 
 Bu Gizlilik Politikası veya kişisel verilerinizle ilgili herhangi bir sorunuz, öneriniz veya talebiniz olması durumunda bizimle iletişime geçmekten çekinmeyin.
 
-E-posta: destek@uygulamaadi.com\
-Web Sitesi: Web Sitenizin Adresi
+E-posta: ibadetrehberim@gmail.com\
+Web Sitesi: www.ibadetrehberim.com
 
 > Yasal Uyarı: İbadet Rehberim uygulaması içerisindeki dini bilgiler, dualar ve yönlendirmeler genel bilgilendirme amaçlıdır ve fetva niteliği taşımaz. Dini konulardaki nihai sorumluluk kullanıcıya aittir.

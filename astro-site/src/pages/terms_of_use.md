@@ -98,5 +98,5 @@ Uyuşmazlıkların çözümünde İstanbul (Merkez) Mahkemeleri ve İcra Dairele
 
 Uygulama ile ilgili her türlü soru, öneri, telif hakkı bildirimi veya hesap silme talepleriniz için bizimle aşağıdaki kanaldan iletişime geçebilirsiniz:
 
-E-posta: destek@uygulamaadi.com\
-Web Sitesi: Web Sitenizin Adresi
+E-posta: ibadetrehberim@gmail.com\
+Web Sitesi: www.ibadetrehberim.com
