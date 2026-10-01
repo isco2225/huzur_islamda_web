@@ -1,5 +1,8 @@
 ---
 // Footer — TASARIM.md §6.8: gece zemininde açıklama, ürün ve hukuki linkler, telif
+import { Image } from 'astro:assets';
+import iscoteraLogo from '../assets/iscotera-logo.svg';
+
 const year = new Date().getFullYear();
 
 const urunLinkleri = [
@@ -66,9 +69,21 @@ const hukukiLinkler = [
       </nav>
     </div>
 
-    <p class="mt-12 border-t border-zemin/10 pt-6 text-[0.875rem] text-zemin/60">
-      &copy; {year} İbadet Rehberim. Tüm hakları saklıdır.
-    </p>
+    <div
+      class="mt-12 flex flex-col gap-3 border-t border-zemin/10 pt-5 text-[0.875rem] text-zemin/60 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>&copy; {year} İbadet Rehberim. Tüm hakları saklıdır.</p>
+      <p class="flex items-center gap-3">
+        <span>Tasarım ve geliştirme</span>
+        <a
+          href="https://iscotera.com/"
+          class="inline-flex min-h-[44px] items-center gap-2 text-base font-bold text-zemin/85 transition-colors hover:text-zemin"
+        >
+          <Image src={iscoteraLogo} alt="" width={28} height={28} class="h-7 w-7" />
+          İSCOTERA
+        </a>
+      </p>
+    </div>
     <!-- TODO: Sosyal medya linkleri Flutter kodunda tanımlı değildi (boş onPressed).
          Gerçek hesap URL'leri geldiğinde buraya eklenecek. -->
   </div>
