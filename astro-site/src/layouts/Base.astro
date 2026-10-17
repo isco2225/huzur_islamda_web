@@ -54,7 +54,15 @@ const ogImageAlt = 'İbadet Rehberim uygulamasının ekranları: zikirmatik, eza
     <!-- Scroll-reveal kapısı: gizli başlangıç durumu yalnız JS varken uygulanır
          (CLAUDE.md sıfır-JS kuralının TASARIM.md §7'deki istisnası) -->
     <script is:inline>
-      document.documentElement.classList.add('js');
+      (() => {
+        const s = document.documentElement.classList;
+        s.add('js');
+        // Mağaza butonu seçimi (MagazaButonlari.astro); iPadOS kendini Mac gibi tanıtır
+        const u = navigator.userAgent;
+        if (/Android/i.test(u)) s.add('android');
+        else if (/iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1))
+          s.add('ios');
+      })();
     </script>
 
     <slot name="head" />

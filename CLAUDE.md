@@ -131,6 +131,10 @@ gorseller/           Ham varlık deposu (GORSELLER.md envanteri)
   için zorunlu; service/template ID'leri Flutter'daki
   `delete_account_screen.dart` ile aynıdır ve tasarımı gereği istemci
   tarafında açıktır), (2) `Base.astro`'daki ~1 KB'lik scroll-reveal script'i.
+  `<head>`'deki küçük inline script de bu ikinci istisnaya dahildir: `html`'e
+  `js` sınıfını ve cihaza göre `ios`/`android` sınıfını koyar;
+  `MagazaButonlari.astro` bununla mobilde yalnız ilgili mağaza butonunu
+  gösterir (masaüstünde/JS'siz ikisi de görünür).
   React/Vue/Svelte gibi UI framework'leri ve animasyon kütüphaneleri eklenmez.
 - **Uydurma bilgi yok:** Kodda/dokümanda olmayan bilgiyi (mağaza linki, e-posta,
   istatistik, yorum) icat etme; görünür `TODO:` bırak ve kullanıcıya sor.

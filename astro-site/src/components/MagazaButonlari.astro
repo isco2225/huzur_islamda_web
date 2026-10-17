@@ -28,15 +28,15 @@ const pasif =
 ---
 
 <div class={`flex flex-wrap gap-3 ${className}`}>
-  <a href={playStoreUrl} target="_blank" rel="noopener" class={dolu}>
+  <a href={playStoreUrl} target="_blank" rel="noopener" class={`${dolu} ${appStoreUrl ? 'magaza-play' : ''}`}>
     <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
       <path d={playIcon}></path>
     </svg>
-    Google Play'den Al
+    Google Play'den İndir
   </a>
   {
     appStoreUrl ? (
-      <a href={appStoreUrl} target="_blank" rel="noopener" class={dolu}>
+      <a href={appStoreUrl} target="_blank" rel="noopener" class={`${dolu} magaza-apple`}>
         <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
           <path d={appleIcon} />
         </svg>
@@ -52,3 +52,13 @@ const pasif =
     )
   }
 </div>
+
+<style>
+  /* Cihaza göre tek buton: html.ios / html.android sınıfını Base.astro'daki
+     head script'i koyar. Masaüstünde, tanınmayan cihazda ve JS'siz iki buton
+     da görünür. Play butonu yalnız App Store linki doluyken gizlenebilir. */
+  :global(html.ios) .magaza-play,
+  :global(html.android) .magaza-apple {
+    display: none;
+  }
+</style>
