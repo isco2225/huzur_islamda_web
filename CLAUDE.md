@@ -94,7 +94,7 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   dizini, footer'daki Rehber sütunu ve "Diğer rehberler" buradan beslenir.
   Yeni rehber = `pages/rehber/<yol>.astro` + `rehberler.ts`'e bir satır.
   Metni görselleştiren hazır bileşenler `Rehber.astro`'nun `:global()`
-  stillerindedir (sıra şeridi, Farz/Sünnet etiketli adım kartları, ayet/hadis
+  stillerindedir (Farz/Sünnet etiketli adım kartları, ayet/hadis
   alıntı kartı, büyük rakamlı farz ızgarası, işaretli liste, bozar/bozmaz
   karşılaştırması, dua kartları, `<details>` SSS); yeni rehber bunları kullanır,
   hareket yalnız `.reveal`.

@@ -39,19 +39,6 @@ const basliklar: Baslik[] = [
   { id: 'sorular', ad: 'Sık sorulan sorular' },
 ];
 
-// Başlık bandındaki "bir bakışta" şeridi: yıkanan/meshedilen organlar sırasıyla
-const duraklar = [
-  { ad: 'Eller', kez: '3' },
-  { ad: 'Ağız', kez: '3' },
-  { ad: 'Burun', kez: '3' },
-  { ad: 'Yüz', kez: '3', farz: true },
-  { ad: 'Kollar', kez: '3', farz: true },
-  { ad: 'Baş', kez: 'mesh', farz: true },
-  { ad: 'Kulaklar', kez: 'mesh' },
-  { ad: 'Boyun', kez: 'mesh' },
-  { ad: 'Ayaklar', kez: '3', farz: true },
-];
-
 type Hukum = 'Farz' | 'Sünnet' | 'Edep';
 const adimlar: { baslik: string; hukum: Hukum; kez?: string; metin: string }[] = [
   {
@@ -286,26 +273,6 @@ const sorular = [
   basliklar={basliklar}
   kaynaklar={kaynaklar}
 >
-  <div slot="ust" class="sira-seridi">
-    <p class="text-[0.875rem] font-medium text-soluk">Bir bakışta abdest sırası</p>
-    <ol>
-      {
-        duraklar.map((d) => (
-          <li>
-            <span class:list={['durak', { 'durak-farz': d.farz }]}>
-              {d.ad} <b>{d.kez === 'mesh' ? 'mesh' : `${d.kez}×`}</b>
-            </span>
-          </li>
-        ))
-      }
-    </ol>
-    <p class="lejant">
-      <span><i class="dolu"></i> Farz</span>
-      <span><i></i> Sünnet</span>
-      <span>3× = üç kere yıkanır</span>
-    </p>
-  </div>
-
   <h2 id="adim-adim">Adım adım abdest nasıl alınır?</h2>
   <ol class="adimlar">
     {

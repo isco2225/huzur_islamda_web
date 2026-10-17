@@ -8,7 +8,7 @@
  * ve Article şemasına `citation` olarak girer. Hükümler Hanefî mezhebine
  * göredir; Şâfiî görüşünün ayrıldığı yerler metin içinde belirtilir.
  *
- * Düzen: beyaz başlık bandı (breadcrumb, h1, özet, isteğe bağlı `ust` slot'u)
+ * Düzen: beyaz başlık bandı (breadcrumb, h1, özet)
  * → metin sütunu + masaüstünde sağda yapışkan içindekiler. Metin içi görsel
  * bileşenler (adım kartları, etiketler, alıntı, karşılaştırma, dua kartları,
  * SSS akordeonu) aşağıdaki :global() sınıflarıdır; yeni rehber bunları
@@ -101,9 +101,6 @@ const tumBasliklar = [...basliklar, { id: 'kaynaklar', ad: 'Kaynaklar' }];
         <p class="giris-3 mt-4 text-[0.9rem] text-soluk">
           Son güncelleme: <time datetime={guncelleme}>{tarih}</time> · Kaynak: Diyanet İşleri Başkanlığı
         </p>
-        <div class="giris-4">
-          <slot name="ust" />
-        </div>
       </div>
     </header>
 
@@ -283,83 +280,6 @@ const tumBasliklar = [...basliklar, { id: 'kaynaklar', ad: 'Kaynaklar' }];
   .rehber-metin :global(.etiket-sunnet) {
     color: var(--color-vurgu-koyu);
     background: color-mix(in srgb, var(--color-vurgu) 14%, transparent);
-  }
-
-  /* ---------- Sıra şeridi (başlık bandında, bir bakışta) ---------- */
-  :global(.sira-seridi) {
-    margin-top: 2rem;
-  }
-  :global(.sira-seridi ol) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.35rem;
-    margin-top: 0.75rem;
-  }
-  :global(.sira-seridi li) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-  /* Bağlantı çizgisi yalnız tek satıra sığan genişlikte; satır kırılınca başta kalmasın */
-  :global(.sira-seridi li + li::before) {
-    content: none;
-  }
-  @media (min-width: 1280px) {
-    :global(.sira-seridi li + li::before) {
-      content: '';
-    }
-  }
-  :global(.sira-seridi li + li::before) {
-    width: 0.9rem;
-    height: 1px;
-    background: color-mix(in srgb, var(--color-detay) 60%, transparent);
-  }
-  :global(.sira-seridi .durak) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    border: 1px solid color-mix(in srgb, var(--color-vurgu) 30%, transparent);
-    border-radius: 999px;
-    padding: 0.35rem 0.8rem;
-    font-size: 0.9rem;
-    color: var(--color-murekkep);
-    background: var(--color-zemin);
-  }
-  :global(.sira-seridi .durak b) {
-    font-weight: 500;
-    font-size: 0.75rem;
-    color: var(--color-soluk);
-    font-variant-numeric: tabular-nums;
-  }
-  :global(.sira-seridi .durak-farz) {
-    border-color: var(--color-vurgu);
-    color: #fff;
-    background: var(--color-vurgu);
-  }
-  :global(.sira-seridi .durak-farz b) {
-    color: #fff;
-  }
-  :global(.sira-seridi .lejant) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 0.9rem;
-    font-size: 0.85rem;
-    color: var(--color-soluk);
-  }
-  :global(.sira-seridi .lejant span) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  :global(.sira-seridi .lejant i) {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 999px;
-    border: 1px solid var(--color-vurgu);
-  }
-  :global(.sira-seridi .lejant .dolu) {
-    background: var(--color-vurgu);
   }
 
   /* ---------- Adım kartları ---------- */
