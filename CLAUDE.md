@@ -93,6 +93,11 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   `FinalCTA`. Liste tek kaynaktan gelir: `src/data/rehberler.ts`; `/rehber/`
   dizini, footer'daki Rehber sütunu ve "Diğer rehberler" buradan beslenir.
   Yeni rehber = `pages/rehber/<yol>.astro` + `rehberler.ts`'e bir satır.
+  Metni görselleştiren hazır bileşenler `Rehber.astro`'nun `:global()`
+  stillerindedir (sıra şeridi, Farz/Sünnet etiketli adım kartları, ayet/hadis
+  alıntı kartı, büyük rakamlı farz ızgarası, işaretli liste, bozar/bozmaz
+  karşılaştırması, dua kartları, `<details>` SSS); yeni rehber bunları kullanır,
+  hareket yalnız `.reveal`.
   **Dinî içerik yalnız kaynaktan yazılır** (öncelik: Diyanet İslam İlmihali ve
   Din İşleri Yüksek Kurulu fetvaları); hüküm uydurma, bilgiden tahmin yürütme
   yok. Her bölümün altına sayfa numaralı "Kaynak:" notu konur, dua okunuşları

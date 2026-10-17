@@ -7,6 +7,12 @@
  * rehber kaynaklarını `kaynaklar` prop'uyla verir, sayfanın altında listelenir
  * ve Article şemasına `citation` olarak girer. Hükümler Hanefî mezhebine
  * göredir; Şâfiî görüşünün ayrıldığı yerler metin içinde belirtilir.
+ *
+ * Düzen: beyaz başlık bandı (breadcrumb, h1, özet, isteğe bağlı `ust` slot'u)
+ * → metin sütunu + masaüstünde sağda yapışkan içindekiler. Metin içi görsel
+ * bileşenler (adım kartları, etiketler, alıntı, karşılaştırma, dua kartları,
+ * SSS akordeonu) aşağıdaki :global() sınıflarıdır; yeni rehber bunları
+ * kullanır, kendi stilini yazmaz. Hareket yalnız mevcut `.reveal` sözleşmesi.
  */
 import Base from './Base.astro';
 import Footer from '../components/Footer.astro';
@@ -19,20 +25,30 @@ export interface Kaynak {
   url?: string;
 }
 
+export interface Baslik {
+  id: string;
+  ad: string;
+}
+
 interface Props {
   title: string;
   description: string;
   /** Sayfanın tek <h1>'i */
   baslik: string;
+  /** Başlık bandındaki giriş paragrafı */
+  ozet: string;
   /** rehberler.ts'teki `yol` ile aynı */
   yol: string;
   /** ISO tarih (YYYY-AA-GG) */
   yayin: string;
   guncelleme?: string;
+  /** İçindekiler: sayfadaki h2'lerin id + adı */
+  basliklar: Baslik[];
   kaynaklar: Kaynak[];
 }
 
-const { title, description, baslik, yol, yayin, guncelleme = yayin, kaynaklar } = Astro.props;
+const { title, description, baslik, ozet, yol, yayin, guncelleme = yayin, basliklar, kaynaklar } =
+  Astro.props;
 const bu = rehberler.find((r) => r.yol === yol);
 const digerleri = rehberler.filter((r) => r.yol !== yol);
 const tarih = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' }).format(new Date(guncelleme));
@@ -65,70 +81,101 @@ const makale = {
     ...(k.url ? { url: k.url } : {}),
   })),
 };
+
+const tumBasliklar = [...basliklar, { id: 'kaynaklar', ad: 'Kaynaklar' }];
 ---
 
 <Base title={title} description={description} ogType="article">
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(kirinti)} />
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(makale)} />
   <main>
-    <article class="mx-auto max-w-[720px] px-5 pt-[clamp(2.5rem,6vw,4rem)] pb-[clamp(3rem,8vw,5rem)] md:px-8">
-      <nav aria-label="Konum" class="text-[0.95rem] text-soluk">
-        <a href="/" class="hover:text-murekkep">Ana sayfa</a>
-        <span aria-hidden="true"> / </span>
-        <a href="/rehber/" class="hover:text-murekkep">Rehber</a>
-      </nav>
-      <h1 class="mt-5 text-[clamp(2rem,4.5vw,2.75rem)]">{baslik}</h1>
-      <p class="mt-3 text-[0.95rem] text-soluk">
-        Son güncelleme: <time datetime={guncelleme}>{tarih}</time> · Kaynak: Diyanet İşleri Başkanlığı
-      </p>
-
-      <div class="rehber-metin mt-8">
-        <slot />
-      </div>
-
-      <aside class="cizgi mt-14 rounded-[20px] border bg-yuzey p-6 text-[0.95rem] leading-[1.7] text-soluk">
-        <p>
-          Bu rehber, Türkiye'de yaygın olan ve Diyanet İşleri Başkanlığının esas aldığı <strong class="font-medium text-murekkep">Hanefî mezhebine</strong> göre hazırlanmıştır; Şâfiî
-          mezhebinin farklı gördüğü yerler ayrıca belirtilmiştir. Özel durumunuzla ilgili sorularınızı
-          Diyanet'in <a href="https://kurul.diyanet.gov.tr/" class="text-vurgu-koyu underline" rel="noopener">Din İşleri
-          Yüksek Kurulu</a> sitesinden ya da <strong class="font-medium text-murekkep">190 Diyanet Fetva Hattı</strong>'ndan
-          sorabilirsiniz.
+    <header class="cizgi border-b bg-yuzey">
+      <div class="kapsayici pt-[clamp(2rem,5vw,3.5rem)] pb-[clamp(2rem,5vw,3rem)]">
+        <nav aria-label="Konum" class="giris-1 text-[0.95rem] text-soluk">
+          <a href="/" class="hover:text-murekkep">Ana sayfa</a>
+          <span aria-hidden="true"> / </span>
+          <a href="/rehber/" class="hover:text-murekkep">Rehber</a>
+        </nav>
+        <h1 class="giris-2 mt-5 max-w-[22ch] text-[clamp(2.1rem,5vw,3.25rem)]">{baslik}</h1>
+        <p class="giris-3 mt-5 max-w-[62ch] text-[1.125rem] leading-[1.7] text-soluk">{ozet}</p>
+        <p class="giris-3 mt-4 text-[0.9rem] text-soluk">
+          Son güncelleme: <time datetime={guncelleme}>{tarih}</time> · Kaynak: Diyanet İşleri Başkanlığı
         </p>
+        <div class="giris-4">
+          <slot name="ust" />
+        </div>
+      </div>
+    </header>
+
+    <div
+      class="kapsayici pt-[clamp(2rem,5vw,3rem)] pb-[clamp(3rem,8vw,5rem)] lg:grid lg:grid-cols-[minmax(0,720px)_220px] lg:justify-between lg:gap-12"
+    >
+      <aside class="lg:order-2">
+        <nav aria-label="İçindekiler" class="icindekiler lg:sticky lg:top-24">
+          <p class="text-[0.875rem] font-medium text-soluk">Bu sayfada</p>
+          <ol class="mt-3 space-y-1">
+            {
+              tumBasliklar.map((b) => (
+                <li>
+                  <a href={`#${b.id}`}>{b.ad}</a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
       </aside>
 
-      <section aria-labelledby="kaynaklar" class="mt-12">
-        <h2 id="kaynaklar" class="text-[1.35rem]">Kaynaklar</h2>
-        <ol class="mt-4 list-decimal space-y-3 pl-5 text-[0.95rem] leading-[1.7] text-soluk">
-          {
-            kaynaklar.map((k) => (
-              <li>
-                {k.url ? ( <a href={k.url} class="text-vurgu-koyu underline" rel="noopener">
-                    {k.ad}
-                  </a> ) : ( <span class="text-murekkep">{k.ad}</span> )}
-                {k.ayrinti && <span>, {k.ayrinti}</span>}
-              </li>
-            ))
-          }
-        </ol>
-      </section>
+      <article class="min-w-0 lg:order-1">
+        <div class="rehber-metin">
+          <slot />
+        </div>
 
-      {
-        digerleri.length > 0 && (
-          <nav aria-labelledby="diger-rehberler" class="mt-12">
-            <h2 id="diger-rehberler" class="text-[1.35rem]">Diğer rehberler</h2>
-            <ul class="mt-4 space-y-2">
-              {digerleri.map((r) => (
+        <aside class="cizgi mt-14 rounded-[20px] border bg-yuzey p-6 text-[0.95rem] leading-[1.7] text-soluk">
+          <p>
+            Bu rehber, Türkiye'de yaygın olan ve Diyanet İşleri Başkanlığının esas aldığı <strong class="font-medium text-murekkep">Hanefî mezhebine</strong> göre hazırlanmıştır; Şâfiî mezhebinin farklı gördüğü yerler ayrıca belirtilmiştir. Özel durumunuzla ilgili sorularınızı Diyanet'in <a href="https://kurul.diyanet.gov.tr/" class="text-vurgu-koyu underline" rel="noopener">Din İşleri Yüksek Kurulu</a> sitesinden ya da <strong class="font-medium text-murekkep">190 Diyanet Fetva Hattı</strong>'ndan sorabilirsiniz.
+          </p>
+        </aside>
+
+        <section aria-labelledby="kaynaklar" class="mt-12">
+          <h2 id="kaynaklar" class="text-[1.35rem]">Kaynaklar</h2>
+          <ol class="mt-4 list-decimal space-y-3 pl-5 text-[0.95rem] leading-[1.7] text-soluk">
+            {
+              kaynaklar.map((k) => (
                 <li>
-                  <a href={`/rehber/${r.yol}/`} class="text-vurgu-koyu underline">
-                    {r.kisaAd}
-                  </a>
+                  {k.url ? (
+                    <a href={k.url} class="text-vurgu-koyu underline" rel="noopener">
+                      {k.ad}
+                    </a>
+                  ) : (
+                    <span class="text-murekkep">{k.ad}</span>
+                  )}
+                  {k.ayrinti && <span>, {k.ayrinti}</span>}
                 </li>
-              ))}
-            </ul>
-          </nav>
-        )
-      }
-    </article>
+              ))
+            }
+          </ol>
+        </section>
+
+        {
+          digerleri.length > 0 && (
+            <nav aria-labelledby="diger-rehberler" class="mt-12">
+              <h2 id="diger-rehberler" class="text-[1.35rem]">
+                Diğer rehberler
+              </h2>
+              <ul class="mt-4 space-y-2">
+                {digerleri.map((r) => (
+                  <li>
+                    <a href={`/rehber/${r.yol}/`} class="text-vurgu-koyu underline">
+                      {r.kisaAd}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+      </article>
+    </div>
 
     <FinalCTA />
   </main>
@@ -136,7 +183,35 @@ const makale = {
 </Base>
 
 <style>
-  /* Uzun okuma tipografisi — Legal.astro düzeninin rehber sürümü */
+  /* İçindekiler: mobilde içerik üstünde kutu, masaüstünde sağda yapışkan liste */
+  .icindekiler {
+    margin-bottom: 2.5rem;
+    border-radius: 20px;
+    background: var(--color-yuzey);
+    padding: 1.25rem 1.5rem;
+  }
+  .icindekiler a {
+    display: inline-block;
+    padding-block: 0.3rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--color-soluk);
+    transition: color 0.15s;
+  }
+  .icindekiler a:hover {
+    color: var(--color-vurgu-koyu);
+  }
+  @media (min-width: 1024px) {
+    .icindekiler {
+      margin-bottom: 0;
+      border-left: 1px solid color-mix(in srgb, var(--color-detay) 25%, transparent);
+      border-radius: 0;
+      background: none;
+      padding: 0.25rem 0 0.25rem 1.25rem;
+    }
+  }
+
+  /* ---------- Uzun okuma tipografisi ---------- */
   .rehber-metin :global(p),
   .rehber-metin :global(li) {
     line-height: 1.75;
@@ -146,19 +221,16 @@ const makale = {
   .rehber-metin :global(p + ul),
   .rehber-metin :global(p + ol),
   .rehber-metin :global(ul + p),
-  .rehber-metin :global(ol + p),
-  .rehber-metin :global(dl + p) {
+  .rehber-metin :global(ol + p) {
     margin-top: 1rem;
   }
-  .rehber-metin :global(.giris) {
-    font-size: 1.125rem;
-    color: var(--color-soluk);
-  }
   .rehber-metin :global(h2) {
-    margin-top: 3rem;
+    margin-top: 4rem;
     margin-bottom: 1rem;
-    font-size: clamp(1.5rem, 3vw, 1.85rem);
-    scroll-margin-top: 5rem;
+    font-size: clamp(1.6rem, 3.2vw, 2rem);
+  }
+  .rehber-metin > :global(h2:first-child) {
+    margin-top: 0;
   }
   .rehber-metin :global(h3) {
     margin-top: 2rem;
@@ -168,13 +240,9 @@ const makale = {
   .rehber-metin :global(strong) {
     font-weight: 600;
   }
-  .rehber-metin :global(ul) {
+  .rehber-metin :global(ul:not([class])) {
     padding-left: 1.25rem;
     list-style: disc;
-  }
-  .rehber-metin :global(ol:not(.adimlar)) {
-    padding-left: 1.5rem;
-    list-style: decimal;
   }
   .rehber-metin :global(li + li) {
     margin-top: 0.6rem;
@@ -184,73 +252,411 @@ const makale = {
     text-decoration: underline;
   }
   .rehber-metin :global(.not) {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
     border-left: 3px solid var(--color-detay);
     padding-left: 1rem;
     font-size: 0.95rem;
     color: var(--color-soluk);
   }
   .rehber-metin :global(.kaynak-not) {
-    font-size: 0.875rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
     color: var(--color-soluk);
   }
 
-  /* Numaralı adımlar: rakam dairesi + metin */
-  .rehber-metin :global(.adimlar) {
-    counter-reset: adim;
-    margin-top: 1.5rem;
-  }
-  .rehber-metin :global(.adimlar > li) {
-    counter-increment: adim;
-    position: relative;
-    padding-left: 3rem;
-    min-height: 2.25rem;
-  }
-  .rehber-metin :global(.adimlar > li + li) {
-    margin-top: 1.25rem;
-  }
-  .rehber-metin :global(.adimlar > li::before) {
-    content: counter(adim);
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: grid;
-    place-items: center;
-    width: 2.1rem;
-    height: 2.1rem;
+  /* ---------- Etiket (Farz / Sünnet / 3 kere) ---------- */
+  .rehber-metin :global(.etiket) {
+    display: inline-flex;
+    align-items: center;
     border-radius: 999px;
-    background: var(--color-vurgu);
-    color: #fff;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.78rem;
     font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-soluk);
+    background: color-mix(in srgb, var(--color-murekkep) 6%, transparent);
+  }
+  .rehber-metin :global(.etiket-farz) {
+    color: #fff;
+    background: var(--color-vurgu);
+  }
+  .rehber-metin :global(.etiket-sunnet) {
+    color: var(--color-vurgu-koyu);
+    background: color-mix(in srgb, var(--color-vurgu) 14%, transparent);
+  }
+
+  /* ---------- Sıra şeridi (başlık bandında, bir bakışta) ---------- */
+  :global(.sira-seridi) {
+    margin-top: 2rem;
+  }
+  :global(.sira-seridi ol) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.35rem;
+    margin-top: 0.75rem;
+  }
+  :global(.sira-seridi li) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  /* Bağlantı çizgisi yalnız tek satıra sığan genişlikte; satır kırılınca başta kalmasın */
+  :global(.sira-seridi li + li::before) {
+    content: none;
+  }
+  @media (min-width: 1280px) {
+    :global(.sira-seridi li + li::before) {
+      content: '';
+    }
+  }
+  :global(.sira-seridi li + li::before) {
+    width: 0.9rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-detay) 60%, transparent);
+  }
+  :global(.sira-seridi .durak) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid color-mix(in srgb, var(--color-vurgu) 30%, transparent);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.9rem;
+    color: var(--color-murekkep);
+    background: var(--color-zemin);
+  }
+  :global(.sira-seridi .durak b) {
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--color-soluk);
     font-variant-numeric: tabular-nums;
   }
+  :global(.sira-seridi .durak-farz) {
+    border-color: var(--color-vurgu);
+    color: #fff;
+    background: var(--color-vurgu);
+  }
+  :global(.sira-seridi .durak-farz b) {
+    color: #fff;
+  }
+  :global(.sira-seridi .lejant) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--color-soluk);
+  }
+  :global(.sira-seridi .lejant span) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  :global(.sira-seridi .lejant i) {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-vurgu);
+  }
+  :global(.sira-seridi .lejant .dolu) {
+    background: var(--color-vurgu);
+  }
 
-  /* İçindekiler kutusu */
-  .rehber-metin :global(.icindekiler) {
-    margin-top: 2rem;
+  /* ---------- Adım kartları ---------- */
+  .rehber-metin :global(.adimlar) {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1.5rem;
+  }
+  .rehber-metin :global(.adim) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-detay) 20%, transparent);
     border-radius: 20px;
     background: var(--color-yuzey);
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 1.25rem 1.25rem 1rem;
   }
-  .rehber-metin :global(.icindekiler ol) {
-    margin-top: 0.5rem;
+  .rehber-metin :global(.adim + .adim) {
+    margin-top: 0;
+  }
+  .rehber-metin :global(.adim-farz) {
+    border-color: color-mix(in srgb, var(--color-vurgu) 45%, transparent);
+    box-shadow: inset 4px 0 0 var(--color-vurgu);
+  }
+  .rehber-metin :global(.adim-no) {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-vurgu-koyu);
+    background: color-mix(in srgb, var(--color-vurgu) 12%, transparent);
+  }
+  .rehber-metin :global(.adim-farz .adim-no) {
+    color: #fff;
+    background: var(--color-vurgu);
+  }
+  .rehber-metin :global(.adim-ust) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    min-height: 2.4rem;
+  }
+  .rehber-metin :global(.adim h3) {
+    margin: 0 0.25rem 0 0;
+    font-size: 1.15rem;
+  }
+  .rehber-metin :global(.adim p) {
+    margin-top: 0.4rem;
   }
 
-  /* Dua listesi: okunuş + anlam */
-  .rehber-metin :global(.dualar dt) {
+  /* ---------- Alıntı kartı (ayet / hadis) ---------- */
+  .rehber-metin :global(.alinti) {
+    position: relative;
+    margin-top: 1.75rem;
+    border-radius: 20px;
+    background: var(--color-gece);
+    padding: 1.75rem 1.75rem 1.5rem;
+    overflow: hidden;
+  }
+  .rehber-metin :global(.alinti::before) {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-detay), transparent);
+  }
+  .rehber-metin :global(.alinti p) {
+    font-family: var(--font-baslik);
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--color-zemin);
+  }
+  .rehber-metin :global(.alinti footer) {
+    margin-top: 0.9rem;
+    font-size: 0.875rem;
+    color: color-mix(in srgb, var(--color-zemin) 65%, transparent);
+  }
+
+  /* ---------- Farz kartları (büyük rakamlı ızgara) ---------- */
+  .rehber-metin :global(.farzlar) {
+    display: grid;
+    gap: 0.9rem;
     margin-top: 1.5rem;
-    font-weight: 500;
+  }
+  @media (min-width: 640px) {
+    .rehber-metin :global(.farzlar) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .rehber-metin :global(.farz) {
+    border-radius: 20px;
+    background: var(--color-yuzey);
+    border: 1px solid color-mix(in srgb, var(--color-vurgu) 30%, transparent);
+    padding: 1.4rem;
+  }
+  .rehber-metin :global(.farz + .farz) {
+    margin-top: 0;
+  }
+  .rehber-metin :global(.farz .rakam) {
+    display: block;
+    font-family: var(--font-baslik);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--color-vurgu);
+  }
+  .rehber-metin :global(.farz h3) {
+    margin-top: 0.75rem;
+    margin-bottom: 0.35rem;
+    font-size: 1.1rem;
+  }
+  .rehber-metin :global(.farz p) {
+    font-size: 0.95rem;
+    color: var(--color-soluk);
+  }
+
+  /* ---------- İşaretli liste (sünnetler) ---------- */
+  .rehber-metin :global(.isaretli) {
+    display: grid;
+    gap: 0.6rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .rehber-metin :global(.isaretli) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .rehber-metin :global(.isaretli li) {
+    position: relative;
+    margin-top: 0;
+    padding-left: 1.9rem;
+  }
+  .rehber-metin :global(.isaretli li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-vurgu) 16%, transparent);
+  }
+  .rehber-metin :global(.isaretli li::after) {
+    content: '';
+    position: absolute;
+    left: 0.42rem;
+    top: 0.55rem;
+    width: 0.35rem;
+    height: 0.6rem;
+    border: solid var(--color-vurgu-koyu);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* ---------- Karşılaştırma (bozar / bozmaz) ---------- */
+  .rehber-metin :global(.karsilastirma) {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .rehber-metin :global(.karsilastirma) {
+      grid-template-columns: 3fr 2fr;
+      align-items: start;
+    }
+  }
+  .rehber-metin :global(.karsilastirma > div) {
+    border-radius: 20px;
+    padding: 1.4rem;
+  }
+  .rehber-metin :global(.kutu-bozar) {
+    background: var(--color-gece);
+  }
+  .rehber-metin :global(.kutu-bozar h3),
+  .rehber-metin :global(.kutu-bozar li) {
+    color: var(--color-zemin);
+  }
+  .rehber-metin :global(.kutu-bozmaz) {
+    border: 1px solid color-mix(in srgb, var(--color-vurgu) 30%, transparent);
+    background: var(--color-yuzey);
+  }
+  .rehber-metin :global(.karsilastirma h3) {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  .rehber-metin :global(.karsilastirma ul) {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .rehber-metin :global(.karsilastirma li) {
+    position: relative;
+    margin-top: 0;
+    padding-left: 1.9rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .rehber-metin :global(.karsilastirma li::before) {
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .rehber-metin :global(.kutu-bozar li::before) {
+    content: '✕';
+    color: var(--color-gece);
+    background: var(--color-zemin);
+  }
+  .rehber-metin :global(.kutu-bozmaz li::before) {
+    content: '✓';
+    color: #fff;
+    background: var(--color-vurgu);
+  }
+
+  /* ---------- Dua kartları ---------- */
+  .rehber-metin :global(.dualar) {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .rehber-metin :global(.dualar) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .rehber-metin :global(.dua) {
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--color-detay) 20%, transparent);
+    background: var(--color-yuzey);
+    padding: 1.25rem 1.4rem;
+  }
+  .rehber-metin :global(.dua + .dua) {
+    margin-top: 0;
+  }
+  .rehber-metin :global(.dua .okunus) {
+    margin-top: 0.75rem;
+    font-family: var(--font-baslik);
+    font-size: 1.05rem;
+    line-height: 1.6;
     color: var(--color-murekkep);
   }
-  .rehber-metin :global(.dualar dd) {
-    margin-top: 0.35rem;
-    line-height: 1.75;
+  .rehber-metin :global(.dua .anlam) {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-soluk);
   }
-  .rehber-metin :global(.dualar .okunus) {
-    font-style: italic;
+
+  /* ---------- SSS akordeonu (yerel <details>, JS yok) ---------- */
+  .rehber-metin :global(.sss) {
+    margin-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-detay) 25%, transparent);
+  }
+  .rehber-metin :global(.sss details) {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-detay) 25%, transparent);
+  }
+  .rehber-metin :global(.sss summary) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 44px;
+    padding-block: 1.1rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-baslik);
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--color-murekkep);
   }
-  .rehber-metin :global(.dualar .anlam) {
+  .rehber-metin :global(.sss summary::-webkit-details-marker) {
+    display: none;
+  }
+  .rehber-metin :global(.sss summary::after) {
+    content: '';
+    flex-shrink: 0;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: solid var(--color-vurgu-koyu);
+    border-width: 0 2px 2px 0;
+    transform: translateY(-25%) rotate(45deg);
+    transition: transform 0.2s;
+  }
+  .rehber-metin :global(.sss details[open] summary::after) {
+    transform: translateY(25%) rotate(-135deg);
+  }
+  .rehber-metin :global(.sss details p) {
+    padding-bottom: 1.25rem;
     color: var(--color-soluk);
   }
 </style>
