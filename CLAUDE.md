@@ -87,12 +87,24 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   UYGULAMA_OZELLIKLERI.md'nin ilgili bölümlerinden yazılır (her sayfanın
   frontmatter yorumunda kaynağı belirtilir) ve sayfalar birbirine gövde
   metninden linklenir. Yeni özellik sayfası bu kalıbı kopyalar.
+- **İbadet rehberleri (`/rehber/<yol>/`).** Abdest, namaz vb. bilgi
+  sayfaları `layouts/Rehber.astro` iskeletini kullanır: breadcrumb, Article +
+  BreadcrumbList JSON-LD, Hanefî/Diyanet notu, kaynakça, "Diğer rehberler" ve
+  `FinalCTA`. Liste tek kaynaktan gelir: `src/data/rehberler.ts`; `/rehber/`
+  dizini, footer'daki Rehber sütunu ve "Diğer rehberler" buradan beslenir.
+  Yeni rehber = `pages/rehber/<yol>.astro` + `rehberler.ts`'e bir satır.
+  **Dinî içerik yalnız kaynaktan yazılır** (öncelik: Diyanet İslam İlmihali ve
+  Din İşleri Yüksek Kurulu fetvaları); hüküm uydurma, bilgiden tahmin yürütme
+  yok. Her bölümün altına sayfa numaralı "Kaynak:" notu konur, dua okunuşları
+  kaynaktaki yazımla birebir aktarılır. Hükümler Hanefî'ye göredir, Şâfiî
+  farkı ayrıca not edilir. Astro tuzağı: satır sonu/başındaki inline etiketin
+  (`<strong>`, `<a>`, `<span>`) yanındaki boşluk düşer — metinle aynı satırda yaz.
 
 ### Klasörler
 
 ```
 astro-site/src/
-  layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro
+  layouts/     Base.astro (meta/OG/canonical/reveal), Legal.astro, Rehber.astro
   components/  Header, Hero, TanitimVideosu (hero'daki tanıtım videosu —
                sessiz/döngülü mp4; autoplay Base.astro reveal script'inden
                `data-otooynat` ile tetiklenir, hareket azaltmada poster
@@ -102,7 +114,9 @@ astro-site/src/
                MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
                dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
-               delete_account.astro, destek.astro, 404.astro
+               delete_account.astro, destek.astro, 404.astro,
+               rehber/ (index.astro + her rehber bir .astro)
+  data/        rehberler.ts (yayındaki rehberlerin listesi)
   styles/      global.css (@theme token'ları + tipografi + animasyon)
   assets/      app_icon.png, video/ (tanitim.mp4 + poster),
                gorseller/ (mockup-*, kart-*, hero-*, store/)

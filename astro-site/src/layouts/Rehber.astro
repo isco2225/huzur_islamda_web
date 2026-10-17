@@ -1,0 +1,256 @@
+---
+/*
+ * İbadet rehberleri (/rehber/<yol>/) için ortak iskelet.
+ *
+ * İçerik yalnız kaynakçada gösterilen eserlerden yazılır (öncelik Diyanet
+ * İşleri Başkanlığı yayınları ve Din İşleri Yüksek Kurulu fetvaları); her
+ * rehber kaynaklarını `kaynaklar` prop'uyla verir, sayfanın altında listelenir
+ * ve Article şemasına `citation` olarak girer. Hükümler Hanefî mezhebine
+ * göredir; Şâfiî görüşünün ayrıldığı yerler metin içinde belirtilir.
+ */
+import Base from './Base.astro';
+import Footer from '../components/Footer.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import { rehberler } from '../data/rehberler';
+
+export interface Kaynak {
+  ad: string;
+  ayrinti?: string;
+  url?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  /** Sayfanın tek <h1>'i */
+  baslik: string;
+  /** rehberler.ts'teki `yol` ile aynı */
+  yol: string;
+  /** ISO tarih (YYYY-AA-GG) */
+  yayin: string;
+  guncelleme?: string;
+  kaynaklar: Kaynak[];
+}
+
+const { title, description, baslik, yol, yayin, guncelleme = yayin, kaynaklar } = Astro.props;
+const bu = rehberler.find((r) => r.yol === yol);
+const digerleri = rehberler.filter((r) => r.yol !== yol);
+const tarih = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'long' }).format(new Date(guncelleme));
+
+const kirinti = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana sayfa', item: new URL('/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'Rehber', item: new URL('/rehber/', Astro.site).href },
+    { '@type': 'ListItem', position: 3, name: bu?.kisaAd ?? baslik },
+  ],
+};
+
+const makale = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: baslik,
+  description,
+  inLanguage: 'tr',
+  datePublished: yayin,
+  dateModified: guncelleme,
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+  image: new URL('/og.png', Astro.site).href,
+  author: { '@type': 'Organization', name: 'İbadet Rehberim', url: new URL('/', Astro.site).href },
+  publisher: { '@type': 'Organization', name: 'İbadet Rehberim', url: new URL('/', Astro.site).href },
+  citation: kaynaklar.map((k) => ({
+    '@type': 'CreativeWork',
+    name: k.ad,
+    ...(k.url ? { url: k.url } : {}),
+  })),
+};
+---
+
+<Base title={title} description={description} ogType="article">
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(kirinti)} />
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(makale)} />
+  <main>
+    <article class="mx-auto max-w-[720px] px-5 pt-[clamp(2.5rem,6vw,4rem)] pb-[clamp(3rem,8vw,5rem)] md:px-8">
+      <nav aria-label="Konum" class="text-[0.95rem] text-soluk">
+        <a href="/" class="hover:text-murekkep">Ana sayfa</a>
+        <span aria-hidden="true"> / </span>
+        <a href="/rehber/" class="hover:text-murekkep">Rehber</a>
+      </nav>
+      <h1 class="mt-5 text-[clamp(2rem,4.5vw,2.75rem)]">{baslik}</h1>
+      <p class="mt-3 text-[0.95rem] text-soluk">
+        Son güncelleme: <time datetime={guncelleme}>{tarih}</time> · Kaynak: Diyanet İşleri Başkanlığı
+      </p>
+
+      <div class="rehber-metin mt-8">
+        <slot />
+      </div>
+
+      <aside class="cizgi mt-14 rounded-[20px] border bg-yuzey p-6 text-[0.95rem] leading-[1.7] text-soluk">
+        <p>
+          Bu rehber, Türkiye'de yaygın olan ve Diyanet İşleri Başkanlığının esas aldığı <strong class="font-medium text-murekkep">Hanefî mezhebine</strong> göre hazırlanmıştır; Şâfiî
+          mezhebinin farklı gördüğü yerler ayrıca belirtilmiştir. Özel durumunuzla ilgili sorularınızı
+          Diyanet'in <a href="https://kurul.diyanet.gov.tr/" class="text-vurgu-koyu underline" rel="noopener">Din İşleri
+          Yüksek Kurulu</a> sitesinden ya da <strong class="font-medium text-murekkep">190 Diyanet Fetva Hattı</strong>'ndan
+          sorabilirsiniz.
+        </p>
+      </aside>
+
+      <section aria-labelledby="kaynaklar" class="mt-12">
+        <h2 id="kaynaklar" class="text-[1.35rem]">Kaynaklar</h2>
+        <ol class="mt-4 list-decimal space-y-3 pl-5 text-[0.95rem] leading-[1.7] text-soluk">
+          {
+            kaynaklar.map((k) => (
+              <li>
+                {k.url ? ( <a href={k.url} class="text-vurgu-koyu underline" rel="noopener">
+                    {k.ad}
+                  </a> ) : ( <span class="text-murekkep">{k.ad}</span> )}
+                {k.ayrinti && <span>, {k.ayrinti}</span>}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      {
+        digerleri.length > 0 && (
+          <nav aria-labelledby="diger-rehberler" class="mt-12">
+            <h2 id="diger-rehberler" class="text-[1.35rem]">Diğer rehberler</h2>
+            <ul class="mt-4 space-y-2">
+              {digerleri.map((r) => (
+                <li>
+                  <a href={`/rehber/${r.yol}/`} class="text-vurgu-koyu underline">
+                    {r.kisaAd}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </article>
+
+    <FinalCTA />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Uzun okuma tipografisi — Legal.astro düzeninin rehber sürümü */
+  .rehber-metin :global(p),
+  .rehber-metin :global(li) {
+    line-height: 1.75;
+    color: var(--color-murekkep);
+  }
+  .rehber-metin :global(p + p),
+  .rehber-metin :global(p + ul),
+  .rehber-metin :global(p + ol),
+  .rehber-metin :global(ul + p),
+  .rehber-metin :global(ol + p),
+  .rehber-metin :global(dl + p) {
+    margin-top: 1rem;
+  }
+  .rehber-metin :global(.giris) {
+    font-size: 1.125rem;
+    color: var(--color-soluk);
+  }
+  .rehber-metin :global(h2) {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.5rem, 3vw, 1.85rem);
+    scroll-margin-top: 5rem;
+  }
+  .rehber-metin :global(h3) {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .rehber-metin :global(strong) {
+    font-weight: 600;
+  }
+  .rehber-metin :global(ul) {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .rehber-metin :global(ol:not(.adimlar)) {
+    padding-left: 1.5rem;
+    list-style: decimal;
+  }
+  .rehber-metin :global(li + li) {
+    margin-top: 0.6rem;
+  }
+  .rehber-metin :global(a) {
+    color: var(--color-vurgu-koyu);
+    text-decoration: underline;
+  }
+  .rehber-metin :global(.not) {
+    margin-top: 1rem;
+    border-left: 3px solid var(--color-detay);
+    padding-left: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-soluk);
+  }
+  .rehber-metin :global(.kaynak-not) {
+    font-size: 0.875rem;
+    color: var(--color-soluk);
+  }
+
+  /* Numaralı adımlar: rakam dairesi + metin */
+  .rehber-metin :global(.adimlar) {
+    counter-reset: adim;
+    margin-top: 1.5rem;
+  }
+  .rehber-metin :global(.adimlar > li) {
+    counter-increment: adim;
+    position: relative;
+    padding-left: 3rem;
+    min-height: 2.25rem;
+  }
+  .rehber-metin :global(.adimlar > li + li) {
+    margin-top: 1.25rem;
+  }
+  .rehber-metin :global(.adimlar > li::before) {
+    content: counter(adim);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    background: var(--color-vurgu);
+    color: #fff;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* İçindekiler kutusu */
+  .rehber-metin :global(.icindekiler) {
+    margin-top: 2rem;
+    border-radius: 20px;
+    background: var(--color-yuzey);
+    padding: 1.25rem 1.5rem;
+  }
+  .rehber-metin :global(.icindekiler ol) {
+    margin-top: 0.5rem;
+  }
+
+  /* Dua listesi: okunuş + anlam */
+  .rehber-metin :global(.dualar dt) {
+    margin-top: 1.5rem;
+    font-weight: 500;
+    color: var(--color-murekkep);
+  }
+  .rehber-metin :global(.dualar dd) {
+    margin-top: 0.35rem;
+    line-height: 1.75;
+  }
+  .rehber-metin :global(.dualar .okunus) {
+    font-style: italic;
+    color: var(--color-murekkep);
+  }
+  .rehber-metin :global(.dualar .anlam) {
+    color: var(--color-soluk);
+  }
+</style>

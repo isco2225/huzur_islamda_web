@@ -1,0 +1,334 @@
+---
+import Rehber from '../../layouts/Rehber.astro';
+import type { Kaynak } from '../../layouts/Rehber.astro';
+
+// İçerik kaynağı: Diyanet İşleri Başkanlığı, İslam İlmihali (34. baskı,
+// 2019), "V. Abdest" bölümü s. 96–112; adım sırası "F) Abdest Nasıl
+// Alınır?" (s. 105–107) ile DİYK "Abdest nedir ve nasıl alınır?" fetvasından.
+// Metinde verilen her sayfa numarası bu baskıya göredir.
+const ilmihal =
+  'https://diniyayinlar.diyanet.gov.tr/Documents/islam%20ilmihali%2017%20X%2024%20.pdf';
+
+const kaynaklar: Kaynak[] = [
+  {
+    ad: 'Diyanet İşleri Başkanlığı, İslam İlmihali',
+    ayrinti: 'Lütfi Şentürk ve Seyfettin Yazıcı, 34. baskı, Ankara 2019, "Abdest" bölümü, s. 96–112',
+    url: ilmihal,
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Abdest nedir ve nasıl alınır?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/abdest-nedir-ve-nasil-alinir/0193c42d-4493-7cd5-0d48-874d6be1a7d3',
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Mezhepler arasında abdestin farzları konusunda farklılık var mıdır?"',
+    ayrinti: 'fetva',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/mezhepler-arasinda-abdestin-farzlari-konusunda-farklilik-var-midir/0193c42d-44c2-71a2-18f9-9a29fcdbaa43',
+  },
+  { ad: "Kur'an-ı Kerim, Mâide suresi 5/6" },
+];
+
+const dualar = [
+  {
+    ne: 'Abdeste başlarken (Eûzü ve Besmele\'den sonra)',
+    okunus: "El-hamdü lillâhillezî ce’ale’l-mâe tahûren ve ce’ale’l-islâme nûrâ.",
+    anlam: "Suyu temizleyici ve İslam'ı nur kılan Allah'a hamdolsun.",
+  },
+  {
+    ne: 'Ağza su alırken',
+    okunus: "Allâhümme’skınî min havzi nebiyyike ke’sen lâ ezmeu ba’dehu ebedâ.",
+    anlam: 'Allahım! Bana peygamberin havuzundan öyle bir kâse içir ki ondan sonra bir daha susamayayım.',
+  },
+  {
+    ne: 'Buruna su alırken',
+    okunus: "Allâhümme lâ tahrimnî râihate naîmike ve cennâtik.",
+    anlam: 'Allahım! Beni nimetlerinin ve cennetlerinin kokusundan mahrum etme.',
+  },
+  {
+    ne: 'Yüzü yıkarken',
+    okunus: 'Allâhümme beyyid vechî binûrike yevme tebyeddu vücûhun ve tesveddu vücûh.',
+    anlam: 'Allahım! Bazı yüzlerin beyazlanacağı bazı yüzlerin de kararacağı günde benim yüzümü ak eyle.',
+  },
+  {
+    ne: 'Sağ kolu yıkarken',
+    okunus: "Allâhümme a’tinî kitabî biyeminî ve hâsibnî hisâben yesîrâ.",
+    anlam: 'Allahım! Bana kitabımı sağ tarafımdan ver ve hesabımı kolaylaştır.',
+  },
+  {
+    ne: 'Sol kolu yıkarken',
+    okunus: "Allâhümme lâ tü’ti kitabî bişimalî ve lâ min verâi zahrî ve lâ tuhasibnî hisaben şedîdâ.",
+    anlam: 'Allahım! Bana kitabımı solumdan ve arka tarafımdan verme ve beni zor bir hesaba çekme.',
+  },
+  {
+    ne: 'Başı meshederken',
+    okunus: 'Allâhümme ğaşşinî birahmetike ve enzil aleyye min berakâtik.',
+    anlam: 'Allahım! Beni rahmetinle ört ve üzerime bereketlerinden indir.',
+  },
+  {
+    ne: 'Kulakları meshederken',
+    okunus: "Allâhümmec’alnî minellezîne yestemi’ûne’l-kavle fe yettebiûne ahseneh.",
+    anlam: 'Allahım! Beni, hak sözü işitip sözün en güzeline uyanlardan eyle.',
+  },
+  {
+    ne: 'Boynu meshederken',
+    okunus: "Allâhümme a’tık rekabetî mine’n-nâr.",
+    anlam: 'Allahım! Benim vücudumu cehennem ateşinden azâd eyle.',
+  },
+  {
+    ne: 'Ayakları yıkarken',
+    okunus: "Allâhümme sebbit kademeyye ale’s-sirâti yevme tezillü fîhi’l-akdâm.",
+    anlam: 'Allahım! Ayakların kayacağı günde benim iki ayağımı sırat üzerinde sağlam tut.',
+  },
+];
+---
+
+<Rehber
+  title="Abdest Nasıl Alınır? Adım Adım, Farzları ve Duaları"
+  description="Abdest adım adım nasıl alınır? Abdestin 4 farzı, sünnetleri, abdesti bozan şeyler ve abdest duaları; Diyanet İslam İlmihali'ne dayanarak, sade bir dille."
+  baslik="Abdest nasıl alınır?"
+  yol="abdest-nasil-alinir"
+  yayin="2026-10-17"
+  kaynaklar={kaynaklar}
+>
+  <p class="giris">
+    Abdest, namazdan önce yüzü, kolları ve ayakları yıkayıp başı meshederek yapılan temizliktir.
+    Namaz kılmak için abdest şarttır; abdestsiz kılınan namaz sahih olmaz. Aşağıda abdestin nasıl
+    alındığını adım adım, ardından farzlarını, sünnetlerini ve abdesti bozan şeyleri bulacaksınız.
+  </p>
+
+  <nav class="icindekiler" aria-label="İçindekiler">
+    <strong>Bu sayfada</strong>
+    <ol>
+      <li><a href="#adim-adim">Adım adım abdest</a></li>
+      <li><a href="#farzlar">Abdestin farzları</a></li>
+      <li><a href="#sunnetler">Abdestin sünnetleri</a></li>
+      <li><a href="#bozan">Abdesti bozan şeyler</a></li>
+      <li><a href="#bozmayan">Abdesti bozmayan şeyler</a></li>
+      <li><a href="#mekruhlar">Abdestin mekruhları</a></li>
+      <li><a href="#dualar">Abdest duaları</a></li>
+      <li><a href="#sorular">Sık sorulan sorular</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="adim-adim">Adım adım abdest nasıl alınır?</h2>
+  <ol class="adimlar">
+    <li>
+      Kollarınızı dirseklerin üstüne kadar sıvayın. İmkânınız varsa suyun üzerinize sıçramaması
+      için yüksekçe bir yerde, kıbleye dönerek durun.
+    </li>
+    <li>
+      Kalbinizden niyet edin; dilinizle de <strong>“Niyet ettim Allah rızası için abdest
+      almaya”</strong> diyebilirsiniz. Ardından <em>“Eûzü billâhi mine'ş-şeytâni'r-racîm.
+      Bismillâhi'r-Rahmâni'r-Rahîm”</em> deyin.
+    </li>
+    <li>
+      Ellerinizi bileklere kadar <strong>üç kere</strong> yıkayın. Parmak aralarını birbirine
+      geçirerek ovun. Yüzük takıyorsanız suyun altına ulaşması için yüzüğü oynatın.
+    </li>
+    <li>
+      Sağ avucunuzla ağzınıza <strong>üç kere</strong> su alın ve her seferinde iyice çalkalayın.
+    </li>
+    <li>
+      Yine sağ avucunuzla burnunuza <strong>üç kere</strong> su çekin; her seferinde sol elinizle
+      sümkürerek burnunuzu temizleyin.
+    </li>
+    <li>
+      Alnın üst tarafından başlayarak yüzünüzün her yerini <strong>üç kere</strong> yıkayın.
+      Sakalınız varsa parmaklarınızla aralayın; seyrekse suyun deriye ulaşmasını sağlayın.
+    </li>
+    <li>
+      Önce sağ kolunuzu, sonra sol kolunuzu dirseklerle beraber <strong>üçer kere</strong> yıkayın.
+    </li>
+    <li>
+      Ellerinizi ıslatın ve sağ elinizin içiyle başınızın <strong>en az dörtte birini</strong> meshedin; farz böylece yerine gelir. Başın tamamını meshetmek isterseniz ıslak iki elinizi
+      parmaklarla birlikte başın ön tarafına koyup arkaya doğru sıvazlayın.
+    </li>
+    <li>
+      Şehadet parmaklarınızla kulaklarınızın içini, başparmaklarınızla dışını meshedin. Ellerinizde
+      ıslaklık kalmadıysa önce yeniden ıslatın.
+    </li>
+    <li>
+      Yeni su almadan, iki elinizin arkasıyla boynunuzu meshedin.
+    </li>
+    <li>
+      Önce sağ, sonra sol ayağınızı topuklarla beraber <strong>üçer kere</strong> yıkayın.
+      Parmak uçlarından başlayın; parmak aralarını sağ ayağın küçük parmağından başlayıp sol
+      ayağın küçük parmağında bitirecek şekilde temizleyin.
+    </li>
+    <li>
+      Abdest bitince kıbleye dönüp <strong>kelime-i şehadet</strong> getirin.
+    </li>
+  </ol>
+  <p class="not">
+    Oruçluysanız ağzınıza ve burnunuza su verirken suyu boğazınıza kaçıracak kadar ileri
+    götürmeyin.
+  </p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 102, 105–107; DİYK, “Abdest nedir ve nasıl alınır?”</p>
+
+  <h2 id="farzlar">Abdestin farzları nelerdir?</h2>
+  <p>
+    Abdestin farzları dörttür ve Kur'an'da, Mâide suresinin 6. ayetinde açıkça sayılır: <em>“Ey iman edenler, namaz kılmaya kalktığınız zaman yüzlerinizi, dirseklerinize kadar
+    ellerinizi ve başlarınıza mesh edip topuklara kadar ayaklarınızı yıkayın.”</em>
+  </p>
+  <ol>
+    <li>
+      <strong>Yüzü bir kere yıkamak.</strong> Yüz; alında saçın bittiği yerden çene altına, iki
+      kulak yumuşağı arasına kadar olan yerdir. Kirpikler ve göz pınarları da yıkanır, gözün içi
+      yıkanmaz. Sık sakalın yalnız üstünü yıkamak yeterlidir.
+    </li>
+    <li>
+      <strong>Elleri ve kolları dirseklerle beraber bir kere yıkamak.</strong>
+    </li>
+    <li>
+      <strong>Başın dörtte birini meshetmek.</strong> Mesh, ıslak eli değdirmektir. Kolları
+      yıkadıktan sonra elde kalan suyla mesh olmaz; başı meshetmek için yeni su alınır.
+    </li>
+    <li>
+      <strong>Ayakları topuklarla beraber bir kere yıkamak.</strong> Çıplak ayağa mesh etmek caiz
+      değildir.
+    </li>
+  </ol>
+  <p>
+    Organları birer kere yıkamak farz, üçer kere yıkamak sünnettir. Abdestte vacip yoktur.
+  </p>
+  <p class="not">
+    <strong>Şâfiî mezhebinde</strong> abdestin farzları altıdır: bu dördüne ek olarak niyet etmek ve
+    organları ayetteki sırayla yıkamak (tertip) de farzdır.
+  </p>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 98–101 ve 18 no.lu dipnot; DİYK, “Mezhepler arasında abdestin
+    farzları konusunda farklılık var mıdır?”
+  </p>
+
+  <h3>Suyun deriye ulaşması gerekir</h3>
+  <p>
+    Yıkanan organlarda suyun deriye ulaşmasını engelleyen hamur, mum gibi şeylerin giderilmesi
+    gerekir. Su geçirmeyen bir tabaka oluşturan oje ve boya da aynı hükümdedir. Suyun geçmesine
+    engel olmayan kına ise abdeste mani değildir.
+  </p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 101</p>
+
+  <h2 id="sunnetler">Abdestin sünnetleri</h2>
+  <p>Sünnetler farz değildir; terk edilseler de abdest geçerli olur. Başlıcaları şunlardır:</p>
+  <ul>
+    <li>Abdeste başlarken elleri bileklere kadar yıkamak.</li>
+    <li>Eûzü ve Besmele ile başlamak.</li>
+    <li>Niyet etmek. Niyet kalple olur; dille söylemek müstehaptır.</li>
+    <li>Başlarken ya da daha önce dişleri misvak veya fırçayla, bunlar yoksa parmakla temizlemek.</li>
+    <li>Ağza üç kere su alıp çalkalamak (mazmaza) ve buruna üç kere su çekmek (istinşak).</li>
+    <li>Ayetteki sıraya uymak: önce yüz, sonra kollar, sonra baş, en son ayaklar.</li>
+    <li>Kolları ve ayakları yıkarken sağdan başlamak.</li>
+    <li>Her organı üç kere yıkamak (ilki farz, diğer ikisi sünnettir).</li>
+    <li>Elleri ve ayakları yıkamaya parmak uçlarından başlamak ve parmak aralarını ovmak.</li>
+    <li>Sık sakalı parmaklarla aşağıdan yukarıya doğru aralamak.</li>
+    <li>Başın tamamını meshetmek, kulakları ve boynu meshetmek.</li>
+    <li>Organları iyice ovarak yıkamak.</li>
+    <li>Organları ara vermeden, biri kurumadan diğerine geçerek yıkamak.</li>
+  </ul>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 101–104</p>
+
+  <h2 id="bozan">Abdesti bozan şeyler</h2>
+  <p>Abdestli birinde şu hâllerden biri olursa abdest bozulur:</p>
+  <ol>
+    <li>Ön ve arkadan idrar, dışkı gibi bir şey çıkması ve arkadan yel çıkması.</li>
+    <li>
+      Vücudun herhangi bir yerinden kan veya irin akması. Ağızdan gelen kan tükürükle eşit ya da
+      ondan fazlaysa bozar, azsa bozmaz; bu, tükürüğün renginden anlaşılır.
+    </li>
+    <li>Ağız dolusu kusmak.</li>
+    <li>Yatarak ya da alındığında düşecek şekilde bir şeye yaslanarak uyumak.</li>
+    <li>Bayılmak.</li>
+    <li>Akıl hastalığı sebebiyle aklın gitmesi.</li>
+    <li>Sarhoş olmak.</li>
+    <li>
+      Namazda yanındakinin duyacağı kadar sesli gülmek. Bu hem namazı hem abdesti bozar;
+      gülümsemek ikisini de bozmaz.
+    </li>
+    <li>Eşlerin tenasül organlarının arada bir şey olmadan birbirine değmesi.</li>
+  </ol>
+  <p class="not">
+    <strong>Şâfiî mezhebinde</strong> ön ve arka dışında vücudun bir yerinden akan kan ve irin
+    abdesti bozmaz.
+  </p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 110–111 ve 25 no.lu dipnot</p>
+
+  <h2 id="bozmayan">Abdesti bozmayan şeyler</h2>
+  <ul>
+    <li>Çıktığı yerde kalıp etrafa yayılmayan kan.</li>
+    <li>Ağız dolusundan az kusmak ve balgam tükürmek.</li>
+    <li>Diş fırçasında, kürdanda ya da ısırılan bir şeyde görülen ama akmayan kan.</li>
+    <li>Hastalık sebebiyle olmayan, ağlamaktan veya gülmekten akan göz yaşı.</li>
+    <li>Bağdaş kurarak ya da dizüstü oturarak uyumak; namazda uyumak.</li>
+  </ul>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 111</p>
+
+  <h2 id="mekruhlar">Abdestin mekruhları</h2>
+  <ul>
+    <li>Suyu israf etmek, bir organı üç kereden fazla yıkamak.</li>
+    <li>Suyu çok az kullanmak, yağ sürer gibi yıkamak.</li>
+    <li>Suyu yüze ve organlara sertçe çarpmak.</li>
+    <li>İhtiyaç olmadıkça konuşmak.</li>
+    <li>Bir özür yokken başkasından yardım istemek.</li>
+    <li>Temiz olmayan bir yerde abdest almak.</li>
+  </ul>
+  <p>
+    Peygamberimiz abdest alırken suyu bol kullanan Sa'd'a “Bu israf nedir?” diye sormuş; “Abdestte
+    de israf olur mu?” sorusuna “Evet, bir akarsuyun kenarında olsan bile” cevabını vermiştir
+    (İbn Mâce, Tahâre, 48).
+  </p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 109–110</p>
+
+  <h2 id="dualar">Abdest duaları</h2>
+  <p>
+    Abdest alırken her organda okunan dualar müstehaptır: okunmasa da abdest tamamdır, ama bilen
+    için okuması güzeldir.
+  </p>
+  <dl class="dualar">
+    {
+      dualar.map((dua) => (
+        <>
+          <dt>{dua.ne}</dt>
+          <dd>
+            <span class="okunus">{dua.okunus}</span>
+            <br />
+            <span class="anlam">“{dua.anlam}”</span>
+          </dd>
+        </>
+      ))
+    }
+  </dl>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 107–109</p>
+
+  <h2 id="sorular">Sık sorulan sorular</h2>
+
+  <h3>Ojeyle abdest olur mu?</h3>
+  <p>
+    Suyun tırnağa ulaşmasını engelleyen bir tabaka oluşturduğu için ojeyle alınan abdest geçerli
+    olmaz; abdestten önce çıkarılması gerekir. Suyu geçiren kına ise abdeste engel değildir. <span class="kaynak-not">(İslam İlmihali, s. 101)</span>
+  </p>
+
+  <h3>Abdestsiz Kur'an okunur mu?</h3>
+  <p>
+    Abdestsiz biri Kur'an'ı ezberden okuyabilir, ama Mushaf'a el süremez; ayrı bir kılıf veya kapla
+    tutabilir. Çocukların abdestsiz tutmasında sakınca yoktur. <span class="kaynak-not">(İslam İlmihali, s. 112)</span>
+  </p>
+
+  <h3>Abdest vakit girmeden alınabilir mi?</h3>
+  <p>
+    Evet. Vakit girmeden önce abdest almak abdestin edeplerindendir. Yalnız sürekli idrar kaçırma
+    gibi bir özrü olanlar abdestlerini vakit girdikten sonra alır. Vakitleri takip etmek için <a href="/namaz-vakitleri/">namaz vakitleri</a> sayfamıza göz atabilirsiniz. <span class="kaynak-not">(İslam İlmihali, s. 104)</span>
+  </p>
+
+  <h3>Abdest organında yara ya da sargı varsa ne yapılır?</h3>
+  <p>
+    Yarayı yıkamak zarar veriyorsa üzerine mesh edilir; o da zararlıysa terk edilir. Sargı varsa ve
+    çözmek zarar verecekse ıslak elle sargının üzerine bir kere mesh edilir. Bu mesh, yara
+    iyileşinceye kadar geçerlidir. <span class="kaynak-not">(İslam İlmihali, s. 101, 114)</span>
+  </p>
+
+  <h3>Abdesti olmayan neleri yapamaz?</h3>
+  <p>
+    Abdestsiz namaz kılınmaz, Kâbe tavaf edilmez ve Kur'an'a el sürülmez. Tilavet secdesi için de
+    abdest farzdır. <span class="kaynak-not">(İslam İlmihali, s. 105, 111–112)</span>
+  </p>
+</Rehber>
