@@ -52,8 +52,8 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   ancak `@theme`'e eklenirse sınıf olarak kullanılabilir; bileşene ham hex
   gömme. Ortak bileşen sınıfları (`.kapsayici`, `.bolum`, `.eyebrow`, `.golge`,
   `.cizgi`, `.rakam`) da `global.css` `@layer components` içindedir.
-- **Mağaza URL'i tek kaynaktan.** `MagazaButonlari.astro` `playStoreUrl`'ü
-  **export eder**; `index.astro` bunu JSON-LD `installUrl` için import eder.
+- **Mağaza URL'i tek kaynaktan.** `MagazaButonlari.astro` `playStoreUrl` ve
+  `appStoreUrl`'ü **export eder**; `index.astro` bunları JSON-LD `installUrl` için import eder.
   Linki değiştirirken iki yeri değil bu bir yeri güncelle. `appStoreUrl` boş
   string olduğu sürece App Store butonu "Yakında" pasif haline düşer — dolunca
   kendiliğinden aktifleşir. Aynı kalıp SSS'te de var: `SSS.astro` `faq`
@@ -172,6 +172,4 @@ geçmişi İngilizcedir.
 
 ## Bekleyen eksikler (kullanıcıdan)
 
-- App Store URL'i → yayınlanınca `MagazaButonlari.astro` içindeki `appStoreUrl`
-  doldurulacak (buton otomatik aktifleşir).
 - Sosyal medya linkleri (varsa footer'a eklenecek).

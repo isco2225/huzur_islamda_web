@@ -1,9 +1,8 @@
 ---
-// Google Play yayında; App Store henüz yayında değil (buton devre dışı).
-// TODO: Uygulama App Store'da yayınlanınca appStoreUrl doldurulup buton aktifleşecek.
+// İki mağazada da yayında. appStoreUrl boş bırakılırsa buton "Yakında" pasif haline düşer.
 export const playStoreUrl =
   'https://play.google.com/store/apps/details?id=com.omran.huzur_islamda&hl=tr';
-const appStoreUrl = ''; // TODO: App Store URL (henüz yayında değil)
+export const appStoreUrl = 'https://apps.apple.com/tr/app/i-badet-rehberim/id6759827771';
 
 interface Props {
   class?: string;
