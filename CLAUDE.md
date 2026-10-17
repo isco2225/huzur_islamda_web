@@ -15,7 +15,7 @@ Uygulamanın kendisi (Flutter) ayrı bir yerdedir ve bu depoyu ilgilendirmez.
 
 | Dosya | Kapsam |
 |---|---|
-| **TASARIM.md** | Görsel tasarımın bağlayıcı şartnamesi: token'lar, tipografi, yüzey ritmi, Gün Döngüsü imza öğesi, animasyon bütçesi, yapılmayacaklar. Görsel bir karar vereceksen önce burayı oku. |
+| **TASARIM.md** | Görsel tasarımın bağlayıcı şartnamesi: token'lar, tipografi, yüzey ritmi, animasyon bütçesi, yapılmayacaklar. Görsel bir karar vereceksen önce burayı oku. |
 | **GORSELLER.md** | Hazır PNG varlıklarının envanteri, yerleşim planı, hazır `alt` metinleri. TASARIM.md §6.3'ü geçersiz kılar: mockup'lar HTML/CSS ile yeniden çizilmez. |
 | **UYGULAMA_OZELLIKLERI.md** | Uygulama özellikleri hakkında içerik yazarken tek doğru kaynak. |
 | **MIGRATION_NOTES.md** | Eski Flutter Web → Astro geçişinin envanteri; tarihsel referans. |
@@ -36,9 +36,9 @@ inceleme ile yapılır. Test çerçevesi ekleme.
 
 ## Mimari
 
-**Ana sayfa + üç özellik sayfası + üç yardımcı sayfa.** `index.astro` sekiz
+**Ana sayfa + üç özellik sayfası + üç yardımcı sayfa.** `index.astro` yedi
 bileşeni sırayla dizer
-(Hero → VakitKusagi → NasilCalisir → Ozellikler → EkranSeridi → SSS → FinalCTA
+(Hero → NasilCalisir → Ozellikler → EkranSeridi → SSS → FinalCTA
 → Footer); `Header`'ı ise her sayfada `Base.astro` basar. Bölümler kendi
 stilini kendi içinde taşır, sayfa yalnız sıralama yapar. Bir bölüm
 eklemek/çıkarmak = `index.astro`'da bir satır.
@@ -97,7 +97,7 @@ astro-site/src/
                sessiz/döngülü mp4; autoplay Base.astro reveal script'inden
                `data-otooynat` ile tetiklenir, hareket azaltmada poster
                sabit kalır), AsistanSohbeti (eski kodlanmış sohbet sahnesi;
-               şu an kullanılmıyor, geri dönüş için duruyor), VakitKusagi,
+               şu an kullanılmıyor, geri dönüş için duruyor),
                NasilCalisir, Ozellikler, EkranSeridi, SSS, FinalCTA, Footer,
                MagazaButonlari, GeriDon
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,

@@ -84,6 +84,11 @@ krem (Nav + Hero)
 
 ## 5. İmza öğesi: Gün Döngüsü
 
+> **Kaldırıldı (2026-10-17, kullanıcı kararı):** Gün Döngüsü bölümü ana
+> sayfadan ve kod tabanından çıkarıldı (`VakitKusagi.astro` silindi; git
+> geçmişinde duruyor). Bu bölüm ve ona yapılan diğer atıflar yalnız tarihsel
+> referanstır; geri getirilmedikçe uygulanmaz.
+
 Sitenin hatırlanacağı tek özgün öğe. Hero'nun altında, **diyagram değil sahne**:
 güneş ufkun ardından doğar, göğü kateder, ufka batar; gökyüzü onunla birlikte
 geceden şafağa, gündüzden akşama döner ve gece yıldızlar geri gelir. Namaz
