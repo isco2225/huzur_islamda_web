@@ -3,7 +3,7 @@ layout: ../layouts/Legal.astro
 title: 'Kullanım Koşulları | İbadet Rehberim'
 pageTitle: 'Kullanım Koşulları'
 description: 'İbadet Rehberim mobil uygulamasının kullanım koşulları: hizmet tanımı, kullanıcı yükümlülükleri, fikri mülkiyet ve sorumluluk sınırları.'
-updated: 'Son Güncelleme Tarihi: 15 Şubat 2026'
+updated: 'Son Güncelleme Tarihi: 2 Ekim 2026'
 ---
 
 ## 1. Genel Hükümler
@@ -16,7 +16,7 @@ Uygulama; kullanıcılara namaz vakitleri takibi, zikirmatik, İslami içerik ak
 
 **Dini İçerik Uyarısı:**
 
-Uygulama içerisinde sunulan namaz vakitleri, kıble yönü, hadisler ve yapay zeka asistanı tarafından verilen yanıtlar yalnızca bilgilendirme ve yardımcı olma amaçlıdır. Bu bilgiler kesin dini hüküm (fetva) niteliği taşımaz. Dini vecibelerinizi yerine getirirken nihai doğrulama sorumluluğu kullanıcıya aittir.
+Uygulama içerisinde sunulan namaz vakitleri, hadisler ve yapay zeka asistanı tarafından verilen yanıtlar yalnızca bilgilendirme ve yardımcı olma amaçlıdır. Bu bilgiler kesin dini hüküm (fetva) niteliği taşımaz. Dini vecibelerinizi yerine getirirken nihai doğrulama sorumluluğu kullanıcıya aittir.
 
 **Abonelikler:**
 
@@ -28,7 +28,7 @@ Uygulamayı kullanırken aşağıdaki hususlara uymayı taahhüt edersiniz:
 
 **Hesap Güvenliği:**
 
-Hesap oluştururken verdiğiniz bilgilerin (E-posta, Ad, Soyad vb.) doğru olduğunu beyan eder; şifrenizin güvenliğinden bizzat sorumlu olduğunuzu kabul edersiniz.
+Hesap oluştururken verdiğiniz bilgilerin (E-posta, Ad, Soyad vb.) doğru olduğunu beyan eder; giriş yaptığınız Google veya Apple hesabının güvenliğinden bizzat sorumlu olduğunuzu kabul edersiniz.
 
 **Uygun Kullanım:**
 
@@ -70,7 +70,7 @@ Geliştirici, teknik veya ticari sebeplerle uygulamanın yayınına geçici veya
 
 **Teknik Hatalar:**
 
-Namaz vakitleri hesaplamaları coğrafi konuma ve seçilen hesaplama yöntemine göre değişiklik gösterebilir. Uygulama, olası yazılımsal hatalardan, GPS sapmalarından veya vakit uyumsuzluklarından doğabilecek manevi sorumlulukları kabul etmez. Temkin sürelerini kontrol etmek kullanıcının sorumluluğundadır.
+Namaz vakitleri hesaplamaları coğrafi konuma göre değişiklik gösterebilir. Uygulama, olası yazılımsal hatalardan veya vakit uyumsuzluklarından doğabilecek manevi sorumlulukları kabul etmez. Temkin sürelerini kontrol etmek kullanıcının sorumluluğundadır.
 
 **Yapay Zeka (Asistan):**
 

@@ -3,7 +3,7 @@ layout: ../layouts/Legal.astro
 title: 'Gizlilik Politikası | İbadet Rehberim'
 pageTitle: 'Gizlilik Politikası'
 description: 'İbadet Rehberim mobil uygulamasının gizlilik politikası: toplanan veriler, kullanım amaçları, paylaşım, güvenlik ve kullanıcı hakları.'
-updated: 'Son Güncelleme Tarihi: 15 Şubat 2026'
+updated: 'Son Güncelleme Tarihi: 2 Ekim 2026'
 ---
 
 İbadet Rehberim ekibi olarak, kullanıcılarımızın gizliliğine ve kişisel verilerinin güvenliğine büyük önem veriyoruz. Bu Gizlilik Politikası, mobil uygulamamızı kullandığınızda verilerinizin nasıl toplandığını, kullanıldığını, paylaşıldığını ve korunduğunu açıklamaktadır.
@@ -16,28 +16,32 @@ Uygulamayı daha verimli kullanabilmeniz ve size kişiselleştirilmiş bir deney
 
 **Kimlik ve İletişim Bilgileri:**
 
-Hesap oluşturduğunuzda Ad, Soyad, E-posta adresi, doğum tarihi ve cinsiyet bilgilerinizi toplarız. Google veya Apple ile giriş yapmanız durumunda, ilgili platform tarafından sağlanan temel profil bilgilerinizi (ad, e-posta, profil fotoğrafı) işleriz.
+Uygulamanın akış ve namaz vakitleri bölümlerini hesap oluşturmadan kullanabilirsiniz. Google veya Apple ile giriş yapmanız durumunda, ilgili platform tarafından sağlanan temel profil bilgilerinizi (ad, e-posta) işleriz. Ad, soyad, doğum tarihi ve cinsiyet bilgilerini profilinize isteğe bağlı olarak ekleyebilirsiniz.
 
 **Konum Bilgileri:**
 
-Namaz vakitlerini doğru hesaplayabilmek için İlçe, Şehir ve Ülke bazlı konum verilerinizi toplarız. Bu veriler anlık GPS takibi şeklinde değil, seçtiğiniz veya onayladığınız lokasyon bilgisi olarak işlenir.
+Namaz vakitlerini doğru hesaplayabilmek için İlçe, Şehir ve Ülke bazlı konum verilerinizi toplarız. Bu veriler anlık GPS takibi şeklinde değil, seçtiğiniz veya onayladığınız lokasyon bilgisi olarak işlenir. Uygulamayı hesap oluşturmadan kullandığınızda seçtiğiniz konum yalnızca cihazınızda saklanır.
 
 **Kullanım ve İçerik Verileri:**
 
-Oluşturduğunuz günlük zikirler, zikir sayılarınız ve "Ruh Haline Göre" oluşturulan zikir setleri. "Akış" (Flow) bölümünde kaydettiğiniz gönderiler (Kaydedilenler). Asistan ile yaptığınız sohbet geçmişi (bağlamı korumak adına son mesajlaşmalar).
+Oluşturduğunuz günlük zikirler, zikir sayılarınız ve "Ruh Haline Göre" oluşturulan zikir setleri. "Akış" (Flow) bölümünde kaydettiğiniz gönderiler (Kaydedilenler). Asistana yazdığınız sorular ve bağlamı korumak adına son mesajlar. Bunlar yanıt üretilebilmesi için Google Gemini yapay zekâ hizmetine iletilir; adınız ve e-posta adresiniz iletilmez, profilinizde varsa yaşınız ve cinsiyetiniz iletilir. İlk sorunuzdan önce uygulama içinde bunun için onayınız istenir.
+
+**Cihaz ve Teknik Veriler:**
+
+IP adresi, cihaz modeli ve işletim sistemi sürümü gibi teknik bilgiler; bunlar hizmetin sunulması sırasında kullandığımız hizmet sağlayıcılar (Firebase, AdMob) tarafından işlenir.
 
 **Reklam Verileri:**
 
-Ücretsiz sürümü kullanıyorsanız, reklam gösterimi için cihaz reklam kimliği (IDFA/GAID) gibi tanımlayıcılar toplanabilir.
+Ücretsiz sürümü kullanıyorsanız reklamlar Google AdMob aracılığıyla gösterilir. Android'de bunun için cihaz reklam kimliği (GAID) kullanılabilir. iOS'ta izleme izni istenmez ve reklam kimliği (IDFA) kullanılmaz.
 
 ## 2. Verilerin Kullanım Amaçları
 
 Topladığımız verileri şu amaçlarla kullanıyoruz:
 
 - Hizmetin Sunulması: Namaz vakitlerini konumunuza göre hesaplamak, zikirlerinizi takip etmek ve kaydetmek.
-- Hesap Yönetimi: Kimliğinizi doğrulamak, şifre sıfırlama işlemlerini yürütmek ve profilinizi yönetmenizi sağlamak.
-- Kişiselleştirme: "Asistan" özelliğinin sorularınıza size özel (örneğin isminizle hitap ederek) yanıt vermesini sağlamak ve ana akışta ilgi alanlarınıza uygun içerikler sunmak.
-- İletişim ve Bildirimler: Namaz vakti hatırlatmaları ve günlük zikir hatırlatmalarını (saat 22:00 gibi) size iletmek.
+- Hesap Yönetimi: Google veya Apple hesabınızla kimliğinizi doğrulamak ve profilinizi yönetmenizi sağlamak.
+- Kişiselleştirme: "Asistan" özelliğinin sorularınıza yaşınıza uygun bir dille yanıt vermesini sağlamak.
+- İletişim ve Bildirimler: Namaz vakti hatırlatmaları ve günlük zikir hatırlatmalarını (akşam saatlerinde) size iletmek. Bu bildirimler cihazınızda planlanır.
 - Geliştirme ve Güvenlik: Uygulamanın hatalarını tespit etmek, güvenliği sağlamak ve kullanıcı deneyimini iyileştirmek.
 - Reklam Gösterimi: Premium üye değilseniz, size uygun reklamları sunabilmek.
 
@@ -45,7 +49,7 @@ Topladığımız verileri şu amaçlarla kullanıyoruz:
 
 Kişisel verilerinizi, yasal zorunluluklar veya hizmetin işleyişi haricinde üçüncü şahıslara satmayız. Verileriniz yalnızca aşağıdaki durumlarda paylaşılabilir:
 
-- Hizmet Sağlayıcılar: Uygulamanın altyapısını sağlayan güvenilir üçüncü taraf hizmetler (veritabanı ve kimlik doğrulama, reklam gösterimi vb.).
+- Hizmet Sağlayıcılar: Uygulamanın altyapısını sağlayan güvenilir üçüncü taraf hizmetler (veritabanı ve kimlik doğrulama için Google Firebase, reklam gösterimi için Google AdMob, asistan yanıtları için Google Gemini, abonelik yönetimi için RevenueCat). Bu sağlayıcılar verilerinizi yalnızca ilgili hizmeti sunmak için, kendi gizlilik politikaları ve bu politikadakine denk koruma yükümlülükleri çerçevesinde işler.
 - Yasal Zorunluluklar: Kanunen yetkili kamu kurum ve kuruluşlarından gelen yasal talepler doğrultusunda verileriniz paylaşılabilir.
 - Ödeme İşlemleri: Premium abonelik (Haftalık/Yıllık) satın alımlarınız Apple App Store veya Google Play Store ödeme sistemleri üzerinden gerçekleşir. Kredi kartı bilgileriniz sunucularımızda tutulmaz.
 
@@ -56,15 +60,16 @@ Verilerinizin güvenliği bizim için önceliklidir:
 - Verileriniz güvenilir bulut sunucularında saklanmaktadır.
 - Uygulama ile sunucular arasındaki veri iletişimi şifreleme teknolojisi ile korunmaktadır.
 - Zikir verileriniz gibi bazı tercihleriniz cihazınızda yerel olarak, cihaz güvenliğinize bağlı olarak saklanır.
-- Hesabınıza erişim şifre korumalıdır. Şifrenizin güvenliğinden siz sorumlusunuz.
+- Hesabınıza Google veya Apple hesabınızla giriş yaparsınız; o hesabın güvenliğinden siz sorumlusunuz.
 
 ## 5. Haklarınız
 
 Kullanıcı olarak kişisel verileriniz üzerinde aşağıdaki haklara sahipsiniz:
 
 - Erişim ve Düzeltme: Profil sayfanızdan kişisel bilgilerinizi (ad, soyad, konum vb.) dilediğiniz zaman görüntüleyebilir ve güncelleyebilirsiniz.
-- Veri Silme (Unutulma Hakkı): Uygulama içerisindeki Ayarlar > Hesap > Hesabı Sil seçeneğini kullanarak hesabınızı ve ilişkili tüm verilerinizi kalıcı olarak silebilirsiniz. Ayrıca web sitemizdeki [talep formunu](/delete_account) kullanarak da silme talebinde bulunabilirsiniz.
+- Veri Silme (Unutulma Hakkı): Uygulama içerisindeki Ayarlar > Hesap > Hesabı Sil seçeneğini kullanarak hesabınızı, profilinizi ve zikir kayıtlarınızı kalıcı olarak silebilirsiniz. Silme sonrasında yalnızca adınızı ve e-posta adresinizi içermeyen özet bilgiler (ülke, şehir, hesap açılış tarihi) ile varsa abonelik kayıtları, istatistik ve yasal yükümlülükler için saklanır. Ayrıca web sitemizdeki [talep formunu](/delete_account) kullanarak da silme talebinde bulunabilirsiniz.
 - İtiraz ve Kısıtlama: Verilerinizin işlenmesine itiraz etme hakkınız saklıdır.
+- Onayı Geri Alma: Yapay zekâ asistanı için verdiğiniz onayı uygulama içinde Ayarlar > Hakkında > Yapay zekâ asistanı onayı adımından geri alabilirsiniz; bundan sonra yeni bir soru göndermeden önce onayınız yeniden istenir. Hesabınızdan çıkış yaptığınızda bu onay kendiliğinden geri alınır.
 - Bildirimleri Kapatma: Ayarlar menüsünden namaz ve zikir bildirimlerini dilediğiniz zaman kapatabilirsiniz.
 
 ## 6. İletişim
