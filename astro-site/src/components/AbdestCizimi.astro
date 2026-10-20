@@ -1,0 +1,749 @@
+---
+/**
+ * Abdest rehberindeki adım kartlarının küçük çizimleri (TASARIM.md §7, 5. kalem).
+ *
+ * Dekoratiftir (aria-hidden): bilgiyi kartın metni taşır. Animasyon kart
+ * `.reveal` ile göründüğünde (`.goster`) başlar ve döngüde sürer (kullanıcı
+ * kararı: tek seferlik oynatma ziyaretçi bakmadan bitiyordu); yeni script yoktur.
+ * JS'siz ya da hareket azaltmada çizim sabit bir karede durur.
+ * Yüzler bilerek çizilmez (yüzsüz siluet). "3 kere" adımlarında sol üstteki
+ * üç nokta yıkamaları sayar.
+ */
+export type Cizim =
+  | 'hazirlik'
+  | 'niyet'
+  | 'eller'
+  | 'agiz'
+  | 'burun'
+  | 'yuz'
+  | 'kollar'
+  | 'bas'
+  | 'kulaklar'
+  | 'boyun'
+  | 'ayaklar'
+  | 'sehadet';
+
+interface Props {
+  cizim: Cizim;
+}
+
+const { cizim } = Astro.props;
+
+// "3 kere" yıkanan adımlarda sayaç gösterilir
+const sayacli = ['eller', 'agiz', 'burun', 'yuz', 'kollar', 'ayaklar'].includes(cizim);
+// Yandan baş profili (niyet, ağız, burun) ve yatay kol (hazırlık, kollar) ortak çizimdir
+const profil = ['niyet', 'agiz', 'burun'].includes(cizim);
+const yatayKol = cizim === 'hazirlik' || cizim === 'kollar';
+---
+
+<span class="cizim" aria-hidden="true">
+  <svg viewBox="0 0 120 120">
+    {
+      sayacli && (
+        <g class="sayac">
+          <circle cx="16" cy="16" r="3.5" />
+          <circle cx="27" cy="16" r="3.5" />
+          <circle cx="38" cy="16" r="3.5" />
+        </g>
+      )
+    }
+
+    {
+      cizim === 'eller' && (
+        <>
+          <rect class="metal" x="56" y="12" width="64" height="11" rx="5.5" />
+          <rect class="metal" x="52" y="12" width="15" height="24" rx="6" />
+          <rect class="su eller-su" x="56.5" y="34" width="5" height="30" rx="2.5" />
+          <g class="eller-damla">
+            <circle class="su" cx="46" cy="76" r="1.8" />
+            <circle class="su" cx="73" cy="80" r="1.5" />
+          </g>
+          <g class="sol-el">
+            <g transform="translate(50 95) rotate(20)">
+              <rect class="ten-golge" x="-9" y="6" width="18" height="44" rx="6" />
+              <rect class="ten-arka" x="-11" y="-12" width="22" height="26" rx="9" />
+              <rect class="ten-arka" x="-9.5" y="-36" width="19" height="30" rx="9.5" />
+              <rect class="ten-arka" x="-15" y="-15" width="8" height="18" rx="4" transform="rotate(-12 -11 -6)" />
+              <g class="el-islak">
+                <rect class="su" x="-11" y="-12" width="22" height="26" rx="9" />
+                <rect class="su" x="-9.5" y="-36" width="19" height="30" rx="9.5" />
+                <rect class="su" x="-15" y="-15" width="8" height="18" rx="4" transform="rotate(-12 -11 -6)" />
+              </g>
+            </g>
+          </g>
+          <g class="sag-el">
+            <g transform="translate(70 95) rotate(-20) scale(-1 1)">
+              <rect class="ten-golge" x="-9" y="6" width="18" height="44" rx="6" />
+              <rect class="ten" x="-11" y="-12" width="22" height="26" rx="9" />
+              <rect class="ten" x="-9.5" y="-36" width="19" height="30" rx="9.5" />
+              <rect class="ten" x="-15" y="-15" width="8" height="18" rx="4" transform="rotate(-12 -11 -6)" />
+              <g class="el-islak">
+                <rect class="su" x="-11" y="-12" width="22" height="26" rx="9" />
+                <rect class="su" x="-9.5" y="-36" width="19" height="30" rx="9.5" />
+                <rect class="su" x="-15" y="-15" width="8" height="18" rx="4" transform="rotate(-12 -11 -6)" />
+              </g>
+            </g>
+          </g>
+        </>
+      )
+    }
+
+    {
+      cizim === 'yuz' && (
+        <>
+          <path class="ten-golge" d="M28 120 C28 101 43 95 60 95 C77 95 92 101 92 120Z" />
+          <rect class="ten-golge" x="52" y="76" width="16" height="24" rx="6" />
+          <ellipse class="ten" cx="36.5" cy="59" rx="4.5" ry="8" />
+          <ellipse class="ten" cx="83.5" cy="59" rx="4.5" ry="8" />
+          <ellipse class="ten" cx="60" cy="57" rx="23" ry="29" />
+          <clipPath id="abdest-yuz-kirp">
+            <ellipse cx="60" cy="57" rx="23" ry="29" />
+          </clipPath>
+          <g clip-path="url(#abdest-yuz-kirp)">
+            <g class="yuz-su">
+              <rect class="su" x="30" y="40" width="60" height="26" opacity=".72" />
+              <rect class="su" x="30" y="64" width="60" height="2.5" />
+            </g>
+          </g>
+          <path class="sac" d="M36 56 C33 31 45 22 60 22 C75 22 87 31 84 56 C82 46 77 37 60 37 C43 37 38 46 36 56Z" />
+          <path class="su yuz-damla" d="M60 87 c-2 3.5 -2 5.5 0 5.5 c2 0 2 -2 0 -5.5Z" />
+        </>
+      )
+    }
+
+    {
+      cizim === 'bas' && (
+        <>
+          <path class="ten-golge" d="M38 120 C38 106 50 100 64 100 C80 100 92 107 94 120Z" />
+          <rect class="ten-golge" x="56" y="80" width="18" height="26" rx="6" />
+          <path
+            class="ten"
+            d="M85 62 C87 42 76 32 61 32 C46 32 37 42 37 56 L34 63 C33 65 34 66 36 66 L37 66 L37 73 C37 79 41 83 47 83 L59 83 C67 83 73 81 77 77 C83 73 85 68 85 62Z"
+          />
+          <path class="sac" d="M38 52 C37 40 47 30 63 30 C79 30 89 40 87 60 C86 68 83 74 79 76 C80 68 79 56 73 52 C65 48 51 50 38 52Z" />
+          <ellipse class="ten-golge" cx="67" cy="62" rx="4" ry="7" />
+          <clipPath id="abdest-sac-kirp">
+            <path d="M38 52 C37 40 47 30 63 30 C79 30 89 40 87 60 C86 68 83 74 79 76 C80 68 79 56 73 52 C65 48 51 50 38 52Z" />
+          </clipPath>
+          {/* Islak iz: baş merkezi etrafında elle birlikte dönen yarım düzlem */}
+          <g class="bas-islak" clip-path="url(#abdest-sac-kirp)">
+            <rect class="su bas-iz" x="-18" y="-24" width="80" height="160" opacity=".72" />
+          </g>
+          {/* El başın eğrisine oturan bir yay; aynı merkez etrafında dönerek kayar */}
+          <g class="bas-el">
+            <path class="kol" d="M71 26 L100 2" />
+            <path class="avuc" d="M56.98 27.54 A28.9 28.9 0 0 1 70.93 28.51" />
+            <path class="parmak" d="M47.16 32.25 A28 28 0 0 1 59.07 28.15" />
+          </g>
+        </>
+      )
+    }
+
+    {
+      profil && (
+        <>
+          <path class="ten-golge" d="M38 120 C38 106 50 100 64 100 C80 100 92 107 94 120Z" />
+          <rect class="ten-golge" x="56" y="80" width="18" height="26" rx="6" />
+          <path
+            class="ten"
+            d="M85 62 C87 42 76 32 61 32 C46 32 37 42 37 56 L34 63 C33 65 34 66 36 66 L37 66 L37 73 C37 79 41 83 47 83 L59 83 C67 83 73 81 77 77 C83 73 85 68 85 62Z"
+          />
+          <path class="sac" d="M38 52 C37 40 47 30 63 30 C79 30 89 40 87 60 C86 68 83 74 79 76 C80 68 79 56 73 52 C65 48 51 50 38 52Z" />
+          <ellipse class="ten-golge" cx="67" cy="62" rx="4" ry="7" />
+        </>
+      )
+    }
+
+    {
+      cizim === 'niyet' && (
+        <>
+          <defs>
+            <radialGradient id="abdest-nur">
+              <stop offset="0" stop-color="var(--color-detay)" />
+              <stop offset="1" stop-color="var(--color-detay)" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          {/* Kalpten niyet: göğüste nabız gibi atan ışık; besmele: ağızdan çıkan ses halkaları */}
+          <circle class="nur" cx="58" cy="108" r="24" fill="url(#abdest-nur)" />
+          <path class="ses ses-1" d="M30 66 q-3 5 0 10" />
+          <path class="ses ses-2" d="M24 62 q-5 9 0 18" />
+          <path class="ses ses-3" d="M18 58 q-7 13 0 26" />
+        </>
+      )
+    }
+
+    {
+      (cizim === 'agiz' || cizim === 'burun') && (
+        <>
+          {cizim === 'agiz' && <ellipse class="su agiz-su" cx="46" cy="72" rx="5.5" ry="3.5" />}
+          {
+            cizim === 'burun' && (
+              <g class="burun-damla">
+                <circle class="su" cx="31" cy="65" r="1.6" />
+                <circle class="su" cx="27" cy="67" r="1.3" />
+              </g>
+            )
+          }
+          {/* Sağ avuç: suyu aşağıdan ağza ya da buruna getirir */}
+          <g class={cizim === 'agiz' ? 'avuc-agiz' : 'avuc-burun'}>
+            <path class="kol" d="M6 4 L-14 44" />
+            <path class="ten" d="M-13 -3 C-12 8 12 8 13 -3 Z" />
+            <ellipse class="su avuc-su" cx="0" cy="-3" rx="12" ry="2.6" />
+          </g>
+        </>
+      )
+    }
+
+    {
+      yatayKol && (
+        <>
+          {cizim === 'kollar' && <rect class="su kol-su" x="-2.5" y="0" width="5" height="56" rx="2.5" />}
+          <path class="ten" d="M28 57 L80 53 L80 75 L28 71 Z" />
+          <circle class="ten" cx="83" cy="64" r="11" />
+          <rect class="ten" x="83" y="53" width="40" height="22" />
+          <rect class="ten" x="5" y="57" width="26" height="14" rx="7" />
+          <rect class="ten" x="18" y="52" width="12" height="7" rx="3.5" />
+          <path class="cizgi-ten" d="M86 58 q4 6 0 12" />
+          {
+            cizim === 'kollar' && (
+              <>
+                <clipPath id="abdest-kol-kirp">
+                  <path d="M28 57 L80 53 L80 75 L28 71 Z" />
+                  <circle cx="83" cy="64" r="11" />
+                  <rect x="83" y="53" width="40" height="22" />
+                  <rect x="5" y="57" width="26" height="14" rx="7" />
+                  <rect x="18" y="52" width="12" height="7" rx="3.5" />
+                </clipPath>
+                {/* Islaklık parmak uçlarından başlar, dirseği de içine alarak durur */}
+                <g clip-path="url(#abdest-kol-kirp)">
+                  <rect class="su kol-islak" x="4" y="44" width="94" height="40" />
+                </g>
+              </>
+            )
+          }
+          {/* Yen: ucu (x=0) bilekten dirseğin üstüne çekilir, kumaş uçta ruloya toplanır */}
+          <g class={cizim === 'hazirlik' ? 'yen yen-kayan' : 'yen'}>
+            <rect class="kumas" x="0" y="49" width="130" height="30" rx="4" />
+            <path class="kumas-kirisik" d="M16 52 q4 12 0 24 M36 52 q4 12 0 24" />
+            <g class="yen-rulo">
+              <rect class="kumas-golge" x="-6" y="46" width="12" height="36" rx="6" />
+              <path class="kumas-kat" d="M-1.5 49 v30 M2.5 49 v30" />
+            </g>
+            {
+              cizim === 'hazirlik' && (
+                <g class="yen-el">
+                  <path class="el-hat" stroke-width="13" d="M6 36 L16 -10" />
+                  <path class="el-ana" stroke-width="11" d="M6 36 L16 -10" />
+                  <ellipse class="el-dolgu" cx="3" cy="40" rx="10" ry="8" />
+                  <rect class="el-dolgu" x="-8.5" y="42" width="4.6" height="17" rx="2.3" />
+                  <rect class="el-dolgu" x="-3.6" y="43" width="4.6" height="18" rx="2.3" />
+                  <rect class="el-dolgu" x="1.3" y="43" width="4.6" height="18" rx="2.3" />
+                  <rect class="el-dolgu" x="6.2" y="42" width="4.6" height="16" rx="2.3" />
+                </g>
+              )
+            }
+          </g>
+        </>
+      )
+    }
+
+    {
+      cizim === 'kulaklar' && (
+        <>
+          {/* Ağız/burun adımlarındaki profilin kulağa yakınlaştırılmış hâli */}
+          <g transform="translate(-53.9 -47.4) scale(1.7)">
+            <rect class="ten-golge" x="56" y="80" width="18" height="26" rx="6" />
+            <path
+              class="ten"
+              d="M85 62 C87 42 76 32 61 32 C46 32 37 42 37 56 L34 63 C33 65 34 66 36 66 L37 66 L37 73 C37 79 41 83 47 83 L59 83 C67 83 73 81 77 77 C83 73 85 68 85 62Z"
+            />
+            <path class="sac" d="M38 52 C37 40 47 30 63 30 C79 30 89 40 87 60 C86 68 83 74 79 76 C80 68 79 56 73 52 C65 48 51 50 38 52Z" />
+          </g>
+          <ellipse class="ten" cx="60" cy="58" rx="10" ry="16" />
+          <path class="cizgi-ten kalin" d="M53 49 C56 41 69 42 69 55 C69 63 66 67 64 73" />
+          <ellipse class="ten-golge" cx="61" cy="61" rx="4.5" ry="7" />
+          <ellipse class="su kulak-islak" cx="60" cy="58" rx="10" ry="16" />
+          {/* El kulağı kavrar: şehadet parmağı içinde, başparmak arkasında */}
+          <g class="kulak-el">
+            <path class="el-hat" stroke-width="14" d="M88 94 L104 126" />
+            <path class="el-ana" stroke-width="12" d="M88 94 L104 126" />
+            <path class="el-hat" stroke-width="8" d="M88 80 C81 71 75 61 73 50" />
+            <path class="el-ana" stroke-width="6" d="M88 80 C81 71 75 61 73 50" />
+            <circle class="el-dolgu" cx="73" cy="93" r="4.5" />
+            <circle class="el-dolgu" cx="75.5" cy="100" r="4.5" />
+            <circle class="el-dolgu" cx="80.5" cy="105" r="4.5" />
+            <ellipse class="el-dolgu" cx="85" cy="92" rx="12.5" ry="11" />
+            <path class="el-hat" stroke-width="7.5" d="M76 82 C70 76 64 71 61.5 63" />
+            <path class="el-ana" stroke-width="5.5" d="M76 82 C70 76 64 71 61.5 63" />
+          </g>
+        </>
+      )
+    }
+
+    {
+      cizim === 'boyun' && (
+        <>
+          <path class="ten-golge" d="M10 120 C12 100 34 90 60 90 C86 90 108 100 110 120Z" />
+          <rect class="ten" x="45" y="52" width="30" height="46" rx="8" />
+          <clipPath id="abdest-boyun-kirp">
+            <rect x="45" y="52" width="30" height="46" rx="8" />
+          </clipPath>
+          <g clip-path="url(#abdest-boyun-kirp)">
+            <rect class="su boyun-islak" x="45" y="52" width="30" height="46" />
+          </g>
+          <ellipse class="ten" cx="34" cy="42" rx="4.5" ry="8" />
+          <ellipse class="ten" cx="86" cy="42" rx="4.5" ry="8" />
+          <circle class="sac" cx="60" cy="38" r="26" />
+          {/* İki elin arkası enseden yanlara doğru kayar */}
+          <g class="boyun-sol">
+            <rect class="ten-golge" x="38" y="86" width="13" height="40" rx="6" />
+            <rect class="ten" x="40" y="58" width="15" height="32" rx="7" />
+            <path class="cizgi-ten" d="M43 70 h9" />
+          </g>
+          <g class="boyun-sag">
+            <rect class="ten-golge" x="69" y="86" width="13" height="40" rx="6" />
+            <rect class="ten" x="65" y="58" width="15" height="32" rx="7" />
+            <path class="cizgi-ten" d="M68 70 h9" />
+          </g>
+        </>
+      )
+    }
+
+    {
+      cizim === 'ayaklar' && (
+        <>
+          <rect class="su ayak-su" x="-2.5" y="0" width="5" height="90" rx="2.5" />
+          <rect class="ten" x="70" y="-4" width="24" height="80" rx="6" />
+          <path class="ten" d="M96 66 C99 82 99 96 90 98 L22 98 C12 98 10 89 17 85 C30 79 52 75 70 68 Z" />
+          <circle class="ten-golge" cx="84" cy="74" r="5" />
+          <path class="cizgi-ten" d="M24 88 v8 M31 86 v10 M38 84 v12" />
+          <clipPath id="abdest-ayak-kirp">
+            <rect x="70" y="-4" width="24" height="80" rx="6" />
+            <path d="M96 66 C99 82 99 96 90 98 L22 98 C12 98 10 89 17 85 C30 79 52 75 70 68 Z" />
+          </clipPath>
+          {/* Islaklık parmak uçlarından başlar, topukları da içine alarak durur */}
+          <g clip-path="url(#abdest-ayak-kirp)">
+            <rect class="su ayak-islak" x="10" y="62" width="92" height="40" />
+          </g>
+        </>
+      )
+    }
+
+    {
+      cizim === 'sehadet' && (
+        <>
+          <circle class="kadran" cx="60" cy="62" r="40" />
+          <circle class="kadran-cember" cx="60" cy="62" r="40" />
+          <path class="kadran-cizgi" d="M60 26 v6 M60 92 v6 M24 62 h6 M90 62 h6" />
+          <circle class="kabe-hale" cx="79.3" cy="39" r="11" />
+          <g transform="translate(79.3 39)">
+            <rect class="kabe" x="-6" y="-6" width="12" height="12" rx="1" />
+            <rect class="kabe-kusak" x="-6" y="-3.2" width="12" height="2" />
+          </g>
+          {/* Pusula iğnesi salınarak kıbleye (Kâbe) oturur */}
+          <g class="igne">
+            <path class="igne-uc" d="M60 30 L65.5 62 L54.5 62 Z" />
+            <path class="igne-kuyruk" d="M60 90 L65.5 62 L54.5 62 Z" />
+            <circle class="igne-mil" cx="60" cy="62" r="3.5" />
+          </g>
+        </>
+      )
+    }
+  </svg>
+</span>
+
+<style>
+  .cizim {
+    --ten: color-mix(in srgb, var(--color-detay) 55%, var(--color-zemin));
+    --ten-arka: color-mix(in srgb, var(--color-detay) 68%, var(--color-zemin));
+    --ten-golge: color-mix(in srgb, var(--color-detay) 85%, var(--color-murekkep));
+    --sac: color-mix(in srgb, var(--color-detay) 45%, var(--color-murekkep));
+    --metal: color-mix(in srgb, var(--color-zemin) 40%, var(--color-gece));
+    --kumas: color-mix(in srgb, var(--color-zemin) 80%, var(--color-gece));
+    --kumas-golge: color-mix(in srgb, var(--color-zemin) 58%, var(--color-gece));
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 18px;
+    background: var(--color-gece);
+    overflow: hidden;
+  }
+  :global(.adim-farz) .cizim {
+    background: var(--color-vurgu-koyu);
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  svg * {
+    transform-box: view-box;
+  }
+
+  .ten { fill: var(--ten); }
+  .ten-arka { fill: var(--ten-arka); }
+  .ten-golge { fill: var(--ten-golge); }
+  .sac { fill: var(--sac); }
+  .su { fill: var(--color-su); }
+  .sayac circle { fill: var(--color-zemin); }
+  /* Ellerin yıkanan kısmı (bileğe kadar); hareketsiz durumda ıslak görünür */
+  .el-islak { opacity: 0.65; }
+  .metal { fill: var(--metal); }
+  .kumas { fill: var(--kumas); }
+  .kumas-golge { fill: var(--kumas-golge); }
+  .kumas-kirisik,
+  .kumas-kat {
+    fill: none;
+    stroke-linecap: round;
+    stroke-width: 1.3;
+  }
+  .kumas-kirisik { stroke: var(--kumas-golge); }
+  .kumas-kat { stroke: var(--kumas); }
+  /* Hareketsiz kare: yen dirseğin üstünde, çeken el yok */
+  .yen { transform: translateX(102px); }
+  .yen-rulo {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .yen-el { opacity: 0; }
+  .cizgi-ten {
+    fill: none;
+    stroke: var(--ten-golge);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .cizgi-ten.kalin { stroke-width: 2.5; }
+  /* Kulaktaki el: koyu ten dolgu + ince kontur, başın teninden ayrışsın */
+  .el-ana,
+  .el-hat {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .el-ana { stroke: var(--ten-arka); }
+  .el-hat { stroke: var(--ten-golge); }
+  .el-dolgu {
+    fill: var(--ten-arka);
+    stroke: var(--ten-golge);
+    stroke-width: 1;
+  }
+  .ses {
+    fill: none;
+    stroke: var(--color-zemin);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    opacity: 0.75;
+  }
+  .kadran { fill: color-mix(in srgb, var(--color-zemin) 18%, var(--color-gece)); }
+  .kadran-cember,
+  .kabe-hale {
+    fill: none;
+    stroke: var(--color-detay);
+    stroke-width: 2;
+    opacity: 0.7;
+  }
+  .kadran-cizgi {
+    stroke: var(--color-zemin);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.5;
+  }
+  .kabe { fill: var(--color-murekkep); }
+  .kabe-kusak,
+  .igne-uc { fill: var(--color-detay); }
+  .igne-kuyruk {
+    fill: var(--color-zemin);
+    opacity: 0.55;
+  }
+  .igne-mil { fill: var(--color-zemin); }
+  .kol,
+  .avuc,
+  .parmak {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .kol {
+    stroke: var(--ten-golge);
+    stroke-width: 8;
+  }
+  .avuc {
+    stroke: var(--ten);
+    stroke-width: 6.4;
+  }
+  .parmak {
+    stroke: var(--ten);
+    stroke-width: 4.6;
+  }
+
+  /* Hareketsiz kareler (JS'siz / hareket azaltma): her çizim okunur bir anda durur */
+  .avuc-agiz { transform: translate(26px, 77px) rotate(16deg); }
+  .avuc-burun { transform: translate(22px, 68px) rotate(10deg); }
+  .agiz-su { opacity: 0; }
+  .kol-su { transform: translateX(56px); }
+  .ayak-su { transform: translateX(52px); }
+  .kol-islak,
+  .ayak-islak,
+  .boyun-islak,
+  .kulak-islak { opacity: 0.72; }
+  .kol-islak { transform-origin: 4px 0; transform: scaleX(0.55); }
+  .ayak-islak { transform-origin: 10px 0; transform: scaleX(0.5); }
+    .boyun-sol { transform: translateX(-12px); }
+  .boyun-sag { transform: translateX(12px); }
+  .nur { transform-origin: 58px 108px; }
+  .igne { transform-origin: 60px 62px; transform: rotate(40deg); }
+
+  /* Hareketsiz durum: el başın arkasında, ön taraf ıslak */
+  .bas-el,
+  .bas-iz {
+    transform-origin: 62px 56px;
+    transform: rotate(30deg);
+  }
+
+  /* Döngü: bir yıkama 1,2 sn; sayaç her üç yıkamada (3,6 sn) sıfırlanır.
+     Mesh 3,6 sn: el önden arkaya kayar, bekler, söner ve baştan başlar. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.goster) .eller-su {
+      transform-origin: 59px 34px;
+      animation: su-ak 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .eller-damla,
+    :global(.goster) .yuz-damla {
+      animation: damla 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .sol-el {
+      animation: ov-sol 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .sag-el {
+      animation: ov-sag 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .el-islak {
+      animation: islan 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .yuz-su {
+      animation: yuz-yika 1.2s 0.4s infinite both;
+    }
+    :global(.goster) .sayac circle:nth-child(1) { animation: say-1 3.6s 0.4s infinite both; }
+    :global(.goster) .sayac circle:nth-child(2) { animation: say-2 3.6s 0.4s infinite both; }
+    :global(.goster) .sayac circle:nth-child(3) { animation: say-3 3.6s 0.4s infinite both; }
+    :global(.goster) .bas-el {
+      animation: mesh-el 3.6s 0.5s infinite both;
+    }
+    :global(.goster) .bas-iz {
+      animation: mesh-iz 3.6s 0.5s infinite both;
+    }
+    :global(.goster) .bas-islak {
+      animation: mesh-son 3.6s 0.5s infinite both;
+    }
+
+    :global(.goster) .yen-kayan { animation: yen-sivan 2.8s 0.4s infinite both; }
+    :global(.goster) .yen-kayan .yen-rulo { animation: rulo 2.8s 0.4s infinite both; }
+    :global(.goster) .yen-el { animation: el-cek 2.8s 0.4s infinite both; }
+    :global(.goster) .nur { animation: nabiz 2.4s 0.4s ease-in-out infinite both; }
+    :global(.goster) .ses { animation: ses 2.4s 0.4s infinite both; }
+    :global(.goster) .ses-2 { animation-delay: 0.65s; }
+    :global(.goster) .ses-3 { animation-delay: 0.9s; }
+    :global(.goster) .avuc-agiz { animation: avuc-agiz 1.2s 0.4s infinite both; }
+    :global(.goster) .avuc-burun { animation: avuc-burun 1.2s 0.4s infinite both; }
+    :global(.goster) .avuc-su { animation: avuc-bosal 1.2s 0.4s infinite both; }
+    :global(.goster) .agiz-su { animation: calkala 1.2s 0.4s infinite both; }
+    :global(.goster) .burun-damla { animation: burna-cek 1.2s 0.4s infinite both; }
+    :global(.goster) .kol-su { animation: kol-su 1.2s 0.4s infinite both; }
+    :global(.goster) .kol-islak { animation: islak-yayil 1.2s 0.4s infinite both; }
+    :global(.goster) .ayak-su { animation: ayak-su 1.2s 0.4s infinite both; }
+    :global(.goster) .ayak-islak { animation: islak-yayil 1.2s 0.4s infinite both; }
+    :global(.goster) .kulak-el { animation: kulak-mesh 2.4s 0.4s infinite both; }
+    :global(.goster) .kulak-islak { animation: mesh-islak 2.4s 0.4s infinite both; }
+    :global(.goster) .boyun-sol { animation: boyun-sol 2.4s 0.4s infinite both; }
+    :global(.goster) .boyun-sag { animation: boyun-sag 2.4s 0.4s infinite both; }
+    :global(.goster) .boyun-islak {
+      transform-origin: 60px 0;
+      animation: boyun-islak 2.4s 0.4s infinite both;
+    }
+    :global(.goster) .igne { animation: igne 3.6s 0.4s infinite both; }
+    :global(.goster) .kabe-hale { animation: hale 3.6s 0.4s infinite both; }
+  }
+
+  @keyframes su-ak {
+    0% { transform: scaleY(0); opacity: 1; }
+    18% { transform: scaleY(1); }
+    70% { transform: scaleY(1); opacity: 1; }
+    90%, 100% { transform: translateY(30px) scaleY(0.4); opacity: 0; }
+  }
+  @keyframes islan {
+    0% { opacity: 0.15; }
+    30%, 75% { opacity: 0.72; }
+    100% { opacity: 0.15; }
+  }
+  @keyframes damla {
+    0%, 30% { transform: none; opacity: 0; }
+    36% { opacity: 1; }
+    70%, 100% { transform: translateY(22px); opacity: 0; }
+  }
+  @keyframes ov-sol {
+    0%, 100% { transform: none; }
+    30% { transform: translate(-2px, 1.5px); }
+    55% { transform: translate(1.5px, -1px); }
+    80% { transform: translate(-1.5px, 1px); }
+  }
+  @keyframes ov-sag {
+    0%, 100% { transform: none; }
+    30% { transform: translate(2px, -1px); }
+    55% { transform: translate(-1.5px, 1.5px); }
+    80% { transform: translate(1.5px, -1px); }
+  }
+  /* Her nokta kendi yıkamasında yanar, tur sonunda üçü birlikte söner */
+  @keyframes say-1 {
+    0%, 8% { opacity: 0.25; }
+    14%, 94% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+  @keyframes say-2 {
+    0%, 41% { opacity: 0.25; }
+    47%, 94% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+  @keyframes say-3 {
+    0%, 75% { opacity: 0.25; }
+    81%, 94% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+  @keyframes yuz-yika {
+    0% { transform: translateY(-34px); opacity: 0; }
+    15% { opacity: 1; }
+    75% { transform: translateY(30px); opacity: 1; }
+    100% { transform: translateY(34px); opacity: 0; }
+  }
+  @keyframes mesh-el {
+    0% { transform: rotate(-38deg); opacity: 0; }
+    10% { transform: rotate(-38deg); opacity: 1; }
+    65%, 80% { transform: rotate(30deg); opacity: 1; }
+    92%, 100% { transform: rotate(30deg); opacity: 0; }
+  }
+  @keyframes mesh-iz {
+    0%, 10% { transform: rotate(-38deg); }
+    65%, 100% { transform: rotate(30deg); }
+  }
+  @keyframes mesh-son {
+    0%, 80% { opacity: 1; }
+    92%, 100% { opacity: 0; }
+  }
+
+  /* Hazırlık: diğer el yenin ucunu tutup bilekten dirseğin üstüne çeker, sonra bırakır */
+  @keyframes yen-sivan {
+    0% { transform: translateX(30px); opacity: 0; }
+    8% { transform: translateX(30px); opacity: 1; }
+    60%, 88% { transform: translateX(102px); opacity: 1; }
+    100% { transform: translateX(102px); opacity: 0; }
+  }
+  @keyframes rulo {
+    0%, 8% { transform: scale(0.75, 0.88); }
+    60%, 100% { transform: scale(1.1, 1.06); }
+  }
+  @keyframes el-cek {
+    0% { transform: translateY(-6px); opacity: 0; }
+    8%, 60% { transform: none; opacity: 1; }
+    74%, 100% { transform: translateY(-16px); opacity: 0; }
+  }
+  @keyframes nabiz {
+    0%, 100% { transform: scale(0.85); opacity: 0.55; }
+    50% { transform: scale(1.12); opacity: 1; }
+  }
+  @keyframes ses {
+    0% { transform: translateX(3px); opacity: 0; }
+    20% { opacity: 0.8; }
+    55%, 100% { transform: none; opacity: 0; }
+  }
+  /* Ağız/burun: avuç aşağıdan gelir, suyu boşaltır, geri iner */
+  @keyframes avuc-agiz {
+    0% { transform: translate(26px, 128px); }
+    35% { transform: translate(26px, 77px); }
+    50%, 62% { transform: translate(26px, 77px) rotate(16deg); }
+    85%, 100% { transform: translate(26px, 128px); }
+  }
+  @keyframes avuc-burun {
+    0% { transform: translate(22px, 128px); }
+    35% { transform: translate(22px, 68px); }
+    50%, 62% { transform: translate(22px, 68px) rotate(10deg); }
+    85%, 100% { transform: translate(22px, 128px); }
+  }
+  @keyframes avuc-bosal {
+    0%, 40% { opacity: 1; }
+    55%, 90% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes calkala {
+    0%, 45% { transform: none; opacity: 0; }
+    55% { transform: none; opacity: 0.9; }
+    65% { transform: translateX(-2.5px); }
+    75% { transform: translateX(2.5px); }
+    85% { transform: translateX(-1.5px); opacity: 0.9; }
+    95%, 100% { transform: none; opacity: 0; }
+  }
+  @keyframes burna-cek {
+    0%, 42% { transform: none; opacity: 0; }
+    48% { opacity: 1; }
+    72%, 100% { transform: translate(4px, -7px); opacity: 0; }
+  }
+  /* Kollar/ayaklar: su parmak uçlarından dirseğe/topuğa doğru akar */
+  @keyframes kol-su {
+    0% { transform: translateX(14px); opacity: 0; }
+    8% { opacity: 1; }
+    70% { transform: translateX(94px); opacity: 1; }
+    80%, 100% { transform: translateX(94px); opacity: 0; }
+  }
+  @keyframes ayak-su {
+    0% { transform: translateX(18px); opacity: 0; }
+    8% { opacity: 1; }
+    70% { transform: translateX(92px); opacity: 1; }
+    80%, 100% { transform: translateX(92px); opacity: 0; }
+  }
+  @keyframes islak-yayil {
+    0% { transform: scaleX(0); opacity: 0.72; }
+    70%, 85% { transform: scaleX(1); opacity: 0.72; }
+    100% { transform: scaleX(1); opacity: 0; }
+  }
+  /* Kulaklar: el kulağı kavrayıp yukarıdan aşağı sıvazlar, parmak ucu kulağın içinde döner */
+  @keyframes kulak-mesh {
+    0% { transform: translate(0, -7px); opacity: 0; }
+    12% { transform: translate(0, -7px); opacity: 1; }
+    35% { transform: translate(2px, -3px); }
+    55% { transform: translate(-1px, 2px); }
+    75%, 88% { transform: translate(0, 4px); opacity: 1; }
+    100% { transform: translate(0, 4px); opacity: 0; }
+  }
+  @keyframes mesh-islak {
+    0% { opacity: 0; }
+    55%, 85% { opacity: 0.72; }
+    100% { opacity: 0; }
+  }
+  /* Boyun: iki elin arkası enseden yanlara kayar */
+  @keyframes boyun-sol {
+    0% { transform: translateX(5px); opacity: 0; }
+    12% { transform: translateX(5px); opacity: 1; }
+    60%, 85% { transform: translateX(-12px); opacity: 1; }
+    100% { transform: translateX(-12px); opacity: 0; }
+  }
+  @keyframes boyun-sag {
+    0% { transform: translateX(-5px); opacity: 0; }
+    12% { transform: translateX(-5px); opacity: 1; }
+    60%, 85% { transform: translateX(12px); opacity: 1; }
+    100% { transform: translateX(12px); opacity: 0; }
+  }
+  @keyframes boyun-islak {
+    0%, 12% { transform: scaleX(0); opacity: 0.72; }
+    60%, 85% { transform: scaleX(1); opacity: 0.72; }
+    100% { transform: scaleX(1); opacity: 0; }
+  }
+  /* Şehadet: pusula iğnesi salınıp kıbleye oturur */
+  @keyframes igne {
+    0% { transform: rotate(-70deg); }
+    35% { transform: rotate(58deg); }
+    50% { transform: rotate(30deg); }
+    60% { transform: rotate(44deg); }
+    68%, 90% { transform: rotate(40deg); }
+    100% { transform: rotate(-70deg); }
+  }
+  @keyframes hale {
+    0%, 62% { opacity: 0; }
+    70%, 90% { opacity: 0.7; }
+    100% { opacity: 0; }
+  }
+</style>

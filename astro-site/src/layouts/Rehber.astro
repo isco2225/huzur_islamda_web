@@ -333,6 +333,27 @@ const tumBasliklar = [...basliklar, { id: 'kaynaklar', ad: 'Kaynaklar' }];
   .rehber-metin :global(.adim p) {
     margin-top: 0.4rem;
   }
+  /* Adım çizimi (AbdestCizimi.astro): mobilde metnin sağına yüzer,
+     geniş ekranda metnin yanında kendi sütununa geçer */
+  .rehber-metin :global(.adim-govde .cizim) {
+    float: right;
+    width: 4.75rem;
+    margin: 0 0 0.5rem 0.75rem;
+  }
+  @media (min-width: 640px) {
+    .rehber-metin :global(.adim-govde) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 7rem;
+      grid-template-rows: auto 1fr;
+      column-gap: 1.25rem;
+    }
+    .rehber-metin :global(.adim-govde .cizim) {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      width: auto;
+      margin: 0;
+    }
+  }
 
   /* ---------- Alıntı kartı (ayet / hadis) ---------- */
   .rehber-metin :global(.alinti) {
@@ -378,6 +399,12 @@ const tumBasliklar = [...basliklar, { id: 'kaynaklar', ad: 'Kaynaklar' }];
     background: var(--color-yuzey);
     border: 1px solid color-mix(in srgb, var(--color-vurgu) 30%, transparent);
     padding: 1.4rem;
+  }
+  /* Farz beden haritası (AbdestFarzCizimi.astro): kartın sağ üstüne yüzer */
+  .rehber-metin :global(.farz .farz-cizim) {
+    float: right;
+    width: 5.5rem;
+    margin: 0 0 0.5rem 0.75rem;
   }
   .rehber-metin :global(.farz + .farz) {
     margin-top: 0;

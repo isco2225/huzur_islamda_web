@@ -1,12 +1,19 @@
 ---
 import Rehber from '../../layouts/Rehber.astro';
 import type { Baslik, Kaynak } from '../../layouts/Rehber.astro';
+import AbdestCizimi, { type Cizim } from '../../components/AbdestCizimi.astro';
+import AbdestFarzCizimi, { type Farz } from '../../components/AbdestFarzCizimi.astro';
 
 // İçerik kaynağı: Diyanet İşleri Başkanlığı, İslam İlmihali (34. baskı,
 // 2019), "V. Abdest" bölümü s. 96–112; adım sırası "F) Abdest Nasıl
 // Alınır?" (s. 105–107) ile DİYK "Abdest nedir ve nasıl alınır?" fetvasından.
 // Metinde verilen her sayfa numarası bu baskıya göredir. Adım etiketleri:
 // farz s. 98–99, sünnet s. 101–104, edep s. 104–105.
+// Bir hocanın incelemesi üzerine (Ekim 2026) eklenenler: başın tamamının
+// meshinin tarifi TDV İslâm Ansiklopedisi "Mesh" maddesinden (Hanefî
+// uygulaması), uykuda "yere sağlam oturma" ölçüsü DİYK "Uyumak abdesti bozar
+// mı?" fetvasından. Kaynakta bulunamayan notlar (dirseklerin dört parmak
+// üstü, yumuşak minderde uyku) eklenmedi.
 const ilmihal =
   'https://diniyayinlar.diyanet.gov.tr/Documents/islam%20ilmihali%2017%20X%2024%20.pdf';
 
@@ -26,6 +33,16 @@ const kaynaklar: Kaynak[] = [
     ayrinti: 'fetva',
     url: 'https://kurul.diyanet.gov.tr/tr/fetva/mezhepler-arasinda-abdestin-farzlari-konusunda-farklilik-var-midir/0193c42d-44c2-71a2-18f9-9a29fcdbaa43',
   },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Uyumak abdesti bozar mı?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/uyumak-abdesti-bozar-mi/0193c42d-464a-715e-cc07-37ffe83ec823',
+  },
+  {
+    ad: 'Mehmet Erdoğan, "Mesh", TDV İslâm Ansiklopedisi',
+    ayrinti: 'c. 29, s. 301–303, Ankara 2004',
+    url: 'https://islamansiklopedisi.org.tr/mesh--abdest',
+  },
   { ad: "Kur'an-ı Kerim, Mâide suresi 5/6" },
 ];
 
@@ -40,16 +57,18 @@ const basliklar: Baslik[] = [
 ];
 
 type Hukum = 'Farz' | 'Sünnet' | 'Edep';
-const adimlar: { baslik: string; hukum: Hukum; kez?: string; metin: string }[] = [
+const adimlar: { baslik: string; hukum: Hukum; kez?: string; cizim?: Cizim; metin: string }[] = [
   {
     baslik: 'Hazırlık',
     hukum: 'Edep',
+    cizim: 'hazirlik',
     metin:
       'Kollarınızı dirseklerin üstüne kadar sıvayın. İmkânınız varsa suyun üzerinize sıçramaması için yüksekçe bir yerde, kıbleye dönerek durun.',
   },
   {
     baslik: 'Niyet ve besmele',
     hukum: 'Sünnet',
+    cizim: 'niyet',
     metin:
       'Kalbinizden niyet edin; dilinizle de <strong>“Niyet ettim Allah rızası için abdest almaya”</strong> diyebilirsiniz. Ardından <em>“Eûzü billâhi mine’ş-şeytâni’r-racîm. Bismillâhi’r-Rahmâni’r-Rahîm”</em> deyin.',
   },
@@ -57,6 +76,7 @@ const adimlar: { baslik: string; hukum: Hukum; kez?: string; metin: string }[] =
     baslik: 'Eller',
     hukum: 'Sünnet',
     kez: '3 kere',
+    cizim: 'eller',
     metin:
       'Ellerinizi bileklere kadar yıkayın. Parmak aralarını birbirine geçirerek ovun. Yüzük takıyorsanız suyun altına ulaşması için yüzüğü oynatın.',
   },
@@ -64,38 +84,45 @@ const adimlar: { baslik: string; hukum: Hukum; kez?: string; metin: string }[] =
     baslik: 'Ağız',
     hukum: 'Sünnet',
     kez: '3 kere',
+    cizim: 'agiz',
     metin: 'Sağ avucunuzla ağzınıza su alın ve her seferinde iyice çalkalayın.',
   },
   {
     baslik: 'Burun',
     hukum: 'Sünnet',
     kez: '3 kere',
+    cizim: 'burun',
     metin: 'Yine sağ avucunuzla burnunuza su çekin; her seferinde sol elinizle sümkürerek burnunuzu temizleyin.',
   },
   {
     baslik: 'Yüz',
     hukum: 'Farz',
     kez: '3 kere',
+    cizim: 'yuz',
     metin:
-      'Alnın üst tarafından başlayarak yüzünüzün her yerini yıkayın. Sakalınız varsa parmaklarınızla aralayın; seyrekse suyun deriye ulaşmasını sağlayın.',
+      'Alnınızın üstünde saçın bittiği yerden başlayarak çene altına ve iki kulak yumuşağına kadar yüzünüzün her yerini yıkayın. Sakalınız varsa parmaklarınızla aralayın; seyrekse suyun deriye ulaşmasını sağlayın.',
   },
   {
     baslik: 'Kollar',
     hukum: 'Farz',
     kez: '3 kere',
-    metin: 'Önce sağ kolunuzu, sonra sol kolunuzu dirseklerle beraber yıkayın.',
+    cizim: 'kollar',
+    metin:
+      'Önce sağ kolunuzu, sonra sol kolunuzu parmak uçlarından başlayarak dirseklerle beraber yıkayın. Dirsekler yıkanacak yere dahildir; suyun dirseklerin her tarafına ulaştığından emin olun.',
   },
   {
     baslik: 'Baş',
     hukum: 'Farz',
     kez: 'mesh',
+    cizim: 'bas',
     metin:
-      'Ellerinizi ıslatın ve sağ elinizin içiyle başınızın <strong>en az dörtte birini</strong> meshedin; farz böylece yerine gelir. Başın tamamını meshetmek isterseniz ıslak iki elinizi parmaklarla birlikte başın ön tarafına koyup arkaya doğru sıvazlayın.',
+      'Ellerinizi ıslatın ve sağ elinizin içiyle başınızın <strong>en az dörtte birini</strong> meshedin; farz böylece yerine gelir. Meshedilecek yer, iki kulağın üst tarafında kalan kısımdır; kulaklardan aşağı sarkan saçlar meshedilmez.\n\nBaşın tamamını meshetmek sünnettir ve şöyle yapılır: Islak iki elinizin parmak uçlarını birleştirin. Başparmaklarınızı ve şehadet parmaklarınızı kaldırın, kalan üçer parmağınızı başınızın ön tarafına koyun ve enseye kadar sıvazlayın. Başa değdirmediğiniz şehadet parmakları ve başparmaklar, sıradaki adımda kulaklar için kullanılır.',
   },
   {
     baslik: 'Kulaklar',
     hukum: 'Sünnet',
     kez: 'mesh',
+    cizim: 'kulaklar',
     metin:
       'Şehadet parmaklarınızla kulaklarınızın içini, başparmaklarınızla dışını meshedin. Ellerinizde ıslaklık kalmadıysa önce yeniden ıslatın.',
   },
@@ -103,39 +130,46 @@ const adimlar: { baslik: string; hukum: Hukum; kez?: string; metin: string }[] =
     baslik: 'Boyun',
     hukum: 'Sünnet',
     kez: 'mesh',
+    cizim: 'boyun',
     metin: 'Yeni su almadan, iki elinizin arkasıyla boynunuzu meshedin.',
   },
   {
     baslik: 'Ayaklar',
     hukum: 'Farz',
     kez: '3 kere',
+    cizim: 'ayaklar',
     metin:
       'Önce sağ, sonra sol ayağınızı topuklarla beraber yıkayın. Parmak uçlarından başlayın; parmak aralarını sağ ayağın küçük parmağından başlayıp sol ayağın küçük parmağında bitirecek şekilde temizleyin.',
   },
   {
     baslik: 'Kelime-i şehadet',
     hukum: 'Edep',
+    cizim: 'sehadet',
     metin: 'Abdest bitince kıbleye dönüp kelime-i şehadet getirin.',
   },
 ];
 
-const farzlar = [
+const farzlar: { baslik: string; cizim: Farz; metin: string }[] = [
   {
     baslik: 'Yüzü bir kere yıkamak',
+    cizim: 'yuz',
     metin:
       'Yüz; alında saçın bittiği yerden çene altına, iki kulak yumuşağı arasına kadar olan yerdir. Kirpikler ve göz pınarları da yıkanır, gözün içi yıkanmaz. Sık sakalın yalnız üstünü yıkamak yeterlidir.',
   },
   {
     baslik: 'Kolları dirseklerle beraber bir kere yıkamak',
+    cizim: 'kollar',
     metin: 'Eller ve kollar, dirsekler de dahil olmak üzere yıkanır; dirseklerin yukarısını yıkamak gerekmez.',
   },
   {
     baslik: 'Başın dörtte birini meshetmek',
+    cizim: 'bas',
     metin:
       'Mesh, ıslak eli değdirmektir. Kolları yıkadıktan sonra elde kalan suyla mesh olmaz; başı meshetmek için yeni su alınır.',
   },
   {
     baslik: 'Ayakları topuklarla beraber bir kere yıkamak',
+    cizim: 'ayaklar',
     metin: 'Topuklar da yıkanır. Çıplak ayağa mesh etmek caiz değildir.',
   },
 ];
@@ -160,11 +194,11 @@ const bozanlar = [
   'Ön ve arkadan idrar, dışkı gibi bir şey çıkması ve arkadan yel çıkması.',
   'Vücudun herhangi bir yerinden kan veya irin akması. Ağızdan gelen kan tükürükle eşit ya da ondan fazlaysa bozar, azsa bozmaz; bu, tükürüğün renginden anlaşılır.',
   'Ağız dolusu kusmak.',
-  'Yatarak ya da alındığında düşecek şekilde bir şeye yaslanarak uyumak.',
+  'Yatarak ya da namaz dışında secdedeymiş gibi durarak uyumak; bir şeye dayanarak uyurken, dayanılan şey çekildiğinde düşecek hâlde olmak.',
   'Bayılmak.',
   'Akıl hastalığı sebebiyle aklın gitmesi.',
   'Sarhoş olmak.',
-  'Namazda yanındakinin duyacağı kadar sesli gülmek. Bu hem namazı hem abdesti bozar; gülümsemek ikisini de bozmaz.',
+  'Namazda yanındakinin duyacağı kadar sesli gülmek. Bu hem namazı hem abdesti bozar. Yalnız kendi duyacağı kadar gülmek abdesti bozmaz ama namazı bozar; gülümsemek ikisini de bozmaz.',
   'Eşlerin tenasül organlarının arada bir şey olmadan birbirine değmesi.',
 ];
 
@@ -173,7 +207,7 @@ const bozmayanlar = [
   'Ağız dolusundan az kusmak ve balgam tükürmek.',
   'Diş fırçasında, kürdanda ya da ısırılan bir şeyde görülen ama akmayan kan.',
   'Hastalık sebebiyle olmayan, ağlamaktan veya gülmekten akan göz yaşı.',
-  'Bağdaş kurarak ya da dizüstü oturarak uyumak; namazda uyumak.',
+  'Yere sağlam oturmuş, eklemleri gevşememiş hâlde uyumak: bağdaş kurarak, dizüstü ya da araçta koltukta dik oturarak uyumak. Namazda uyumak da bozmaz.',
 ];
 
 const dualar = [
@@ -281,7 +315,8 @@ const sorular = [
           <span class="adim-no" aria-hidden="true">
             {i + 1}
           </span>
-          <div>
+          <div class:list={{ 'adim-govde': a.cizim }}>
+            {a.cizim && <AbdestCizimi cizim={a.cizim} />}
             <div class="adim-ust">
               <h3>
                 <span class="sr-only">{i + 1}. adım: </span>
@@ -292,7 +327,9 @@ const sorular = [
               </span>
               {a.kez && <span class="etiket">{a.kez}</span>}
             </div>
-            <p set:html={a.metin} />
+            <div>
+              {a.metin.split('\n\n').map((m) => <p set:html={m} />)}
+            </div>
           </div>
         </li>
       ))
@@ -306,7 +343,9 @@ const sorular = [
     <p>“Bir kimse güzelce abdest alırsa, tırnaklarının altına kadar vücudundan günahları dökülür.”</p>
     <footer>Hadis-i şerif · Müslim, Tahâre, 33</footer>
   </blockquote>
-  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 97, 102, 104–107; DİYK, “Abdest nedir ve nasıl alınır?”</p>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 97–99, 102, 104–107; DİYK, “Abdest nedir ve nasıl alınır?”; başın tamamının meshi: TDV İslâm Ansiklopedisi, “Mesh”, c. 29, s. 301–303
+  </p>
 
   <h2 id="farzlar">Abdestin farzları nelerdir?</h2>
   <p>
@@ -322,6 +361,7 @@ const sorular = [
     {
       farzlar.map((f, i) => (
         <li class="farz reveal" style={`--gecikme: ${i * 0.1}s`}>
+          <AbdestFarzCizimi farz={f.cizim} />
           <span class="rakam" aria-hidden="true">
             {i + 1}
           </span>
@@ -369,7 +409,7 @@ const sorular = [
   <p class="not">
     <strong>Şâfiî mezhebinde</strong> ön ve arka dışında vücudun bir yerinden akan kan ve irin abdesti bozmaz.
   </p>
-  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 110–111 ve 25 no.lu dipnot</p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 110–111 ve 25 no.lu dipnot; DİYK, “Uyumak abdesti bozar mı?”</p>
 
   <h2 id="mekruhlar">Abdestin mekruhları</h2>
   <ul class="isaretli">

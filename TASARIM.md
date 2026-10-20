@@ -161,7 +161,7 @@ duruyordu; (2) tek karede duran çamurlu aynalı gradyan.
 
 ## 7. Animasyon bütçesi (tavan — yenisi eklenmez)
 
-Hareket ölçülüdür; şu dört kalem bütçenin tamamıdır:
+Hareket ölçülüdür; şu beş kalem bütçenin tamamıdır:
 
 1. **Hero girişi:** rozetler → H1 → alt metin → butonlar/mockup, 100 ms arayla,
    yalnız ilk yüklemede (saf CSS `belir` animasyonu).
@@ -176,10 +176,26 @@ Hareket ölçülüdür; şu dört kalem bütçenin tamamıdır:
 4. **Gün Döngüsü** (§5): 30 sn'de doğuş → gökyüzünü katetme → batış; gökyüzü
    katmanları ve vakit şeridi aynı çizelgede ona eşlik eder. Sayfadaki tek
    sürekli hareket budur.
+5. **Rehber adım çizimleri** (yalnız `/rehber/` sayfaları; Ekim 2026'da
+   kullanıcı onayıyla eklendi): adım kartlarındaki küçük inline SVG çizimler
+   (`AbdestCizimi.astro`) ve farz kartlarındaki beden haritası
+   (`AbdestFarzCizimi.astro`: farzın kapsadığı bölge mavi dolar, sınırı —
+   dirseğin/topuğun üstü, saç bitimi, başın dörtte biri — altın çizgiyle
+   işaretlenir). Kart `.reveal` ile göründüğünde başlar ve
+   **döngüde sürer**: "3 kere" adımlarında yıkama 1,2 sn, sayaç her üç
+   yıkamada (3,6 sn) sıfırlanır; mesh 3,6 sn'de önden arkaya kayar, bekler
+   ve baştan başlar. Bu, aşağıdaki "sonsuz dikkat çekici" yasağının bilinçli
+   istisnasıdır (Ekim 2026, kullanıcı kararı: tek seferlik oynatma ziyaretçi
+   bakmadan bitiyordu); istisna yalnız bu kalem içindir. Yeni script yoktur,
+   tetikleyici mevcut `.goster` sınıfıdır. Malzeme dolu yüzeydir (gece/koyu yeşil kutu, ten
+   tonu, mavi su), çizgi-sanat değildir; renkler yalnız token karışımıdır.
+   Su ve yıkanan yerler `--color-su` (mavi) ile gösterilir (kullanıcı kararı,
+   Ekim 2026). Bu renk **yalnız bu çizimlere aittir**; üçüncü vurgu rengi
+   değildir, buton/link/arayüzde kullanılmaz. Figürler yüzsüz siluettir.
 
 Kurallar: yalnız `transform` ve `opacity` (CLS = 0); `prefers-reduced-motion:
 reduce` durumunda tümü kapalı, içerik doğrudan görünür. **Yasak:** parallax,
-imleç takibi, otomatik video, sonsuz dikkat çekiciler, animasyon kütüphaneleri
+imleç takibi, otomatik video, sonsuz dikkat çekiciler (5. kalem hariç), animasyon kütüphaneleri
 (GSAP/AOS/Framer vb.), bu listeye yeni animasyon kalemi eklemek.
 
 ## 8. Responsive

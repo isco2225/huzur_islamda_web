@@ -97,7 +97,11 @@ Bilinmesi gereken, tek dosyaya bakınca görünmeyen bağlantılar:
   stillerindedir (Farz/Sünnet etiketli adım kartları, ayet/hadis
   alıntı kartı, büyük rakamlı farz ızgarası, işaretli liste, bozar/bozmaz
   karşılaştırması, dua kartları, `<details>` SSS); yeni rehber bunları kullanır,
-  hareket yalnız `.reveal`.
+  hareket yalnız `.reveal`. Tek istisna adım kartlarındaki SVG çizimlerdir
+  (`AbdestCizimi.astro`, TASARIM.md §7 5. kalem): adım verisine `cizim:`
+  alanı verilince kart `.adim-govde` düzenine geçer, çizim reveal'da başlar ve
+  döngüde sürer. Farz kartlarının beden haritası da aynı kalemdedir
+  (`AbdestFarzCizimi.astro`, kartın sağ üstüne yüzer).
   **Dinî içerik yalnız kaynaktan yazılır** (öncelik: Diyanet İslam İlmihali ve
   Din İşleri Yüksek Kurulu fetvaları); hüküm uydurma, bilgiden tahmin yürütme
   yok. Her bölümün altına sayfa numaralı "Kaynak:" notu konur, dua okunuşları
@@ -116,7 +120,8 @@ astro-site/src/
                sabit kalır), AsistanSohbeti (eski kodlanmış sohbet sahnesi;
                şu an kullanılmıyor, geri dönüş için duruyor),
                NasilCalisir, Ozellikler, EkranSeridi, SSS, FinalCTA, Footer,
-               MagazaButonlari, GeriDon
+               MagazaButonlari, GeriDon, AbdestCizimi (rehber adım çizimleri),
+               AbdestFarzCizimi (farz kartı beden haritası)
   pages/       index.astro, namaz-vakitleri.astro, zikirmatik.astro,
                dua-hadis-ayet.astro, privacy_policy.md, terms_of_use.md,
                delete_account.astro, destek.astro, 404.astro,

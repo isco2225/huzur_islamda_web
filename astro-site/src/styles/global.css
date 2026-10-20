@@ -15,6 +15,7 @@
   --color-detay: #b9944a; /* sıcak altın — yalnız ince çizgi ve vakit noktaları */
   --color-gece: #0e1b2a; /* koyu bölüm zemini (final CTA / footer) */
   --color-error: #b00020; /* form hataları */
+  --color-su: #3d9be0; /* yalnız rehber çizimlerinde su/ıslaklık — arayüz ve vurgu rengi değil */
 
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
