@@ -198,8 +198,8 @@ const bozanlar = [
   'Bayılmak.',
   'Akıl hastalığı sebebiyle aklın gitmesi.',
   'Sarhoş olmak.',
-  'Namazda yanındakinin duyacağı kadar sesli gülmek. Bu hem namazı hem abdesti bozar. Yalnız kendi duyacağı kadar gülmek abdesti bozmaz ama namazı bozar; gülümsemek ikisini de bozmaz.',
-  'Eşlerin tenasül organlarının arada bir şey olmadan birbirine değmesi.',
+  'Namazda yanındakinin duyacağı kadar sesli gülmek. Bu hem namazı hem abdesti bozar. Yalnız kendi duyacağı kadar gülmek abdesti bozmaz ama namazı bozar; gülümsemek ikisini de bozmaz. Cenaze namazında ve tilavet secdesinde sesli gülmek abdesti bozmaz, yalnızca o namazı veya secdeyi bozar. Ergenlik çağına girmemiş çocuğun namazda gülmesiyle de yalnızca namazı bozulur.',
+  'Eşlerin tenasül organlarının birbirine değmesi (fahiş mübaşeret). Hiçbir ıslaklık gelmese de abdest bozulur; arada vücut sıcaklığının hissedilmesine engel olmayan ince bir şey bulunsa bile yine bozulur.',
 ];
 
 const bozmayanlar = [
@@ -207,7 +207,7 @@ const bozmayanlar = [
   'Ağız dolusundan az kusmak ve balgam tükürmek.',
   'Diş fırçasında, kürdanda ya da ısırılan bir şeyde görülen ama akmayan kan.',
   'Hastalık sebebiyle olmayan, ağlamaktan veya gülmekten akan göz yaşı.',
-  'Yere sağlam oturmuş, eklemleri gevşememiş hâlde uyumak: bağdaş kurarak, dizüstü ya da araçta koltukta dik oturarak uyumak. Namazda uyumak da bozmaz.',
+  'Yere sağlam oturmuş, eklemleri gevşememiş hâlde uyumak: bağdaş kurarak, dizüstü ya da araçta koltuğa yaslanmadan dik oturarak uyumak. Namazda uyumak da bozmaz. Ancak bu hâllerde yel çıkması gibi abdesti bozan bir şey olduğu biliniyorsa abdest bozulur.',
 ];
 
 const dualar = [
@@ -285,13 +285,13 @@ const sorular = [
   {
     soru: 'Abdest organında yara ya da sargı varsa ne yapılır?',
     cevap:
-      'Yarayı yıkamak zarar veriyorsa üzerine mesh edilir; o da zararlıysa terk edilir. Sargı varsa ve çözmek zarar verecekse ıslak elle sargının üzerine bir kere mesh edilir. Bu mesh, yara iyileşinceye kadar geçerlidir.',
+      'Yarayı yıkamak zarar veriyorsa ilacın üzerine su akıtılır; bu da zarar veriyorsa yaranın üzerine mesh edilir; mesh de zararlıysa terk edilir. Sargı varsa ve çözmek zarar verecekse ıslak elle sargının üzerine bir kere mesh edilir. Bu ruhsatın belirli bir süresi yoktur, yara iyileşinceye kadar devam eder; sargının abdestli bağlanmış olması da şart değildir. Yara iyileştiği için sargı düşer veya çıkarılırsa mesh bozulur ve o yer yıkanır.',
     kaynak: 'İslam İlmihali, s. 101, 114',
   },
   {
     soru: 'Abdesti olmayan neleri yapamaz?',
     cevap:
-      "Abdestsiz namaz kılınmaz, Kâbe tavaf edilmez ve Kur'an'a el sürülmez. Tilavet secdesi için de abdest farzdır.",
+      "Abdestsiz namaz kılınmaz ve Kur'an'a el sürülmez; tilavet secdesi için de abdest farzdır. Kâbe'yi tavaf etmek için abdestli olmak ise vaciptir.",
     kaynak: 'İslam İlmihali, s. 105, 111–112',
   },
 ];
@@ -304,6 +304,7 @@ const sorular = [
   ozet="Abdest, namazdan önce yüzü, kolları ve ayakları yıkayıp başı meshederek yapılan temizliktir. Namaz kılmak için abdest şarttır; abdestsiz kılınan namaz sahih olmaz."
   yol="abdest-nasil-alinir"
   yayin="2026-10-17"
+  guncelleme="2026-10-20"
   basliklar={basliklar}
   kaynaklar={kaynaklar}
 >
@@ -380,7 +381,7 @@ const sorular = [
     Yıkanan organlarda suyun deriye ulaşmasını engelleyen hamur, mum gibi şeylerin giderilmesi gerekir. Su geçirmeyen bir tabaka oluşturan oje ve boya da aynı hükümdedir. Suyun geçmesine engel olmayan kına ise abdeste mani değildir.
   </p>
   <p class="kaynak-not">
-    Kaynak: İslam İlmihali, s. 98–101 ve 18 no.lu dipnot; DİYK, “Mezhepler arasında abdestin farzları konusunda farklılık var mıdır?”
+    Kaynak: İslam İlmihali, s. 98–101 ve 83 no.lu dipnot; DİYK, “Mezhepler arasında abdestin farzları konusunda farklılık var mıdır?”
   </p>
 
   <h2 id="sunnetler">Abdestin sünnetleri</h2>
@@ -407,9 +408,9 @@ const sorular = [
     </div>
   </div>
   <p class="not">
-    <strong>Şâfiî mezhebinde</strong> ön ve arka dışında vücudun bir yerinden akan kan ve irin abdesti bozmaz.
+    <strong>Şâfiî mezhebinde</strong> ön ve arka dışında vücudun bir yerinden akan kan ve irin abdesti bozmaz. Buna karşılık Şâfiî mezhebine göre, kendisiyle arasında evlenme engeli bulunmayan karşı cinsten birine arada bir engel olmadan dokunmak her ikisinin de abdestini bozar (saça, tırnağa dokunmak bozmaz). Kişinin kendisinin veya başkasının ön ya da arka avret yerine avuç içiyle dokunması da abdesti bozar. Hanefî mezhebinde bu iki durum abdesti bozmaz.
   </p>
-  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 110–111 ve 25 no.lu dipnot; DİYK, “Uyumak abdesti bozar mı?”</p>
+  <p class="kaynak-not">Kaynak: İslam İlmihali, s. 110–111 ve 90 no.lu dipnot; DİYK, “Uyumak abdesti bozar mı?”; DİYK, “Karşı cinse dokunmak abdesti bozar mı?”</p>
 
   <h2 id="mekruhlar">Abdestin mekruhları</h2>
   <ul class="isaretli">
