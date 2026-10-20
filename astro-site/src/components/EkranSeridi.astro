@@ -1,44 +1,38 @@
 ---
 import { Image } from 'astro:assets';
 
-// Mağaza tanıtım görselleri (gorseller/store_photos): koyu yeşil zeminli,
-// başlıklı 8 kare. Tam kanvas oldukları için köşe ve gölge site tarafında verilir.
+// Mağaza tanıtım görselleri (gorseller/store_photos = App Store seti,
+// 1242×2688): başlıklı, krem/yeşil zeminli 6 kare. Şeritteki sıra dosya
+// adındaki numaradır; mağazadaki sıradan farklı olarak ezan vakitleri başta.
+// Tam kanvas oldukları için köşe, çerçeve ve gölge site tarafında verilir.
 const dosyalar = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/gorseller/store/*.png',
   { eager: true }
 );
 const altYazilar: Record<string, { alt: string; altYazi: string }> = {
   '01-vakitler': {
-    alt: 'Mağaza görseli — Hiçbir vakti kaçırma: konuma göre ezan vakitleri listesi ve kalan süre',
+    alt: 'Mağaza görseli — Ezan vaktini kaçırma: şehre göre ezan vakitleri, vakit bildirimi ve kalan süre',
     altYazi: 'Ezan vakitleri',
   },
-  '02-zikir-sayac': {
-    alt: 'Mağaza görseli — zikirmatik sayaç ekranı',
-    altYazi: 'Zikirmatik',
+  '02-vitrin': {
+    alt: 'Mağaza görseli — İbadet Rehberim: keşfet akışında hadis ve ayet kartları, sonraki vakit ve günlük zikir bildirimleri',
+    altYazi: 'İbadet Rehberim',
   },
-  '03-zikir-tesbihat': {
-    alt: 'Mağaza görseli — namaz tesbihatını tek dokunuşla oluşturma',
-    altYazi: 'Namaz tesbihatı',
+  '03-kesfet': {
+    alt: 'Mağaza görseli — Okurken sor, anında öğren: Arapça metniyle gönderi detayı ve asistan düğmesi',
+    altYazi: 'Okurken sor',
   },
-  '04-zikirlerim': {
-    alt: 'Mağaza görseli — günlük zikir hedefleri ve ilerleme listesi',
-    altYazi: 'Günlük zikir takibi',
-  },
-  '05-asistan': {
-    alt: 'Mağaza görseli — İslami sorular için asistan sohbeti',
+  '04-asistan': {
+    alt: 'Mağaza görseli — Merak ettiklerini çekinmeden sor: dualar hakkında asistan sohbeti',
     altYazi: 'İslami asistan',
   },
-  '06-kesfet': {
-    alt: 'Mağaza görseli — dua ve hadis kartlarından oluşan keşfet akışı',
-    altYazi: 'Keşfet akışı',
+  '05-zikir-onerileri': {
+    alt: 'Mağaza görseli — Kalbine göre zikirler: günlük zikir listesi, ruh haline göre ve namaz için zikir seçenekleri',
+    altYazi: 'Zikir önerileri',
   },
-  '07-gonderi': {
-    alt: 'Mağaza görseli — Arapça metniyle birlikte gönderi detayı',
-    altYazi: 'Gönderi detayı',
-  },
-  '08-kapanis': {
-    alt: 'Mağaza görseli — İbadet Rehberim: ibadetin ritmi, cebinde',
-    altYazi: 'İbadet Rehberim',
+  '06-zikirmatik': {
+    alt: 'Mağaza görseli — Zikirlerini dokunuşla say: hedefli zikirmatik sayacı',
+    altYazi: 'Zikirmatik',
   },
 };
 const ekranlar = Object.keys(dosyalar)
@@ -49,7 +43,7 @@ const ekranlar = Object.keys(dosyalar)
   });
 ---
 
-<!-- Beyaz bant: koyu yeşil mağaza görselleri burada öne çıkar -->
+<!-- Beyaz bant: krem/yeşil mağaza görselleri burada öne çıkar -->
 <section id="ekranlar" class="bolum cizgi border-y bg-yuzey">
   <div class="kapsayici">
     <p class="eyebrow reveal">Ekranlar</p>
@@ -107,11 +101,14 @@ const ekranlar = Object.keys(dosyalar)
     scroll-snap-align: start;
     width: min(56vw, 220px);
   }
-  /* Görseller tam kanvas: köşe ve tek hafif gölge site tarafında */
+  /* Görseller tam kanvas: köşe, kıl çizgisi ve tek hafif gölge site
+     tarafında. Çizgi krem görselin beyaz bantta kenarını belli eder. */
   .resim {
     width: 100%;
     height: auto;
     border-radius: 20px;
+    outline: 1px solid color-mix(in srgb, var(--color-detay) 20%, transparent);
+    outline-offset: -1px;
     box-shadow:
       0 1px 2px rgb(32 34 26 / 6%),
       0 16px 32px -20px rgb(32 34 26 / 20%);
