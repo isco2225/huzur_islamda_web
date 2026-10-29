@@ -16,4 +16,9 @@ export const rehberler: Rehber[] = [
     kisaAd: 'Abdest nasıl alınır?',
     ozet: 'Adım adım abdest, abdestin farzları ve sünnetleri, abdesti bozan şeyler ve abdest duaları.',
   },
+  {
+    yol: 'regaib-kandili',
+    kisaAd: 'Regaib Kandili',
+    ozet: '2026 Regaib Kandili ne zaman, bu gece neler yapılır, oruç ne zaman tutulur ve Regaib namazı var mı? Üç aylar takvimiyle.',
+  },
 ];

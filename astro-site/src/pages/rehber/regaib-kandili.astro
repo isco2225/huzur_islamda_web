@@ -1,0 +1,340 @@
+---
+import Rehber from '../../layouts/Rehber.astro';
+import type { Baslik, Kaynak } from '../../layouts/Rehber.astro';
+
+// İçerik kaynağı: Diyanet İşleri Başkanlığı, İslam İlmihali (34. baskı,
+// 2019), "XIII. Mübarek Günler ve Geceler" bölümü s. 358–364 (Üçaylar s. 360–361,
+// Regaib Gecesi s. 361–362) ile DİYK fetvaları; tarihçe ve rivayetlerin değeri
+// TDV İslâm Ansiklopedisi "Regâib Gecesi", "Receb" ve "Üç Aylar" maddelerinden.
+// Tarihler Diyanet'in resmî "2026/2027 Yılı Dinî Günler" listelerinden
+// (vakithesaplama.diyanet.gov.tr); kandil, gecenin başladığı akşamın tarihine
+// yazılır (Miraç = 26 Recep, Berat = 14 Şaban, Kadir = 26 Ramazan). Recep'in
+// 13–15. günleri 1 Recep = 10 Aralık'tan sayıldı. Dua okunuşu Diyanet
+// kaynaklarında bulunamadığı için yalnız Türkçe anlamı verildi. Ekim 2026'da
+// başka bir modelin bağımsız doğrulamasıyla ifadeler kaynağa göre sıkılaştırıldı
+// ("Regaib orucu" ayrımı, bidat tanımı, Şaban orucu, İlmihal s. 272 ve 364).
+const ilmihal =
+  'https://diniyayinlar.diyanet.gov.tr/Documents/islam%20ilmihali%2017%20X%2024%20.pdf';
+
+const kaynaklar: Kaynak[] = [
+  {
+    ad: 'Diyanet İşleri Başkanlığı, İslam İlmihali',
+    ayrinti:
+      'Lütfi Şentürk ve Seyfettin Yazıcı, 34. baskı, Ankara 2019, "Oruç Çeşitleri", s. 271–272 ve "Mübarek Günler ve Geceler" bölümünün ilgili kısmı, s. 358–364',
+    url: ilmihal,
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Mübârek gün ve geceler ile kandillerin İslam’daki yeri nedir?"',
+    ayrinti: 'fetva, 7 Şubat 2024',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/mubarek-gun-ve-geceler-ile-kandillerin-islamdaki-yeri-nedir/a43ec845-60e3-439a-08f5-08dd1c135351',
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Kandil gecelerine ait özel bir namaz veya ibadet şekli var mıdır? Mübarek geceleri nasıl değerlendirmek gerekir?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/kandil-gecelerine-ait-ozel-bir-namaz-veya-ibadet-sekli-var-midir-mubarek-geceleri-nasil-degerlendirmek-gerekir/0193c42d-55a9-73cc-ca2f-a9e8d2fd61d5',
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Kandillerde oruç tutmak isteyen kişi, kandil gecesinin olduğu günde mi, bir gün sonrasında mı oruç tutmalıdır?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/kandillerde-oruc-tutmak-isteyen-kisi-kandil-gecesinin-oldugu-gunde-mi-bir-gun-sonrasinda-mi-oruc-tutmalidir/0193c42d-6c95-7507-ca83-b41661900699',
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Üç ayların dindeki yeri ve bu aylarda oruç tutmanın hükmü nedir?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/uc-aylarin-dindeki-yeri-ve-bu-aylarda-oruc-tutmanin-hukmu/0193c42d-6c6a-78f0-f3a0-7d8958e74fb0',
+  },
+  {
+    ad: 'Din İşleri Yüksek Kurulu, "Cuma günleri oruç tutmanın hükmü nedir?"',
+    ayrinti: 'fetva, 12 Temmuz 2017',
+    url: 'https://kurul.diyanet.gov.tr/tr/fetva/cuma-gunleri-oruc-tutmanin-hukmu-nedir/0193c42d-6d2a-77c6-cbe4-8cdc99cb35b1',
+  },
+  {
+    ad: 'Diyanet İşleri Başkanlığı, "2026 Yılı Dinî Günler"',
+    url: 'https://vakithesaplama.diyanet.gov.tr/dinigunler.php?yil=2026',
+  },
+  {
+    ad: 'Diyanet İşleri Başkanlığı, "2027 Yılı Dinî Günler"',
+    url: 'https://vakithesaplama.diyanet.gov.tr/icerik.php?icerik=154',
+  },
+  {
+    ad: 'Hamdi Tekeli, "Regâib Gecesi", TDV İslâm Ansiklopedisi',
+    ayrinti: 'c. 34, s. 535–536, İstanbul 2007',
+    url: 'https://islamansiklopedisi.org.tr/regaib-gecesi',
+  },
+  {
+    ad: 'Hacı Mehmet Günay, "Receb", TDV İslâm Ansiklopedisi',
+    ayrinti: 'c. 34, s. 506–507, İstanbul 2007',
+    url: 'https://islamansiklopedisi.org.tr/receb',
+  },
+  {
+    ad: 'M. Kâmil Yaşaroğlu, "Üç Aylar", TDV İslâm Ansiklopedisi',
+    ayrinti: 'c. 42, s. 276, İstanbul 2012',
+    url: 'https://islamansiklopedisi.org.tr/uc-aylar',
+  },
+  { ad: "Kur'an-ı Kerim, Bakara 2/217; Mâide 5/2; Tevbe 9/5, 36" },
+];
+
+const basliklar: Baslik[] = [
+  { id: 'ne-zaman', ad: 'Regaib Kandili ne zaman?' },
+  { id: 'nedir', ad: 'Regaib ne demek?' },
+  { id: 'nasil-degerlendirilir', ad: 'Bu gece neler yapılır?' },
+  { id: 'regaib-namazi', ad: 'Regaib namazı var mı?' },
+  { id: 'oruc', ad: 'Kandil günü orucu' },
+  { id: 'uc-aylar', ad: 'Üç aylar nedir?' },
+  { id: 'sorular', ad: 'Sık sorulan sorular' },
+];
+
+// Üç aylar takvimi: gün rakamı + tarih. Gece, yazılan günün akşamı başlar.
+const takvim: { gun: string; ad: string; tarih: string; datetime: string; ek: string }[] = [
+  {
+    gun: '10',
+    ad: 'Regaib Kandili',
+    tarih: '10 Aralık 2026 Perşembe akşamı',
+    datetime: '2026-12-10',
+    ek: "Recep ayının ilk cuma gecesi. Üç aylar da bu gün başlar.",
+  },
+  {
+    gun: '4',
+    ad: 'Miraç Kandili',
+    tarih: '4 Ocak 2027 Pazartesi akşamı',
+    datetime: '2027-01-04',
+    ek: "Recep ayının 27. gecesi.",
+  },
+  {
+    gun: '22',
+    ad: 'Berat Kandili',
+    tarih: '22 Ocak 2027 Cuma akşamı',
+    datetime: '2027-01-22',
+    ek: "Şaban ayının 15. gecesi.",
+  },
+  {
+    gun: '8',
+    ad: 'Ramazan başlıyor',
+    tarih: '8 Şubat 2027 Pazartesi ilk oruç',
+    datetime: '2027-02-08',
+    ek: 'İlk teravih 7 Şubat Pazar akşamı kılınır.',
+  },
+  {
+    gun: '5',
+    ad: 'Kadir Gecesi',
+    tarih: '5 Mart 2027 Cuma akşamı',
+    datetime: '2027-03-05',
+    ek: "Ramazan'ın 27. gecesi.",
+  },
+  {
+    gun: '9',
+    ad: 'Ramazan Bayramı',
+    tarih: '9–11 Mart 2027',
+    datetime: '2027-03-09',
+    ek: 'Arefe 8 Mart Pazartesi.',
+  },
+];
+
+const yapilabilecekler = [
+  'Kaza namazı borcunuz varsa kaza, yoksa nafile namaz kılmak.',
+  "Kur'an-ı Kerim okumak ve okuduğunu anlamaya çalışmak.",
+  'Hata ve günahlar için tövbe ve istiğfar etmek, Allah’tan af dilemek.',
+  'Dua etmek ve zikretmek.',
+  'Hayatın gidişatını gözden geçirip kendine çekidüzen vermek.',
+  'Sadaka vermek, yoksulları ve kimsesizleri gözetmek.',
+  'Akrabayı arayıp sormak, sıla-i rahim yapmak.',
+  'Ertesi gün oruç tutmak.',
+];
+
+const dayanaksizlar = [
+  'Bu geceye mahsus “Regaib namazı” diye bir namaz. Ne Peygamberimiz ne sahabe ne de tâbiîn böyle bir namaz kılmıştır.',
+  'Regaib gecesinin, Peygamberimizin anne rahmine düştüğü gece olduğu.',
+  'İsra ve Miraç olayının Regaib gecesinde gerçekleştiği.',
+  'Recep ve Şaban’ı aralıksız oruçla geçirip Ramazan’a bağlamak (“üç aylar orucu”).',
+  '“Receb Allah’ın ayıdır, Şaban benim ayımdır, Ramazan ümmetimin ayıdır” sözü. Bu sözün aslı bulunamamıştır.',
+  'Üç aylarda vefat eden kimsenin sorguya çekilmeyeceği inancı.',
+];
+
+const dayanaklilar = [
+  "Recep, Kur'an'da saygı gösterilmesi istenen haram aylardandır.",
+  'Peygamberimiz Recep ve Şaban’da diğer aylardan daha çok nafile oruç tutmuştur.',
+  'Kandil gecelerinde kılınan namaz, okunan Kur’an ve yapılan dua, bu geceye mahsus olduğu iddia edilmedikçe bidat sayılmaz.',
+  'Din İşleri Yüksek Kurulu’na göre kandil gecelerini takip eden gün oruç tutmak müstehaptır.',
+];
+
+const sorular = [
+  {
+    soru: 'Regaib Kandili hangi gece, ne zaman başlar?',
+    cevap:
+      "Regaib Kandili, Recep ayının ilk cuma gecesidir; yani perşembeyi cumaya bağlayan gece. Dinî açıdan gün güneşin batmasıyla başladığı için gece gündüzden önce gelir. 2026'da kandil gecesi 10 Aralık Perşembe akşamı akşam vaktiyle başlar ve 11 Aralık Cuma sabah vaktine kadar sürer.",
+    kaynak: 'DİYK, “Kandillerde oruç tutmak isteyen kişi…”',
+  },
+  {
+    soru: "Regaib Kandili'nde hangi dua okunur?",
+    cevap:
+      'Sahih kaynaklarda bu geceye mahsus bir dua veya ibadet şekli bildirilmemiştir; dilediğiniz duayı edebilirsiniz. Peygamberimizin Recep ayı girdiğinde “Allah’ım! Receb ve Şaban’ı bize mübarek kıl ve bizi Ramazan’a ulaştır.” diye dua ettiği rivayet edilir. Her gün yeni dua, hadis ve ayetler için <a href="/dua-hadis-ayet/">dua, hadis ve ayet akışımıza</a> göz atabilirsiniz.',
+    kaynak: 'DİYK, “Kandil gecelerine ait özel bir namaz…”; DİYK, “Mübârek gün ve geceler…”',
+  },
+  {
+    soru: 'Kandil gecelerinde yapılan ibadetler bidat mıdır?',
+    cevap:
+      'Hayır. Sahih kaynaklarda bu gecelere mahsus bir ibadet şekli bildirilmemiştir, ama kandil gecelerinde kılınan namazlar veya yapılan diğer salih ameller, bu gecelere mahsus oldukları iddia edilmedikçe bidat sayılmaz. Bidat, Peygamberimizin vefatından sonra, dinî bir delile dayanmadığı hâlde dinin emri olduğu inancıyla yapılan uygulamalar için kullanılan bir tabirdir.',
+    kaynak: 'DİYK, “Mübârek gün ve geceler…”',
+  },
+  {
+    soru: 'Bu gecelere neden “kandil” deniyor?',
+    cevap:
+      'Osmanlı döneminde bu gecelerde camiler kandillerle aydınlatıldığı için halk arasında bu gecelere “kandil” denmiştir.',
+    kaynak: 'DİYK, “Mübârek gün ve geceler…”',
+  },
+  {
+    soru: 'Regaib Kandili ilk ne zaman kutlandı?',
+    cevap:
+      'İslâm âlimlerinin büyük kısmına göre Peygamberimiz, sahabe ve tâbiîn döneminde Regaib kandili bilinmiyordu. Bu geceye mahsus ibadet ve kutlamalar hicrî 4. (miladi 10.) yüzyılda ortaya çıktı. Gecenin kandil olarak kutlanmasına ilk defa Kudüs’te 1056’da (hicrî 448), Bağdat’ta 1087’de (hicrî 480) başlandı.',
+    kaynak: 'TDV İslâm Ansiklopedisi, “Regâib Gecesi”, c. 34, s. 535–536',
+  },
+];
+---
+
+<Rehber
+  title="Regaib Kandili 2026: Ne Zaman, Nasıl İhya Edilir?"
+  description="Regaib (Regaip) Kandili 2026'da 10 Aralık Perşembe akşamı. Regaib ne demek, bu gece ne yapılır, oruç ne zaman tutulur? Diyanet kaynaklı üç aylar takvimi."
+  baslik="Regaib Kandili 2026: ne zaman, nasıl ihya edilir?"
+  ozet="Regaib Kandili, Recep ayının ilk cuma gecesidir ve üç ayların başladığını haber verir. 2026'da Regaib Kandili 10 Aralık Perşembe akşamı, perşembeyi cumaya bağlayan gece idrak edilecek."
+  yol="regaib-kandili"
+  yayin="2026-10-30"
+  basliklar={basliklar}
+  kaynaklar={kaynaklar}
+>
+  <h2 id="ne-zaman">2026 Regaib Kandili ne zaman?</h2>
+  <p>
+    Regaib Kandili bu yıl <strong>10 Aralık 2026 Perşembe</strong> günü. Kandil gecesi perşembeyi cumaya bağlayan gecedir: 10 Aralık akşamı akşam vaktiyle başlar, 11 Aralık sabah vaktine kadar sürer. Vakitleri takip etmek için <a href="/namaz-vakitleri/">namaz vakitleri</a> sayfamıza göz atabilirsiniz.
+  </p>
+  <p>
+    10 Aralık aynı zamanda Recep ayının ilk günü; yani üç aylar da bu gün başlıyor. Üç aylar boyunca idrak edilecek mübarek geceler, Diyanet'in Hicrî takvimine göre şöyle:
+  </p>
+  <ol class="farzlar">
+    {
+      takvim.map((t, i) => (
+        <li class="farz reveal" style={`--gecikme: ${(i % 2) * 0.1}s`}>
+          <span class="rakam" aria-hidden="true">
+            {t.gun}
+          </span>
+          <h3>{t.ad}</h3>
+          <p>
+            <time datetime={t.datetime}>{t.tarih}</time>. {t.ek}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="not">
+    Kadir gecesinin Ramazan'ın hangi gecesi olduğu kesin olarak bilinmez; 27. gece olduğu görüşü genel kabul görmüştür. Peygamberimiz Ramazan'ın özellikle son on gecesini ihya etmeye teşvik etmiştir.
+  </p>
+  <p class="kaynak-not">
+    Kaynak: Diyanet İşleri Başkanlığı, 2026 ve 2027 Yılı Dinî Günler (1 Recep 1448 = 10 Aralık 2026); gecelerin hesabı: DİYK, “Kandillerde oruç tutmak isteyen kişi…”; gecelerin yeri: İslam İlmihali, s. 360; Kadir gecesi: DİYK, “Mübârek gün ve geceler…”
+  </p>
+
+  <h2 id="nedir">Regaib ne demek?</h2>
+  <p>
+    Regaib, “regibe” kelimesinin çoğuludur; regibe de çok bağış ve iyilik demektir. Buna göre Regaib gecesi, müminlere Allah'ın rahmetinin, lütuf ve ihsanının bol bol verildiği gece anlamına gelir. “Regaip Kandili” şeklinde de yazılır.
+  </p>
+  <p>
+    Recep ayı, Kur'an'da saygı gösterilmesi istenen ve savaşmanın yasaklandığı haram aylardan biridir. Regaib Kandili de üç ayların başladığını vurgulamak ve toplumda farkındalık oluşturmak için bu ayın ilk cuma gecesi idrak edilir.
+  </p>
+  <p>
+    Yaygın bir kanaatin aksine Regaib gecesi, Peygamberimizin anne rahmine düştüğü gece değildir; bu konuda ne sahih bir hadis ne de güvenilir bir rivayet vardır. Bu gece, yapılan dua ve ibadetlerin kabul edildiği, Allah'ın rahmet ve lütfunun bol bol ihsan edildiği bir gece olarak kutlanagelmiştir.
+  </p>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 361; DİYK, “Mübârek gün ve geceler…”; Bakara 2/217; Mâide 5/2; Tevbe 9/5, 36
+  </p>
+
+  <h2 id="nasil-degerlendirilir">Regaib gecesinde neler yapılır?</h2>
+  <p>
+    Peygamberimiz bazı mübarek gün ve gecelerin değerlendirilmesini tavsiye etmiş, bunların bazılarını kendisi de bizzat değerlendirmiştir; ama bu gün ve gecelere özel bir namaz ya da ibadet şekli bildirmemiştir. Diyanet, kandil gecelerini bağışlanma ve hayatımıza çekidüzen vermek için bir fırsat olarak görmeyi tavsiye eder. Regaib gecesinde yapabilecekleriniz:
+  </p>
+  <ul class="isaretli">
+    {yapilabilecekler.map((y) => <li>{y}</li>)}
+  </ul>
+  <p>
+    Namaza durmadan önce abdestinizi tazelemeyi unutmayın; adım adım anlatımı <a href="/rehber/abdest-nasil-alinir/">abdest rehberimizde</a> bulabilirsiniz. İstiğfar ve zikirlerinizi saymak için de <a href="/zikirmatik/">Zikirmatik</a>'i kullanabilirsiniz.
+  </p>
+  <p class="not">
+    Kandil gecelerinde yapılanlar dinî bir zorunluluk değildir. İbadeti yalnızca bu gecelerde yoğunlaştırıp diğer zamanlarda bütünüyle bırakmak da doğru bir tutum değildir; önemli olan düzenli ve devamlı ibadettir.
+  </p>
+  <blockquote class="alinti reveal">
+    <p>“Gücünüz nispetinde nafile ibadet ediniz. Çünkü siz usanmadıkça Allah usanmaz. Allah katında amellerin en sevimlisi, az olsa da devamlı olanıdır.”</p>
+    <footer>Hadis-i şerif · Ebû Dâvûd, Salât, 315</footer>
+  </blockquote>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 361–362, 364; DİYK, “Kandil gecelerine ait özel bir namaz…”; DİYK, “Mübârek gün ve geceler…”; zikir: TDV İslâm Ansiklopedisi, “Receb”, c. 34, s. 506–507
+  </p>
+
+  <h2 id="regaib-namazi">Regaib namazı var mı?</h2>
+  <p>
+    Hayır. “Regâib namazı” adıyla bilinen ve bu geceye mahsus kılınan namazın bir dayanağı yoktur: Peygamberimiz böyle bir namaz kılmamış, sahabe ve tâbiîn de bu adla bir namaz kılmamıştır. Hadis âlimleri, Regaib orucu ve namazıyla ilgili rivayetin uydurma olduğunu tespit etmiştir. Bu gece kılınacak namaz, diğer mübarek gecelerde olduğu gibi kaza ve nafile namazdır.
+  </p>
+  <p>Regaib gecesi ve üç aylar hakkında yaygın olan, ama kaynaklarda dayanağı olmayan inanışlar ile kaynaklarda yeri olanlar:</p>
+  <div class="karsilastirma">
+    <div class="kutu-bozar reveal">
+      <h3>Kaynaklarda dayanağı yok</h3>
+      <ul class="kutu-liste">
+        {dayanaksizlar.map((d) => <li>{d}</li>)}
+      </ul>
+    </div>
+    <div class="kutu-bozmaz reveal" style="--gecikme: 0.1s">
+      <h3>Kaynaklarda yeri var</h3>
+      <ul class="kutu-liste">
+        {dayanaklilar.map((d) => <li>{d}</li>)}
+      </ul>
+    </div>
+  </div>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 361–362; DİYK, “Mübârek gün ve geceler…”; DİYK, “Üç ayların dindeki yeri…”; DİYK, “Kandil gecelerine ait özel bir namaz…”; TDV İslâm Ansiklopedisi, “Regâib Gecesi”, c. 34, s. 535–536 ve “Üç Aylar”, c. 42, s. 276
+  </p>
+
+  <h2 id="oruc">Regaib Kandili'nde oruç tutulur mu?</h2>
+  <p>
+    Regaib'e mahsus bir oruç yoktur. Recep'in ilk perşembesi oruç tutup gecesinde Regaib namazı kılmanın sevap olduğunu söyleyen rivayet asılsızdır. Ancak Din İşleri Yüksek Kurulu, kandil gecelerinin gündüzünde, yani geceyi takip eden gün oruç tutmayı genel olarak müstehap sayar. Gece gündüzden önce geldiği için bu gün 2026'da <strong>11 Aralık Cuma</strong> günüdür. Dilerseniz önceki günle, 10 Aralık Perşembe ile birlikte de tutabilirsiniz.
+  </p>
+  <p class="not">
+    Regaib gecesini takip eden gün her zaman cumadır. Yalnız cuma günü nafile oruç tutmak tenzihen mekruh görüldüğü için cumayla birlikte bir gün önce (perşembe) ya da bir gün sonra (cumartesi) de oruç tutmanız uygun olur. Kaza veya adak orucunu cuma günü tutmakta ise sakınca yoktur.
+  </p>
+  <h3>Recep ve Şaban'da oruç</h3>
+  <p>
+    Peygamberimiz Recep ve Şaban'da diğer aylara göre daha çok nafile oruç tutmuştur; Şaban, Ramazan'dan sonra en çok oruç tuttuğu aydır. Ama Ramazan dışında hiçbir ayın tamamını oruçlu geçirmemiştir. Bu yüzden Recep ve Şaban'ı aralıksız oruçla geçirmenin dinî bir dayanağı yoktur; sağlığınız elverdiği ölçüde bu aylarda dilediğiniz kadar nafile oruç tutabilirsiniz.
+  </p>
+  <p>
+    Peygamberimizin tuttuğu ve tavsiye ettiği nafile oruçlar da iyi bir ölçüdür: pazartesi ve perşembe günleri ile kamerî ayın 13, 14 ve 15. günleri. Recep ayında bu üç gün 22–24 Aralık 2026'ya denk geliyor.
+  </p>
+  <p class="kaynak-not">
+    Kaynak: DİYK, “Kandil gecelerine ait özel bir namaz…”; DİYK, “Kandillerde oruç tutmak isteyen kişi…”; DİYK, “Cuma günleri oruç tutmanın hükmü nedir?”; DİYK, “Üç ayların dindeki yeri…”; DİYK, “Mübârek gün ve geceler…”; İslam İlmihali, s. 272, 360; asılsız rivayet: TDV İslâm Ansiklopedisi, “Regâib Gecesi”, c. 34, s. 535–536
+  </p>
+
+  <h2 id="uc-aylar">Üç aylar nedir?</h2>
+  <p>
+    Üç aylar, kamerî aylardan Recep, Şaban ve Ramazan'dır. Bu aylar mübarek gecelerle doludur: Recep'in ilk cuma gecesi Regaib, 27. gecesi Miraç; Şaban'ın 15. gecesi Berat, Ramazan'ın 27. gecesi de Kadir gecesidir. Kur'an'ın indiği ve oruç ibadetinin tahsis edildiği Ramazan'ın da bu aylar arasında olması, üç ayları diğer aylardan farklı kılar.
+  </p>
+  <p>
+    Bu aylarda insanın kendine çekidüzen vermesi, geçmişinin muhasebesini yapıp geleceğe daha gayretli yönelmesi tavsiye edilir: kötü alışkanlıkları azaltıp iyilikleri çoğaltmak ve imkânı ölçüsünde yoksulları gözetmek. Böyle yapan, bu ayları değerlendirmiş ve manevi feyzinden yararlanmış olur.
+  </p>
+  <blockquote class="alinti reveal">
+    <p>“Allah’ım! Receb ve Şaban’ı bize mübarek kıl ve bizi Ramazan’a ulaştır.”</p>
+    <footer>Peygamberimizin Recep ayı girdiğinde ettiği dua · Taberânî, el-Mu‘cemü’l-evsat, 4/189; Beyhakî, Şu‘abü’l-îmân, 5/348-349</footer>
+  </blockquote>
+  <p class="not">
+    Hadis âlimleri bu rivayeti zayıf kabul etse de Recep ayının faziletiyle ilgili en çok güvenilen rivayetlerden biri sayılır.
+  </p>
+  <p class="kaynak-not">
+    Kaynak: İslam İlmihali, s. 360–361; DİYK, “Üç ayların dindeki yeri…”; TDV İslâm Ansiklopedisi, “Receb”, c. 34, s. 506–507
+  </p>
+
+  <h2 id="sorular">Sık sorulan sorular</h2>
+  <div class="sss">
+    {
+      sorular.map((s, i) => (
+        <details open={i === 0}>
+          <summary>{s.soru}</summary>
+          <p>
+            <Fragment set:html={s.cevap} /> <span class="kaynak-not">({s.kaynak})</span>
+          </p>
+        </details>
+      ))
+    }
+  </div>
+</Rehber>
