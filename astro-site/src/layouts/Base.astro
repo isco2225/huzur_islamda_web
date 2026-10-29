@@ -27,9 +27,12 @@ const ogImageAlt = 'İbadet Rehberim uygulamasının ekranları: zikirmatik, eza
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Favicon'ların köşeleri yuvarlatılmış ve saydamdır (header logosu gibi %25);
+         ?v= eski kare ikonun tarayıcı önbelleğini kırar -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=2" />
     <!-- Google favicon yönergesi 48px katı ister; 192px sürüm arama sonuçları için -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/Icon-192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192.png" />
+    <!-- iOS köşeleri kendisi yuvarlatır ve saydamlığı siyaha boyar: kare ve opak kalmalı -->
     <link rel="apple-touch-icon" href="/icons/Icon-192.png" />
     <meta name="theme-color" content="#677d2a" />
     <meta name="generator" content={Astro.generator} />
