@@ -3,7 +3,7 @@ layout: ../layouts/Legal.astro
 title: 'Gizlilik Politikası | İbadet Rehberim'
 pageTitle: 'Gizlilik Politikası'
 description: 'İbadet Rehberim mobil uygulamasının gizlilik politikası: toplanan veriler, kullanım amaçları, paylaşım, güvenlik ve kullanıcı hakları.'
-updated: 'Son Güncelleme Tarihi: 26 Ekim 2026'
+updated: 'Son Güncelleme Tarihi: 4 Kasım 2026'
 ---
 
 İbadet Rehberim ekibi olarak, kullanıcılarımızın gizliliğine ve kişisel verilerinin güvenliğine büyük önem veriyoruz. Bu Gizlilik Politikası, mobil uygulamamızı kullandığınızda verilerinizin nasıl toplandığını, kullanıldığını, paylaşıldığını ve korunduğunu açıklamaktadır.
@@ -24,7 +24,7 @@ Namaz vakitlerini doğru hesaplayabilmek için İlçe, Şehir ve Ülke bazlı ko
 
 **Kullanım ve İçerik Verileri:**
 
-Oluşturduğunuz günlük zikirler, zikir sayılarınız ve "Ruh Haline Göre" oluşturulan zikir setleri. "Akış" (Flow) bölümünde kaydettiğiniz gönderiler (Kaydedilenler). Asistana yazdığınız sorular ve bağlamı korumak adına son mesajlar. Bunlar yanıt üretilebilmesi için Google Gemini yapay zekâ hizmetine iletilir; adınız ve e-posta adresiniz iletilmez, profilinizde varsa yaşınız ve cinsiyetiniz iletilir. İlk sorunuzdan önce uygulama içinde bunun için onayınız istenir.
+Oluşturduğunuz günlük zikirler, zikir sayılarınız, kendi yazdığınız zikir rutinleri (adı, içindeki zikirler ve adetleri) ve "Ruh Haline Göre" oluşturulan zikir setleri. "Akış" (Flow) bölümünde kaydettiğiniz gönderiler (Kaydedilenler). Asistana yazdığınız sorular ve bağlamı korumak adına son mesajlar. Bunlar yanıt üretilebilmesi için Google Gemini yapay zekâ hizmetine iletilir; adınız ve e-posta adresiniz iletilmez, profilinizde varsa yaşınız ve cinsiyetiniz iletilir. İlk sorunuzdan önce uygulama içinde bunun için onayınız istenir.
 
 **Cihaz ve Teknik Veriler:**
 
@@ -32,7 +32,7 @@ IP adresi, cihaz modeli ve işletim sistemi sürümü gibi teknik bilgiler; bunl
 
 **Kullanım İstatistikleri:**
 
-Uygulamayı iyileştirmek için Google Analytics for Firebase ile hangi ekranların açıldığını, kullanım süresini, zikir serisinin ulaştığı gün sayısı gibi uygulama içi olayları, cihaz ve uygulama sürümü gibi teknik bilgileri ve IP adresinden çıkarılan yaklaşık konumu (ülke, şehir) toplarız. Bunlara yalnızca hesap türü (misafir veya kayıtlı), abonelik türü, bildirimlerin açık olup olmadığı ve konum seçilip seçilmediği bilgisi eklenir. Bu istatistiklere adınız, e-posta adresiniz, hesap kimliğiniz, yaşınız, cinsiyetiniz, zikirleriniz ve asistana yazdıklarınız eklenmez; reklam kimliği kullanılmaz ve veriler reklam amacıyla kullanılmaz. Uygulamadaki Ayarlar > Etkileşimler > Kullanım İstatistikleri anahtarıyla dilediğiniz zaman kapatabilirsiniz; hesabınızı sildiğinizde cihazınızdaki istatistik kimliği sıfırlanır.
+Uygulamayı iyileştirmek için Google Analytics for Firebase ile hangi ekranların açıldığını, kullanım süresini, zikir serisinin ulaştığı gün sayısı ve oluşturulan zikir rutinindeki zikir sayısı gibi uygulama içi olayları, cihaz ve uygulama sürümü gibi teknik bilgileri ve IP adresinden çıkarılan yaklaşık konumu (ülke, şehir) toplarız. Bunlara yalnızca hesap türü (misafir veya kayıtlı), abonelik türü, bildirimlerin açık olup olmadığı ve konum seçilip seçilmediği bilgisi eklenir. Bu istatistiklere adınız, e-posta adresiniz, hesap kimliğiniz, yaşınız, cinsiyetiniz, zikirleriniz ve asistana yazdıklarınız eklenmez; reklam kimliği kullanılmaz ve veriler reklam amacıyla kullanılmaz. Uygulamadaki Ayarlar > Gizlilik > Kullanım istatistikleri anahtarıyla dilediğiniz zaman kapatabilirsiniz; hesabınızı sildiğinizde cihazınızdaki istatistik kimliği sıfırlanır.
 
 **Reklam Verileri:**
 
@@ -71,11 +71,11 @@ Verilerinizin güvenliği bizim için önceliklidir:
 Kullanıcı olarak kişisel verileriniz üzerinde aşağıdaki haklara sahipsiniz:
 
 - Erişim ve Düzeltme: Profil sayfanızdan kişisel bilgilerinizi (ad, soyad, konum vb.) dilediğiniz zaman görüntüleyebilir ve güncelleyebilirsiniz.
-- Veri Silme (Unutulma Hakkı): Uygulama içerisindeki Ayarlar > Hesap > Hesabı Sil seçeneğini kullanarak hesabınızı, profilinizi ve zikir kayıtlarınızı kalıcı olarak silebilirsiniz. Silme sonrasında yalnızca adınızı ve e-posta adresinizi içermeyen özet bilgiler (ülke, şehir, hesap açılış tarihi) ile varsa abonelik kayıtları, istatistik ve yasal yükümlülükler için saklanır. Ayrıca web sitemizdeki [talep formunu](/delete_account) kullanarak da silme talebinde bulunabilirsiniz.
+- Veri Silme (Unutulma Hakkı): Uygulama içerisindeki Ayarlar > Hesabı sil seçeneğini kullanarak hesabınızı, profilinizi ve zikir kayıtlarınızı kalıcı olarak silebilirsiniz. Silme sonrasında yalnızca adınızı ve e-posta adresinizi içermeyen özet bilgiler (ülke, şehir, hesap açılış tarihi) ile varsa abonelik kayıtları, istatistik ve yasal yükümlülükler için saklanır. Ayrıca web sitemizdeki [talep formunu](/delete_account) kullanarak da silme talebinde bulunabilirsiniz.
 - İtiraz ve Kısıtlama: Verilerinizin işlenmesine itiraz etme hakkınız saklıdır.
-- Onayı Geri Alma: Yapay zekâ asistanı için verdiğiniz onayı uygulama içinde Ayarlar > Hakkında > Yapay zekâ asistanı onayı adımından geri alabilirsiniz; bundan sonra yeni bir soru göndermeden önce onayınız yeniden istenir. Hesabınızdan çıkış yaptığınızda bu onay kendiliğinden geri alınır.
+- Onayı Geri Alma: Yapay zekâ asistanı için verdiğiniz onayı uygulama içinde Ayarlar > Gizlilik > Yapay zekâ asistanı onayı adımından geri alabilirsiniz; bundan sonra yeni bir soru göndermeden önce onayınız yeniden istenir. Hesabınızdan çıkış yaptığınızda bu onay kendiliğinden geri alınır.
 - Bildirimleri Kapatma: Ayarlar menüsünden bildirimleri tümüyle ya da türüne göre (namaz vakitleri, zikir hatırlatmaları, cuma mesajı) dilediğiniz zaman kapatabilirsiniz.
-- İstatistikleri Kapatma: Ayarlar > Etkileşimler > Kullanım İstatistikleri anahtarıyla kullanım istatistiklerinin toplanmasını durdurabilirsiniz.
+- İstatistikleri Kapatma: Ayarlar > Gizlilik > Kullanım istatistikleri anahtarıyla kullanım istatistiklerinin toplanmasını durdurabilirsiniz.
 
 ## 6. İletişim
 
